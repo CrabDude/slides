@@ -1,0 +1,25 @@
+{
+  "env": {
+    "node": true,
+    "es6": true
+  },
+  "parser": "babel-eslint",
+  "rules": {
+    "curly": [2, "multi-line"],
+    "no-throw-literal": 1,
+    "strict": "never",
+    "semi": [2, "never"],
+    "quotes": "single",
+    "eol-last": 1,
+    "no-new-require": 1,
+    "no-sync": 1,
+    "no-mixed-requires": [1, true],
+    "no-use-before-define": [1, "nofunc"],
+    "no-undef": "variable",
+    "no-unused-vars": 0,
+    "comma-dangle": 0,
+    "new-cap": [2, {
+      "capIsNewExceptions": ["Schema", "Passport"]
+    }]
+  }
+}
