@@ -17,11 +17,27 @@ Building your first node.js server.
 
 ---
 
+# `http`: Example
+
 ```javascript
 let http = require('http')
+
+
+  
+
+
+
+
+
+
+
+
+.
 ```
 
 ---
+
+# `http`: Example
 
 ```javascript
 let http = require('http')
@@ -41,6 +57,8 @@ server.listen(8000, '127.0.0.1')
 
 ---
 
+# `http`: Example
+
 ```javascript
 let http = require('http')
 
@@ -59,6 +77,8 @@ server.listen(8000, '127.0.0.1')
 
 ---
 
+# `http`: Example
+
 ```javascript
 let http = require('http')
 
@@ -76,6 +96,8 @@ server.listen(8000, '127.0.0.1')
 ```
 
 ---
+
+# `http`: Example
 
 ```javascript
 let http = require('http')
@@ -108,10 +130,23 @@ server.listen(8000, '127.0.0.1')
 
 ---
 
-# Express: Middleware
+# Middleware
 
-**You decide what blocks you want:**
-- Static file server
+A function passed to `app.use()` or a route with the following signature:
+
+```javascript
+app.use((req, res, next) => {
+  // Typically, either terminate the res with .end() or .send()
+  // Or do something and then call next()
+})
+```
+
+---
+
+# Middleware: Examples
+
+**Middleware are opt-in. Include what you want:**
+- Static files: `express.static()`
 - Logging: `morgan`
 - Body parsing: `body-parser`
 - Cookie parsing: `cookie-parser`
@@ -121,22 +156,29 @@ server.listen(8000, '127.0.0.1')
 
 ---
 
-# Express: Middleware
+# Middleware: Stack
+
+**Middleware are ordered like an array:**
 
 ```javascript
-let connect = require('connect')
+let express = require('express')
 let app = express()
 
-// First middleware in pipeline
+// 1st in middleware stack
 app.use((req, res, next) => {
-  // Send to next handler if url not /about
-  if (req.url != '/about') return next()
+  // Pass control to next middleware in stack
+  if (req.url !== '/about') return next()
   res.end('About page')
 })
 
-// Second middleware in pipeline
+// 2nd in middleware stack
 app.use((req, res, next) => {
   res.end('Default page')
+})
+
+// 3rd in middleware stack
+app.use((req, res, next) => {
+  // NEVER CALLED since next was not called above
 })
 
 app.listen(8080, '127.0.0.1')
@@ -144,201 +186,7 @@ app.listen(8080, '127.0.0.1')
 
 ---
 
-# Express: Configuration
-
-if (process.env.NODE_ENV === 'development') {
-  app.use(morgan('dev')) // Verbose logging
-}
-
----
-
-# Express: Routing
-
-```javascript
-let express = require('express')
-let app = express()
-
-
-
-
-
-
-
-
-
-
-```
-
----
-
-# Express: Routing
-
-```javascript
-let express = require('express')
-let app = express()
-
-
-
-
-
-
-
-
-```
-
----
-
-# Express: Routing
-
-```javascript
-let express = require('express')
-let app = express()
-
-app.get('/version', (req, res) => {
-  res.writeHead(200, {'Content-Type': 'application/json'})
-  var result = { version: '1.0.0' }
-  res.end(JSON.stringify(result))
-})
-
-
-```
-
----
-
-# Express: Routing
-
-```javascript
-let express = require('express')
-let app = express()
-
-app.get('/version', (req, res) => {
-  res.writeHead(200, {'Content-Type': 'application/json'})
-  var result = { version: '1.0.0' }
-  res.end(JSON.stringify(result))
-})
-
-app.listen(3000)
-```
-
----
-
-# Express: Routing
-
-```javascript
-let express = require('express')
-let app = express()
-
-app.get('/version', (req, res) => {
-  let result = { version: '1.0.0' }
-  res.json(result)
-})
-
-
-app.listen(3000)
-```
-
----
-
-# Express: Parameters
-
-```javascript
-
-
-let user = (req, res) => {
-  
-  let item = { id: 1, name: 'John' }
-  
-  res.json(item)
-}
-
-app.get('/user', user)
-```
-
----
-
-# Express: Parameters
-
-```javascript
-let users = require('./users.json')
-
-let user = (req, res) => {
-  
-  let item = users[req.params.id]
-  
-  res.json(item)
-}
-
-app.get('/user', user)
-```
-
----
-
-# Express: Parameters
-
-```javascript
-let users = require('./users.json')
-
-let user = (req, res) => {
-  
-  let item = users[req.params.id]
-  if (!req.params.id) return res.json(users)
-  res.json(item)
-}
-
-app.get('/user', user)
-```
-
----
-
-# Express: Parameters
-
-```javascript
-let users = require('./users.json')
-
-let user = function (req, res) {
-  
-  let item = users[req.params.id]
-  if (!item) return res.send(404, 'not found')
-  res.json(item)
-}
-
-app.get('/user/:id', user)
-```
-
----
-
-# Express: Parameters
-
-```javascript
-let users = require('./users.json')
-
-let user = function (req, res) {
-  if (!req.params.id) return res.json(users)
-  let item = users[req.params.id]
-  if (!item) return res.send(404, 'not found')
-  res.json(item)
-}
-
-app.get('/user/:id?', user)
-```
-
----
-
-# Express: Sanitizing Parameters
-
-```javascript
-app.param(':id', (v) => {
-  return parseInt(v, 10)
-})
-
-app.get('/user/:id', (req, res) => {
-  res.send('user id: ' + req.params.id)
-})
-```
-
---- 
-
-# Express: Middleware
+# Middleware: `body-parser`
 
 ```javascript
 let express = require('express')
@@ -351,13 +199,12 @@ app.get('/user', user)
 
 
 
-
-
+.
 ```
 
 ---
 
-# Express: Middleware
+# Middleware: `body-parser`
 
 ```javascript
 let express = require('express')
@@ -370,13 +217,12 @@ app.get('/user', user)
 
 
 
-
-
+.
 ```
 
 ---
 
-# Express: Middleware
+# Middleware: `body-parser`
 
 ```javascript
 let express = require('express')
@@ -387,30 +233,31 @@ let bodyParser = require('body-parser')
 app.use(bodyParser.text())
 app.get('/user', user)
 
-let register = (req, res) => {
+app.post('/user', (req, res) => {
   // use req.body to create new user
-}
-app.post('/user', register)
+})
 ```
 
 ---
 
-# Express: Custom Middleware
+# Middleware: Custom
 
+**Any function with signature: `(req, res, next) => {}`**
 ```javascript
-let customMiddleware = function (req, res, next) {
+app.use((req, res, next) => {
   res.setHeader('X-API-Version', '1.0.0')
   return next()
-}
+})
 
-app.use(bodyParser())
-app.use(customMiddleware)
 app.get('/user', user)
 ```
 
 ---
 
-# Express: Basic Auth
+# Middleware: Basic Auth
+
+
+*http://username:password@127.0.0.1:8000/user*
 
 ```javascript
 let express = require('express')
@@ -426,10 +273,12 @@ let app = express()
 
 app.get('/user', user)
 ```
-
 ---
 
-# Express: Basic Auth
+# Middleware: Basic Auth
+
+
+*http://username:password@127.0.0.1:8000/user*
 
 ```javascript
 let express = require('express')
@@ -448,7 +297,10 @@ app.get('/user', user)
 
 ---
 
-# Express: Basic Auth
+# Middleware: Basic Auth
+
+
+*http://username:password@127.0.0.1:8000/user*
 
 ```javascript
 let express = require('express')
@@ -462,13 +314,15 @@ let validate = (username, password, callback) => {
 }
 
 
-
 app.get('/user', user)
 ```
 
 ---
 
-# Express: Basic Auth
+# Middleware: Basic Auth
+
+
+*http://username:password@127.0.0.1:8000/user*
 
 ```javascript
 let express = require('express')
@@ -482,13 +336,15 @@ let validate = (username, password, callback) => {
 }
 
 app.use(auth)
-
 app.get('/user', user)
 ```
 
 ---
 
-# Express: Basic Auth
+# Middleware: Basic Auth
+
+
+*http://username:password@127.0.0.1:8000/user*
 
 ```javascript
 let express = require('express')
@@ -502,48 +358,201 @@ let validate = (username, password, callback) => {
 }
 
 
-
 app.get('/user', auth, user)
 ```
 ---
 
-# Express: Middleware
+# Express: Configuration
 
-**Redundant code...**
+**Conditionally use middleware:**
+```javascript
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev')) // Verbose logging
+}
+```
+
+---
+
+# Express: Routing
 
 ```javascript
-app.get('/user/:id', (req, res) => {
-  let id = req.params.id
-  User.get(id).then(user => {
-    res.send('user ' + user.name)
-  })
+let express = require('express')
+let app = express()
+
+
+
+
+
+
+
+app.listen(8000)
+```
+
+---
+
+# Express: Routing
+
+```javascript
+let express = require('express')
+let app = express()
+
+app.get('/version', (req, res) => {
+
+
+
 })
 
-app.put('/user/:id', (req, res) => {
-  let id = req.params.userId
-  User.get(id).then(user => {
-    user.update(req.body)
-  })
+app.listen(8000)
+```
+
+---
+
+# Express: Routing
+
+```javascript
+let express = require('express')
+let app = express()
+
+app.get('/version', (req, res) => {
+  res.writeHead(200, {'Content-Type': 'application/json'})
+  let result = { version: '1.0.0' }
+  res.end(JSON.stringify(result))
+})
+
+app.listen(8000)
+```
+
+---
+
+# Express: Routing
+
+```javascript
+let express = require('express')
+let app = express()
+
+app.get('/version', (req, res) => {
+
+  let result = { version: '1.0.0' }
+  res.json(result)
+})
+
+app.listen(8000)
+```
+
+---
+
+# Express: Parameters
+
+```javascript
+
+
+app.get('/user', (req, res) => {
+  
+  let user = { id: 1, name: 'John' }
+  
+  res.json(user)
 })
 ```
 
 ---
 
-# Express: Middleware
+# Express: Parameters
+
+```javascript
+let users = require('./users.json')
+
+app.get('/user/:id', (req, res) => {
+  
+  let user = users[req.params.id]
+  
+  res.json(user)
+})
+```
+
+---
+
+# Express: Parameters
+
+```javascript
+let users = require('./users.json')
+
+app.get('/user/:id', (req, res) => {
+  
+  let user = users[req.params.id]
+  if (!user) return res.send(404, 'Not Found')
+  res.json(user)
+})
+```
+
+---
+
+# Express: Parameters
+
+```javascript
+let users = require('./users.json')
+
+app.get('/user/:id?', (req, res) => {
+  if (!req.params.id) return res.json(users)
+  let user = users[req.params.id]
+  if (!user) return res.send(404, 'Not Found')
+  res.json(user)
+})
+```
+
+---
+
+# Express: Sanitizing Parameters
+
+```javascript
+app.param(':userId', then(async (req, res, next, id) => {
+  try {
+    req.user = await User.get(id)
+    next()
+  } catch(e) {
+    res.send(401, 'Unauthorized')
+  }
+}))
+
+app.get('/user/:userId', (req, res) => {
+  res.send('user id: ' + req.user.id)
+})
+```
+
+---
+
+# Middleware: Composition
+
+**Redundant code...**
+
+```javascript
+app.get('/user/:id', then(async (req, res) => {
+  let id = req.params.id
+  let user = await User.get(id)
+  res.send('user ' + user.name)
+}))
+
+app.put('/user/:id', then((req, res) => {
+  let id = req.params.id
+  let user = await User.get(id)
+  user.update(req.body)
+}))
+```
+
+---
+
+# Middleware: Composition
 
 **Refactored to use middleware:**
 
 ```javascript
-let loadUser = (req, res, next) => {
+let then = require('express-then')
+let loadUser = then(async (req, res, next) => {
   let id = req.params.id
-  let promise = User.get(id).then(user => {
-    if (!user) throw new Error('invalid userId')
-    req.user = user
-  })
-    
-  nodeify(promise, next)
+  let user = await User.get(id)
+  req.user = user
 })
 
+// Reuse loadUser as a route middleware
 app.get('/user/:id', loadUser, (req, res) => {
   res.send('user ' + req.user.name)
 })
@@ -555,7 +564,9 @@ app.put('/user/:id', loadUser, (req, res) => {
 
 ---
 
-# Express: Stacking
+# Middleware: Composition
+
+**Composable route middleware**
 
 ```javascript
 app.put('/user/:id', isAdmin, loadUser, (req, res) => {
@@ -563,19 +574,14 @@ app.put('/user/:id', isAdmin, loadUser, (req, res) => {
 })
 ```
 
-is cleaner than...
+**is cleaner than...**
 
 ```javascript
-app.put('/user/:id', (req, res, next) => {
-  // Verify if the current user is an admin
-  isAdmin(req, res, (err) => {
-    if (err) return next(err)
-    loadUser(req, res, (err, user) => {
-      if (err) return next(err)
-      req.user.update(req.body)
-    })
-  })
-})
+app.put('/user/:id', then(async (req, res, next) => {
+  await isAdmin(req, res)
+  let user = await loadUser(req, res)
+  req.user.update(req.body)
+}))
 ```
 
 ---
@@ -583,12 +589,15 @@ app.put('/user/:id', (req, res, next) => {
 # Express: Rendering Views
 
 ```javascript
-app.get('/user/:id', loadUser, function(req, res) {
+// Configure ejs view engine
+app.set('views', path.join(__dirname, 'views'))
+app.set('view engine', 'ejs')
+
+// Render view
+app.get('/user/:id', loadUser, (req, res) => {
   res.render('user_edit', {
-    locals: {
-      user: req.user,
-      title: 'Edit User ' + req.user.username
-    }
+    user: req.user,
+    title: 'Edit User ' + req.user.username
   })
 })
 ```
