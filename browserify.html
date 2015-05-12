@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Browserify</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style type="text/css">
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Browserify
+
+For using node.js in the browser.
+
+---
+
+# Why Browserify?
+
+**Manually managing dependencies is a hassle:**
+
+- Separate script per module or concatenation
+- Shared global namespace results in collisions
+- Inclusion order must be manually calculated
+
+---
+
+# Why Browserify?
+
+> Browserify lets you `require('modules')` in the browser by bundling up all of your dependencies.
+
+-- browserify.org
+
+---
+
+# Why Browserify?
+
+**Module management with browserify:**
+
+- Modules are scoped in their own namespace
+- Uses CommonJS standard interface:
+  - Dependencies defined using `require()`
+  - Modules defined by assigning to `module.exports`
+  - Exactly like node.js
+- Automatic dependency resolution
+
+---
+
+# Why Browserify?
+
+**main.js**
+
+```javascript
+let $ = require('jquery')
+$('body').html('Browserify is Node!')
+```
+
+---
+
+# Why Browserify?
+
+**Build process:**
+
+```bash
+project$ npm install --save jquery
+
+project$ browserify main.js -o bundle.js
+```
+
+---
+
+# Why Browserify?
+
+**models/user.js:**
+
+```javascript
+class User {
+  
+  ...
+
+}
+
+module.exports = User
+```
+
+---
+
+# Why Browserify?
+
+**main.js**
+
+```javascript
+let $ = require('jquery')
+let _ = require('underscore')
+let User = require('../models/user')
+```
+
+---
+
+# Tooling
+
+**Pick & Choose:**
+
+- Babel.js with [`babelify`](https://github.com/babel/babelify):
+  
+  ```bash
+  browserify  -d -e main.js -t [ babelify --stage 0 ] -o bundle.js
+  ```
+- Auto-rebuild server with [`beefy`](http://didact.us/beefy/):
+  
+  ```bash
+  beefy main.js --open -- -t [ babelify --stage 0 ]
+  ```
+- Express middleware with [`browserify-middleware`](https://github.com/ForbesLindesay/browserify-middleware):
+
+  ```javascript
+  //provide browserified versions of all the files in a directory
+  app.use('/js', browserify('./client/dir'));
+  ```
+- Source maps with [`exorcist`](https://www.npmjs.com/package/exorcist)
+
+---
+
+# Additional Resources
+
+**So many!**
+
+- [Browserify Handbook](https://github.com/substack/browserify-handbook)
+- [Interactive code course](http://tagtree.tv/browserify-an-intro)
+- [Browserify Articles](http://browserify.org/articles.html)
+  
+---
+
+class: center, middle
+
+# Questions?
+
+    </textarea>
+    <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create({
+        highlightStyle: 'tomorrow-night-bright'
+      })
+    </script>
+  </body>
+</html>
