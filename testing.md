@@ -31,7 +31,7 @@ A test which tests the result of systems interacting
 
 # Terminology
 
-~Integration Test~
+~~Integration Test~~
 
 ---
 
@@ -268,7 +268,7 @@ $ mocha
 
 
 
-
+.
 ```
 
 ---
@@ -367,9 +367,14 @@ npm install --save-dev babel
 ```javascript
 {
   "scripts": {
+    // As a compiler option
     "test": "mocha --compilers js:babel/register"
   }
 }
+```
+
+```bash
+$ npm test
 ```
 
 ---
@@ -387,6 +392,7 @@ npm install --save-dev babel
 ```javascript
 {
   "scripts": {
+    // As a programmatic require
     "test": "mocha --require babelhook"
   }
 }
@@ -526,6 +532,8 @@ describe('Test suite', ()=> {
 })
 ```
 
+---
+
 # Mocha TDD
 
 **Setup & Teardown:**
@@ -561,7 +569,6 @@ describe('Test suite', ()=> {
 
 ---
 
-
 # Mocha TDD
 
 **Pending tests:**
@@ -580,7 +587,7 @@ describe('Feature', ()=> {
 
 ```javascript
 describe('Feature', ()=> {
-  it.skip(`should ignore this test that's currently broken`, ...)
+  it.skip('should ignore this test that\'s currently broken', ...)
   it('should still pass this test', ...)
 })
 ```
@@ -593,7 +600,7 @@ describe('Feature', ()=> {
 
 ```javascript
 describe('Feature', ()=> {
-  it.only(`should pass this test because it's currently being worked on`, ...)
+  it.only('should pass this test because it\'s currently being worked on', ...)
   it('should ignore this test at the moment', ...)
 })
 ```
@@ -606,9 +613,9 @@ describe('Feature', ()=> {
 
 - `mocha test/test.js`
 - `mocha --watch test/test.js`
-- `mocha --grep="Test suite" test/test.js`
+- `mocha --grep="Test suite" test/test.js` *
   
-  *Only runs tests with "Test suite" in descriptions*
+\* Only runs tests with "Test suite" in descriptions
 
 ---
 
@@ -715,11 +722,11 @@ project_root$ gulp
 **Features:**
 
 - BDD (chaining)
-- node.js & browser support
+- node.js and browser support
 - Multiple assertion styles
   - should: `foo.should.be.a('string')`
   - expect: `expect(foo).to.be.a('string')`
-  - assert: `assert.typeOf(foo, 'string')
+  - assert: `assert.typeOf(foo, 'string')`
 
 ---
 
