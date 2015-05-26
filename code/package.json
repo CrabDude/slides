@@ -1,0 +1,20 @@
+{
+  "name": "slides-code",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel": "^5.4.7"
+  },
+  "dependencies": {
+    "songbird": "^1.0.1"
+  }
+}

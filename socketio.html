@@ -98,14 +98,18 @@ socket.on('connect', ()=>console.log('connected'))
 // server.js
 ioServer.on('connection', socket => {
   socket.on('customMessageEvent', msg => {
-    // echo back
+    // echo back to EVERYONE
     ioServer.emit('customMessageEvent', msg)
+
+    // echo back to JUST socket
+    socket.emit('customMessageEvent', msg)
   })
 })
 ```
 
 ```javascript
 // client.js
+socket.emit('customMessageEvent', 'Hello world!')
 socket.on('customMessageEvent', msg => console.log('message: ', msg))
 ```
 
