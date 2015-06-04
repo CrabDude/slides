@@ -1,4 +1,3 @@
-
 class: center, middle
 
 # Node.js in Production
@@ -447,13 +446,13 @@ pm2 reload app        # Restart cluster processes with 0ms downtime
 **Pretranspile your code with `babel`:**
 
 ```bash
-$ babel src --out-dir dist
+$ babel src -d dist --optional asyncToGenerator
 ```
 
 Generate source-maps for non-production environments:
 
 ```bash
-$ babel src --out-dir dist --source-maps
+$ babel src -d dist --source-maps # or -s
 ```
 
 Run the transpiled code:
@@ -744,4 +743,3 @@ heapdump.writeSnapshot(filename, callback)
 class: center, middle
 
 # Questions?
-
