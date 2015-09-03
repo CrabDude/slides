@@ -934,11 +934,10 @@ app.get('/user/:id?', (req, res) => {
 
 # Middleware: Composition
 
-**Redundant code...**
+**Refactor redundant code as middleware:**
 
 ```javascript
 let then = require('express-then')
-
 
 
 
@@ -962,35 +961,7 @@ app.put('/user/:id', then(async (req, res) => {
 
 # Middleware: Composition
 
-**Redundant code...**
-
-```javascript
-let then = require('express-then')
-
-
-
-
-
-
-
-app.get('/user/:id', then(async (req, res) => {
-  let id = req.params.id
-  let user = await User.get(id)
-  res.send('user ' + user.name)
-}))
-
-app.put('/user/:id', then(async (req, res) => {
-  let id = req.params.id
-  let user = await User.get(id)
-  user.update(req.body)
-}))
-```
-
----
-
-# Middleware: Composition
-
-**Redundant code...**
+**Refactor redundant code as middleware:**
 
 ```javascript
 let then = require('express-then')
@@ -1000,7 +971,6 @@ let loadUser = then(async (req, res, next) => {
 
 })
 
-
 app.get('/user/:id', then(async (req, res) => {
   let id = req.params.id
   let user = await User.get(id)
@@ -1018,7 +988,7 @@ app.put('/user/:id', then(async (req, res) => {
 
 # Middleware: Composition
 
-**Redundant code...**
+**Refactor redundant code as middleware:**
 
 ```javascript
 let then = require('express-then')
@@ -1028,7 +998,6 @@ let loadUser = then(async (req, res, next) => {
 
 })
 
-
 app.get('/user/:id', then(async (req, res) => {
 
 
@@ -1046,7 +1015,7 @@ app.put('/user/:id', then(async (req, res) => {
 
 # Middleware: Composition
 
-**Redundant code...**
+**Refactor redundant code as middleware:**
 
 ```javascript
 let then = require('express-then')
@@ -1056,7 +1025,6 @@ let loadUser = then(async (req, res, next) => {
   req.user = user
 })
 
-
 app.get('/user/:id', then(async (req, res) => {
 
 
@@ -1074,7 +1042,7 @@ app.put('/user/:id', then(async (req, res) => {
 
 # Middleware: Composition
 
-**Refactored to use middleware:**
+**Refactor redundant code as middleware:**
 
 ```javascript
 let then = require('express-then')
@@ -1083,7 +1051,6 @@ let loadUser = then(async (req, res, next) => {
   let user = await User.get(id)
   req.user = user
 })
-
 
 app.get('/user/:id', then(async (req, res) => {
 
@@ -1102,7 +1069,7 @@ app.put('/user/:id', then(async (req, res) => {
 
 # Middleware: Composition
 
-**Refactored to use middleware:**
+**Refactor redundant code as middleware:**
 
 ```javascript
 let then = require('express-then')
@@ -1112,7 +1079,6 @@ let loadUser = then(async (req, res, next) => {
   req.user = user
 })
 
-// Reuse loadUser as a route middleware
 app.get('/user/:id', loadUser, then(async (req, res) => {
 
 
@@ -1151,6 +1117,8 @@ app.put('/user/:id', then(async (req, res, next) => {
 ---
 
 # Express: Rendering Views
+
+**Use `res.render` render view with arguments:**
 
 ```javascript
 // Configure ejs view engine
