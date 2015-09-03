@@ -30,8 +30,6 @@ let http = require('http')
 
 
 
-
-
 .
 ```
 
@@ -50,8 +48,6 @@ let server = http.createServer((req, res) => {
 
 })
 
-
-
 server.listen(8000, '127.0.0.1')
 ```
 
@@ -70,8 +66,6 @@ let server = http.createServer((req, res) => {
 
 })
 
-
-
 server.listen(8000, '127.0.0.1')
 ```
 
@@ -82,27 +76,7 @@ server.listen(8000, '127.0.0.1')
 ```javascript
 let http = require('http')
 
-let handler = (req, res) => {
-  res.writeHead(200, {'Content-Type': 'application/json'})
-  let result = { version: '1.0.0' }
-  res.end(JSON.stringify(result))
-
-
-})
-
-let server = http.createServer(handler)
-
-server.listen(8000, '127.0.0.1')
-```
-
----
-
-# `http`: Example
-
-```javascript
-let http = require('http')
-
-let dispatcher = (req, res) => {
+let server = http.createServer((req, res) => {
   switch(req.url) {
     case '/version': version(req, res); break;
     case '/user': user(req, res); break;
@@ -110,34 +84,141 @@ let dispatcher = (req, res) => {
   }
 })
 
-let server = http.createServer(dispatcher)
+server.listen(8000, '127.0.0.1')
+```
+
+---
+
+# `http`: Example
+
+```javascript
+let http = require('http')
+
+
+//switch(req.url) {
+//  case '/version': version(req, res); break;
+//  case '/user': user(req, res); break;
+//  default: notFound(req, res); break;
+
+
 
 server.listen(8000, '127.0.0.1')
 ```
 
 ---
 
+# `http`: Example
+
+```javascript
+let express = require('express')
+let app = express()
+
+//switch(req.url) {
+//  case '/version': version(req, res); break;
+//  case '/user': user(req, res); break;
+//  default: notFound(req, res); break;
+
+
+
+server.listen(8000, '127.0.0.1')
+```
+
+---
+
+# Express: Example
+
+```javascript
+let express = require('express')
+let app = express()
+
+//switch(req.url) {
+    app.get('/version', version)
+//  case '/user': user(req, res); break;
+//  default: notFound(req, res); break;
+
+
+
+server.listen(8000, '127.0.0.1')
+```
+
+---
+
+# Express: Example
+
+```javascript
+let express = require('express')
+let app = express()
+
+//switch(req.url) {
+    app.get('/version', version)
+    app.get('/user', user)
+//  default: notFound(req, res); break;
+
+
+
+server.listen(8000, '127.0.0.1')
+```
+
+---
+
+# Express: Example
+
+```javascript
+let express = require('express')
+let app = express()
+
+//switch(req.url) {
+    app.get('/version', version)
+    app.get('/user', user)
+    app.all(notFound)
+
+
+
+server.listen(8000, '127.0.0.1')
+```
+
+---
+
+# Express: Example
+
+```javascript
+let express = require('express')
+let app = express()
+
+
+app.get('/version', version)
+app.get('/user', user)
+app.all(notFound)
+
+
+
+server.listen(8000, '127.0.0.1')
+```
+
+---
+
+
 # Express
 
 ### Why use a framework?
-- Foundation fo collaboration & code reuse
+- Foundation for iteroperability & code reuse
 - Battle tested: memory leaks, bugs, stability, debugging
 
 ### Why use Express?
 - Simple REST API routing
 - Massive middleware ecosystem ("There's a middleware for that")
-- ~80% market-share
+- Over 50% market-share
 
 ---
 
 # Middleware
 
-A function passed to `app.use()` or a route with the following signature:
+A function passed to `app.use()` or a route that accepts `(req, res, next) => {}`:
 
 ```javascript
 app.use((req, res, next) => {
-  // Typically, either terminate the res with .end() or .send()
-  // Or do something and then call next()
+  // Terminate the response with .end() or .send()
+  // Or mutate the response and call next()
 })
 ```
 
@@ -161,24 +242,339 @@ app.use((req, res, next) => {
 **Middleware are ordered like an array:**
 
 ```javascript
-let express = require('express')
 let app = express()
 
-// 1st in middleware stack
+
+
+
+
+
+
+
+
+
+app.listen(8080, '127.0.0.1')
+```
+
+---
+
+# Middleware: Stack
+
+**Middleware are ordered like an array:**
+
+```javascript
+let app = express()
+
+// Log every request to the console
+app.use(morgan('dev')) 
+
+
+
+
+
+
+
+app.listen(8080, '127.0.0.1')
+```
+
+---
+
+# Middleware: Stack
+
+**Middleware are ordered like an array:**
+
+```javascript
+let app = express()
+
+// Log every request to the console
+app.use(morgan('dev')) 
+
+// Read and parse cookies
+app.use(cookieParser('ilovethenodejs'))
+
+
+
+
+app.listen(8080, '127.0.0.1')
+```
+
+---
+
+# Middleware: Stack
+
+**Middleware are ordered like an array:**
+
+```javascript
+let app = express()
+
+// Log every request to the console
+app.use(morgan('dev')) 
+
+// Read and parse cookies
+app.use(cookieParser('ilovethenodejs'))
+
+// Get form submission data
+app.use(bodyParser.text())
+
+app.listen(8080, '127.0.0.1')
+```
+
+---
+
+# Middleware: Custom
+
+**Write your own middleware:**
+
+```javascript
+let app = express()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+app.listen(8080, '127.0.0.1')
+```
+
+---
+
+# Middleware: Custom
+
+**Write your own middleware:**
+
+```javascript
+let app = express()
+
+// FIFO: Called 1st
 app.use((req, res, next) => {
-  // Pass control to next middleware in stack
+
+
+
+})
+
+
+
+
+
+
+
+
+
+
+
+app.listen(8080, '127.0.0.1')
+```
+
+---
+
+# Middleware: Custom
+
+**Write your own middleware:**
+
+```javascript
+let app = express()
+
+// FIFO: Called 1st
+app.use((req, res, next) => {
+  // If not /about, continue to next middleware
+
+
+})
+
+
+
+
+
+
+
+
+
+
+
+app.listen(8080, '127.0.0.1')
+```
+
+---
+
+# Middleware: Custom
+
+**Write your own middleware:**
+
+```javascript
+let app = express()
+
+// FIFO: Called 1st
+app.use((req, res, next) => {
+  // If not /about, continue to next middleware
+  if (req.url !== '/about') return next()
+
+})
+
+
+
+
+
+
+
+
+
+
+
+app.listen(8080, '127.0.0.1')
+```
+
+---
+
+# Middleware: Custom
+
+**Write your own middleware:**
+
+```javascript
+let app = express()
+
+// FIFO: Called 1st
+app.use((req, res, next) => {
+  // If not /about, continue to next middleware
   if (req.url !== '/about') return next()
   res.end('About page')
 })
 
-// 2nd in middleware stack
+
+
+
+
+
+
+
+
+
+
+app.listen(8080, '127.0.0.1')
+```
+
+---
+
+# Middleware: Custom
+
+**Write your own middleware:**
+
+```javascript
+let app = express()
+
+// FIFO: Called 1st
+app.use((req, res, next) => {
+  // If not /about, continue to next middleware
+  if (req.url !== '/about') return next()
+  res.end('About page')
+})
+
+// FIFO: Called 2nd
+app.use((req, res, next) => {
+
+})
+
+
+
+
+
+
+app.listen(8080, '127.0.0.1')
+```
+
+---
+
+# Middleware: Custom
+
+**Write your own middleware:**
+
+```javascript
+let app = express()
+
+// FIFO: Called 1st
+app.use((req, res, next) => {
+  // If not /about, continue to next middleware
+  if (req.url !== '/about') return next()
+  res.end('About page')
+})
+
+// FIFO: Called 2nd
 app.use((req, res, next) => {
   res.end('Default page')
 })
 
-// 3rd in middleware stack
+
+
+
+
+
+app.listen(8080, '127.0.0.1')
+```
+
+---
+
+# Middleware: Custom
+
+**Write your own middleware:**
+
+```javascript
+let app = express()
+
+// FIFO: Called 1st
 app.use((req, res, next) => {
-  // NEVER CALLED since next was not called above
+  // If not /about, continue to next middleware
+  if (req.url !== '/about') return next()
+  res.end('About page')
+})
+
+// FIFO: Called 2nd
+app.use((req, res, next) => {
+  res.end('Default page')
+})
+
+// FIFO: Called 3rd
+app.use((req, res, next) => {
+
+})
+
+app.listen(8080, '127.0.0.1')
+```
+
+---
+
+# Middleware: Custom
+
+**Write your own middleware:**
+
+```javascript
+let app = express()
+
+// FIFO: Called 1st
+app.use((req, res, next) => {
+  // If not /about, continue to next middleware
+  if (req.url !== '/about') return next()
+  res.end('About page')
+})
+
+// FIFO: Called 2nd
+app.use((req, res, next) => {
+  res.end('Default page')
+})
+
+// FIFO: Called 3rd
+app.use((req, res, next) => {
+  // NEVER CALLED #2 doesn't call next
 })
 
 app.listen(8080, '127.0.0.1')
@@ -189,14 +585,12 @@ app.listen(8080, '127.0.0.1')
 # Middleware: `body-parser`
 
 ```javascript
-let express = require('express')
 let app = express()
+let sendUser = require('./sendUser')
 
 
 
-
-app.get('/user', user)
-
+app.get('/user', sendUser)
 
 
 .
@@ -207,14 +601,12 @@ app.get('/user', user)
 # Middleware: `body-parser`
 
 ```javascript
-let express = require('express')
 let app = express()
+let sendUser = require('./sendUser')
 let bodyParser = require('body-parser')
 
-
 app.use(bodyParser.text())
-app.get('/user', user)
-
+app.get('/user', sendUser)
 
 
 .
@@ -225,14 +617,28 @@ app.get('/user', user)
 # Middleware: `body-parser`
 
 ```javascript
-let express = require('express')
 let app = express()
+let sendUser = require('./sendUser')
 let bodyParser = require('body-parser')
 
+app.use(bodyParser.text())
+app.get('/user', sendUser)
+app.post('/user', (req, res) => {
+
+})
+```
+
+---
+
+# Middleware: `body-parser`
+
+```javascript
+let app = express()
+let sendUser = require('./sendUser')
+let bodyParser = require('body-parser')
 
 app.use(bodyParser.text())
-app.get('/user', user)
-
+app.get('/user', sendUser)
 app.post('/user', (req, res) => {
   // use req.body to create new user
 })
@@ -240,27 +646,12 @@ app.post('/user', (req, res) => {
 
 ---
 
-# Middleware: Custom
-
-**Any function with signature: `(req, res, next) => {}`**
-```javascript
-app.use((req, res, next) => {
-  res.setHeader('X-API-Version', '1.0.0')
-  return next()
-})
-
-app.get('/user', user)
-```
-
----
-
 # Middleware: Basic Auth
 
 
 *http://username:password@127.0.0.1:8000/user*
 
 ```javascript
-let express = require('express')
 let app = express()
 
 
@@ -277,16 +668,55 @@ app.get('/user', user)
 
 # Middleware: Basic Auth
 
+*http://username:password@127.0.0.1:8000/user*
+
+```javascript
+let app = express()
+let basicAuth = require('basic-auth-connect')
+
+
+
+
+
+
+
+
+app.get('/user', user)
+```
+
+---
+
+# Middleware: Basic Auth
 
 *http://username:password@127.0.0.1:8000/user*
 
 ```javascript
-let express = require('express')
 let app = express()
+let basicAuth = require('basic-auth-connect')
+let auth = basicAuth(validate)
 
 
 
-let validate = (username, password, callback) => {
+
+
+
+
+app.get('/user', user)
+```
+
+---
+
+# Middleware: Basic Auth
+
+
+*http://username:password@127.0.0.1:8000/user*
+
+```javascript
+let app = express()
+let basicAuth = require('basic-auth-connect')
+let auth = basicAuth(validate)
+
+let validate = (username, password, next) => {
   let result = (username === 'steve' && password === '12345')
   callback(null, result)
 }
@@ -303,14 +733,13 @@ app.get('/user', user)
 *http://username:password@127.0.0.1:8000/user*
 
 ```javascript
-let express = require('express')
 let app = express()
 let basicAuth = require('basic-auth-connect')
 let auth = basicAuth(validate)
 
-let validate = (username, password, callback) => {
+let validate = (username, password, next) => {
   let result = (username === 'steve' && password === '12345')
-  callback(null, result)
+  next(null, result)
 }
 
 
@@ -325,14 +754,13 @@ app.get('/user', user)
 *http://username:password@127.0.0.1:8000/user*
 
 ```javascript
-let express = require('express')
 let app = express()
 let basicAuth = require('basic-auth-connect')
 let auth = basicAuth(validate)
 
-let validate = (username, password, callback) => {
+let validate = (username, password, next) => {
   let result = (username === 'steve' && password === '12345')
-  callback(null, result)
+  next(null, result)
 }
 
 app.use(auth)
@@ -347,14 +775,13 @@ app.get('/user', user)
 *http://username:password@127.0.0.1:8000/user*
 
 ```javascript
-let express = require('express')
 let app = express()
 let basicAuth = require('basic-auth-connect')
 let auth = basicAuth(validate)
 
-let validate = (username, password, callback) => {
+let validate = (username, password, next) => {
   let result = (username === 'steve' && password === '12345')
-  callback(null, result)
+  next(null, result)
 }
 
 
@@ -373,10 +800,9 @@ if (process.env.NODE_ENV === 'development') {
 
 ---
 
-# Express: Routing
+# Express: Routes
 
 ```javascript
-let express = require('express')
 let app = express()
 
 
@@ -390,10 +816,9 @@ app.listen(8000)
 
 ---
 
-# Express: Routing
+# Express: Routes
 
 ```javascript
-let express = require('express')
 let app = express()
 
 app.get('/version', (req, res) => {
@@ -407,10 +832,9 @@ app.listen(8000)
 
 ---
 
-# Express: Routing
+# Express: Routes
 
 ```javascript
-let express = require('express')
 let app = express()
 
 app.get('/version', (req, res) => {
@@ -424,10 +848,9 @@ app.listen(8000)
 
 ---
 
-# Express: Routing
+# Express: Routes
 
 ```javascript
-let express = require('express')
 let app = express()
 
 app.get('/version', (req, res) => {
@@ -452,6 +875,8 @@ app.get('/user', (req, res) => {
   
   res.json(user)
 })
+
+.
 ```
 
 ---
@@ -467,6 +892,8 @@ app.get('/user/:id', (req, res) => {
   
   res.json(user)
 })
+
+.
 ```
 
 ---
@@ -482,6 +909,8 @@ app.get('/user/:id', (req, res) => {
   if (!user) return res.send(404, 'Not Found')
   res.json(user)
 })
+
+.
 ```
 
 ---
@@ -497,25 +926,8 @@ app.get('/user/:id?', (req, res) => {
   if (!user) return res.send(404, 'Not Found')
   res.json(user)
 })
-```
 
----
-
-# Express: Sanitizing Parameters
-
-```javascript
-app.param(':userId', then(async (req, res, next, id) => {
-  try {
-    req.user = await User.get(id)
-    next()
-  } catch(e) {
-    res.send(401, 'Unauthorized')
-  }
-}))
-
-app.get('/user/:userId', (req, res) => {
-  res.send('user id: ' + req.user.id)
-})
+.
 ```
 
 ---
@@ -525,15 +937,135 @@ app.get('/user/:userId', (req, res) => {
 **Redundant code...**
 
 ```javascript
+let then = require('express-then')
+
+
+
+
+
+
+
 app.get('/user/:id', then(async (req, res) => {
   let id = req.params.id
   let user = await User.get(id)
   res.send('user ' + user.name)
 }))
 
-app.put('/user/:id', then((req, res) => {
+app.put('/user/:id', then(async (req, res) => {
   let id = req.params.id
   let user = await User.get(id)
+  user.update(req.body)
+}))
+```
+
+---
+
+# Middleware: Composition
+
+**Redundant code...**
+
+```javascript
+let then = require('express-then')
+
+
+
+
+
+
+
+app.get('/user/:id', then(async (req, res) => {
+  let id = req.params.id
+  let user = await User.get(id)
+  res.send('user ' + user.name)
+}))
+
+app.put('/user/:id', then(async (req, res) => {
+  let id = req.params.id
+  let user = await User.get(id)
+  user.update(req.body)
+}))
+```
+
+---
+
+# Middleware: Composition
+
+**Redundant code...**
+
+```javascript
+let then = require('express-then')
+let loadUser = then(async (req, res, next) => {
+
+
+
+})
+
+
+app.get('/user/:id', then(async (req, res) => {
+  let id = req.params.id
+  let user = await User.get(id)
+  res.send('user ' + user.name)
+}))
+
+app.put('/user/:id', then(async (req, res) => {
+  let id = req.params.id
+  let user = await User.get(id)
+  user.update(req.body)
+}))
+```
+
+---
+
+# Middleware: Composition
+
+**Redundant code...**
+
+```javascript
+let then = require('express-then')
+let loadUser = then(async (req, res, next) => {
+
+
+
+})
+
+
+app.get('/user/:id', then(async (req, res) => {
+
+
+  res.send('user ' + user.name)
+}))
+
+app.put('/user/:id', then(async (req, res) => {
+
+
+  user.update(req.body)
+}))
+```
+
+---
+
+# Middleware: Composition
+
+**Redundant code...**
+
+```javascript
+let then = require('express-then')
+let loadUser = then(async (req, res, next) => {
+  let id = req.params.id
+  let user = await User.get(id)
+  req.user = user
+})
+
+
+app.get('/user/:id', then(async (req, res) => {
+
+
+  res.send('user ' + user.name)
+}))
+
+app.put('/user/:id', then(async (req, res) => {
+
+
   user.update(req.body)
 }))
 ```
@@ -552,14 +1084,46 @@ let loadUser = then(async (req, res, next) => {
   req.user = user
 })
 
-// Reuse loadUser as a route middleware
-app.get('/user/:id', loadUser, (req, res) => {
-  res.send('user ' + req.user.name)
+
+app.get('/user/:id', then(async (req, res) => {
+
+
+  res.send('user ' + user.name)
+}))
+
+app.put('/user/:id', then(async (req, res) => {
+
+
+  req.user.update(req.body)
+}))
+```
+
+---
+
+# Middleware: Composition
+
+**Refactored to use middleware:**
+
+```javascript
+let then = require('express-then')
+let loadUser = then(async (req, res, next) => {
+  let id = req.params.id
+  let user = await User.get(id)
+  req.user = user
 })
 
-app.put('/user/:id', loadUser, (req, res) => {
+// Reuse loadUser as a route middleware
+app.get('/user/:id', loadUser, then(async (req, res) => {
+
+
+  res.send('user ' + user.name)
+}))
+
+app.put('/user/:id', loadUser, then(async (req, res) => {
+
+
   req.user.update(req.body)
-})
+}))
 ```
 
 ---
@@ -580,7 +1144,7 @@ app.put('/user/:id', isAdmin, loadUser, (req, res) => {
 app.put('/user/:id', then(async (req, res, next) => {
   await isAdmin(req, res)
   let user = await loadUser(req, res)
-  req.user.update(req.body)
+  user.update(req.body)
 }))
 ```
 

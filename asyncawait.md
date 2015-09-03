@@ -1,3 +1,4 @@
+
 class: center, middle
 
 # Async/Await 
@@ -445,7 +446,7 @@ foo()
 **Our hero!* **
 
 ```javascript
-async main() => {
+async function main() => {
     let a = await foo()
 
 
@@ -470,7 +471,7 @@ main()
 **Our hero!* **
 
 ```javascript
-async main() => {
+async function main() => {
     let a = await foo()
     let b = await bar(a)
     let c = await baz(b)
@@ -495,7 +496,7 @@ main()
 **Our hero!* **
 
 ```javascript
-async main(someArg) => {
+async function main(someArg) => {
     let a = await foo(someArg)
     let b = await bar(a)
     let c = await baz(b)
@@ -520,7 +521,7 @@ main(someArg)
 **Our hero!* **
 
 ```javascript
-async main(someArg) => {
+async function main(someArg) => {
     let a = await foo(someArg)
     let b = await bar(a)
     let c = await baz(b)
@@ -545,7 +546,7 @@ main(someArg)
 **Our hero!* **
 
 ```javascript
-async main(someArg) => {
+async function main(someArg) => {
     let a = await foo(someArg)
     let b = await bar(a)
     let c = await baz(b)
@@ -570,7 +571,7 @@ main(someArg)
 **Our hero!* **
 
 ```javascript
-async main(someArg) => {
+async function main(someArg) => {
     let a = await foo(someArg)
     let b = await bar(a)
     let c = await baz(b)
@@ -595,7 +596,7 @@ main(someArg)
 **Our hero!* **
 
 ```javascript
-async main(someArg) => {
+async function main(someArg) => {
     let a = await foo(someArg)
     let b = await bar(a)
     let c = await baz(b)
@@ -620,7 +621,7 @@ async ()=> {
 **Our hero!* **
 
 ```javascript
-async main(someArg) => {
+async function main(someArg) => {
     let a = await foo(someArg)
     let b = await bar(a)
     let c = await baz(b)
@@ -876,7 +877,7 @@ class: center, middle
 **Separation of Async and Sync lifecycle phases**
 
 ```javascript
-async main(someArg) => {
+async function main(someArg) => {
 
     let a = await foo(someArg)
     let b = await bar(a)
@@ -902,7 +903,7 @@ async ()=> {
 **Separation of Async and Sync lifecycle phases**
 
 ```javascript
-async main(someArg) => {
+async function main(someArg) => {
     // General Phase
     let a = await foo(someArg)
     let b = await bar(a)
@@ -1218,3 +1219,6 @@ bluebird.coroutine(function*() {
 class: center, middle
 
 # Questions?
+
+
+
