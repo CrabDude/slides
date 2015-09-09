@@ -417,7 +417,7 @@ process.stdin.pipe(transformStream).pipe(process.stdout)
 
 # Streams: `stream.Transform`
 
-### Or **create your own** transofrm stream class:
+### Or **create your own** transform stream class:
 
 ```javascript
 let fs = require('fs')
