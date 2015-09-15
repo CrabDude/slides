@@ -66,6 +66,7 @@ project$ browserify main.js -o bundle.js
 **models/user.js:**
 
 ```javascript
+// Write isomorphic modules
 class User {
   
   ...
@@ -79,11 +80,14 @@ module.exports = User
 
 # Why Browserify?
 
-**main.js**
+**On the client:**
 
 ```javascript
-let $ = require('jquery')
-let _ = require('underscore')
+let User = require('../models/user')
+```
+
+**On the server:**
+```javascript
 let User = require('../models/user')
 ```
 
@@ -93,7 +97,7 @@ let User = require('../models/user')
 
 **Pick & Choose:**
 
-- Babel.js with [`babelify](https://github.com/babel/babelify):
+- Babel.js with [`babelify`](https://github.com/babel/babelify):
   
   ```bash
   browserify  -d -e main.js -t [ babelify --stage 0 ] -o bundle.js

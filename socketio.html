@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Browserify</title>
+    <title>Socket.io</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <style type="text/css">
       @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
@@ -29,18 +29,98 @@ For realtime PUBSUB in node.js.
 
 # Why socket.io?
 
-**Manually managing transport layers is a hassle:**
+**Built on [Engine.io](https://github.com/socketio/engine.io)**
 
 - Not all browsers support WebSockets
+- Manually managing transport layers is a hassle
 - A single normalized `EventEmitter` API:
 
   ```javascript
-  socket.emit(event, payload)
+  // Publish / emit to...
+
+  // All connected clients
+  io.emit('eventName', payload)
+
+  // All connections for a single user session
+  socket.to(socket.id).emit('eventName', payload)
+
+  // A single connection
+  socket.emit('eventName', payload)
   ```
 
-http://www.slideshare.net/EyalV/nodejs-socketio-37327827
+*Note: See [here](http://www.slideshare.net/EyalV/nodejs-socketio-37327827) for more details on the transport layer / API compatibility issue.*
 
 ---
+
+# Why socket.io?
+
+**Batteries (additional features) included:**
+
+---
+
+# Why socket.io?
+
+**Batteries (additional features) included:**
+
+- Broadcasting
+
+---
+
+# Why socket.io?
+
+**Batteries (additional features) included:**
+
+- Broadcasting
+- Volatility
+
+---
+
+# Why socket.io?
+
+**Batteries (additional features) included:**
+
+- Broadcasting
+- Volatility
+- Rooms
+
+---
+
+# Why socket.io?
+
+**Batteries (additional features) included:**
+
+- Broadcasting
+- Volatility
+- Rooms
+- Namespaces
+
+---
+
+# Why socket.io?
+
+**Batteries (additional features) included:**
+
+- Broadcasting
+- Volatility
+- Rooms
+- Namespaces
+- Request/response
+
+---
+
+# Why socket.io?
+
+**Batteries (additional features) included:**
+
+- Broadcasting
+- Volatility
+- Rooms
+- Namespaces
+- Request/response
+- [And more!](http://socket.io/docs/)
+
+---
+
 # socket.io
 
 **Setting up the server:**
@@ -49,13 +129,13 @@ http://www.slideshare.net/EyalV/nodejs-socketio-37327827
 // server.js
 let express = require('express')
 let io = require('socket.io')
-let Server = require('http').Server
+let HttpServer = require('http').Server
 
 let app = express()
-let server = Server(app)
-let ioServer = io(server)
+let httpServer = HttpServer(app)
+let ioServer = io(httpServer)
 
-server.listen(8000)
+httpServer.listen(8000)
 ```
 
 ---
@@ -67,6 +147,10 @@ server.listen(8000)
 ```javascript
 // client.js
 let io = require('socket.io-client')
+let socket = io()
+
+
+// Or pass a custom host and port:
 let socket = io('http://127.0.0.1:8000')
 ```
 
@@ -87,6 +171,8 @@ ioServer.on('connection', socket => {
 ```javascript
 // client.js
 socket.on('connect', ()=>console.log('connected'))
+
+// Also, 'disconnect', 'reconnect', 'reconnecting', etc...
 ```
 ---
 
@@ -97,62 +183,99 @@ socket.on('connect', ()=>console.log('connected'))
 ```javascript
 // server.js
 ioServer.on('connection', socket => {
-  socket.on('customMessageEvent', msg => {
+  socket.on('eventName', msg => {
     // echo back to EVERYONE
-    ioServer.emit('customMessageEvent', msg)
+    ioServer.emit('eventName', msg)
 
     // echo back to JUST socket
-    socket.emit('customMessageEvent', msg)
+    socket.emit('eventName', msg)
   })
 })
 ```
 
 ```javascript
 // client.js
-socket.emit('customMessageEvent', 'Hello world!')
-socket.on('customMessageEvent', msg => console.log('message: ', msg))
+socket.emit('eventName', 'Hello world!')
+socket.on('eventName', msg => console.log('message: ', msg))
 ```
 
 ---
 
 # socket.io
 
-**Broadcasting:**
+**Targeted messaging with "rooms":**
 
 ```javascript
 // server.js
 ioServer.on('connection', socket => {
-  socket.on('customMessageEvent', msg => {
-    // echo back
-    ioServer.emit('customMessageEvent', msg)
+  socket.on('eventName', msg => {
+    // echo to users in a room
+    ioServer.to('someRoom').emit('eventName', msg)
+
+    // echo to all connections in the same session
+    ioServer.to(socket.id).emit('eventName', msg)
   })
 })
 ```
 
 ```javascript
 // client.js
-socket.on('customMessageEvent', msg => console.log('message: ', msg))
+socket.join('someRoom')
+socket.on('eventName', msg => console.log('message: ', msg))
+```
+
+*Note: Clients automatically `.join(socket.id)`*
+
+---
+
+# socket.io
+
+**Request/response messaging**
+
+```javascript
+// server.js
+ioServer.on('connection', socket => {
+  socket.on('clientRequestEvent', (msg, fn) => {
+    // Responsd to client with payload
+    fn('The current server time is: ' + Date.now())
+  })
+})
+```
+
+```javascript
+// client.js
+let requestPayload = {}
+socket.emit('clientRequestEvent', requestPayload, currentServerTime => {
+  console.log(currentServerTime)
+})
 ```
 
 ---
 
 # socket.io
 
-**Messaging:**
+**Broadcasting: emit to all except the current socket:**
 
 ```javascript
 // server.js
 ioServer.on('connection', socket => {
-  socket.on('customMessageEvent', msg => {
-    // echo back
-    ioServer.emit('customMessageEvent', msg)
-  })
+  socket.broadcast.emit('someEvent', 'New connection for id: ' + socket.id)
 })
 ```
 
 ```javascript
 // client.js
-socket.on('customMessageEvent', msg => console.log('message: ', msg))
+socket.broadcast.emit('helloEvent', 'Howdy everyone!')
+```
+
+---
+
+# socket.io
+
+**Volatile messages: Delivery not guaranteed**
+
+```javascript
+socket.volatile.emit('thinking about sandwiches', true)
 ```
 
 ---
