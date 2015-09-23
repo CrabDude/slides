@@ -1,16 +1,25 @@
+
 class: center, middle
 
-# Node.js in Production
+# Production Node.js
 
-For node.js stability, metrics and performance.
+For node.js debugging, stability, tooling and performance.
 
-*https://github.com/CrabDude/slides/blob/master/production.html*
+https://cdn.rawgit.com/CrabDude/slides/master/production.html
+
 ---
 
 # Overview
 
 **Topics to cover:**
 
+- Debugging
+  - [`node-inspector`](https://www.npmjs.com/package/node-inspector) & [`babel-node-debug`](https://www.npmjs.com/package/babel-node-debug)
+  - [`unhandledRejection`](https://nodejs.org/api/all.html#all_event_unhandledrejection)
+  - [`trycatch`](https://github.com/CrabDude/trycatch/)
+    - async `try/catch`
+    - Long-stack-traces
+    - [`uncaughtApplicationException`](https://github.com/CrabDude/trycatch/#uncaughtapplicationexception)
 - Stability
   - [`uncaughtException`](https://nodejs.org/docs/latest/api/all.html#all_event_uncaughtexception)
   - [`cluster`](https://nodejs.org/docs/latest/api/all.html#all_cluster) for multi-process support
@@ -19,7 +28,7 @@ For node.js stability, metrics and performance.
   - [`babel`](https://babeljs.io/) compilation
   - [`eslint`](http://eslint.org/)
   - Logging with [`debug`](https://www.npmjs.com/package/debug)
-  - [`npm shrinkwrap`](https://www.npmjs.com/doc/shrinkwrap.html)
+  - [`nodemon`](https://www.npmjs.com/package/nodemon)
 - Performance
   - Event-loop blocking & monitoring
     - [`blocked`](https://www.npmjs.com/package/blocked)
@@ -28,25 +37,454 @@ For node.js stability, metrics and performance.
 
 ---
 
-# Stability: `uncaughtException`
+# Debugging
 
-**Handle errors before they crash the process and exit.**
+**Use Chrome DevTools to debug V8 with [`node-inspector`](https://github.com/node-inspector/node-inspector):**
 
-> Emitted when an exception bubbles all the way back to the event loop. If a listener is added for this exception, the default action (which is to print a stack trace and exit) will not occur.
+```bash
+npm install -g node-inspector
+.
+```
 
-- Listening on `uncaughtException` is like switching your jet from automatic to manual ejection. You are not responsible for calling `process.exit()`
+---
 
-https://nodejs.org/api/process.html#process_event_uncaughtexception
+# Debugging
+
+**Use Chrome DevTools to debug V8 with [`node-inspector`](https://github.com/node-inspector/node-inspector):**
+
+```bash
+npm install -g node-inspector
+npm install -g babel-node-debug
+```
+
+---
+
+# Debugging
+
+**Use Chrome DevTools to debug V8 with [`node-inspector`](https://github.com/node-inspector/node-inspector):**
+
+```bash
+npm install -g node-inspector
+npm install -g babel-node-debug
+```
+
+Option #1
+```bash
+.
+.
+```
+
+Option #2
+```bash
+.
+.
+.
+```
+
+---
+
+# Debugging
+
+**Use Chrome DevTools to debug V8 with [`node-inspector`](https://github.com/node-inspector/node-inspector):**
+
+```bash
+npm install -g node-inspector
+npm install -g babel-node-debug
+```
+
+Option #1
+```bash
+node-debug app.js
+.
+```
+
+Option #2
+```bash
+.
+.
+.
+```
+
+---
+
+# Debugging
+
+**Use Chrome DevTools to debug V8 with [`node-inspector`](https://github.com/node-inspector/node-inspector):**
+
+```bash
+npm install -g node-inspector
+npm install -g babel-node-debug
+```
+
+Option #1
+```bash
+node-debug app.js
+bode-debug app.js
+```
+
+Option #2
+```bash
+.
+.
+.
+```
+
+---
+
+# Debugging
+
+**Use Chrome DevTools to debug V8 with [`node-inspector`](https://github.com/node-inspector/node-inspector):**
+
+```bash
+npm install -g node-inspector
+npm install -g babel-node-debug
+```
+
+Option #1
+```bash
+node-debug app.js
+bode-debug app.js
+```
+
+Option #2 (daemon + [`--debug` flag(s)](https://nodejs.org/api/all.html#all_advanced_usage))
+```bash
+.
+.
+.
+```
+
+---
+
+# Debugging
+
+**Use Chrome DevTools to debug V8 with [`node-inspector`](https://github.com/node-inspector/node-inspector):**
+
+```bash
+npm install -g node-inspector
+npm install -g babel-node-debug
+```
+
+Option #1
+```bash
+node-debug app.js
+bode-debug app.js
+```
+
+Option #2 (daemon + [`--debug` flag(s)](https://nodejs.org/api/all.html#all_advanced_usage))
+```bash
+node-inspector # start daemon in another tab
+.
+.
+```
+
+---
+
+# Debugging
+
+**Use Chrome DevTools to debug V8 with [`node-inspector`](https://github.com/node-inspector/node-inspector):**
+
+```bash
+npm install -g node-inspector
+npm install -g babel-node-debug
+```
+
+Option #1
+```bash
+node-debug app.js
+bode-debug app.js
+```
+
+Option #2 (daemon + [`--debug` flag(s)](https://nodejs.org/api/all.html#all_advanced_usage))
+```bash
+node-inspector # start daemon in another tab
+node --debug-brk      app.js # Adds breakpoint on line 1
+.
+```
+
+---
+
+# Debugging
+
+**Use Chrome DevTools to debug V8 with [`node-inspector`](https://github.com/node-inspector/node-inspector):**
+
+```bash
+npm install -g node-inspector
+npm install -g babel-node-debug
+```
+
+Option #1
+```bash
+node-debug app.js
+bode-debug app.js
+```
+
+Option #2 (daemon + [`--debug` flag(s)](https://nodejs.org/api/all.html#all_advanced_usage))
+```bash
+node-inspector # start daemon in another tab
+node --debug-brk=5858 app.js # Adds breakpoint on line 1
+.
+```
+
+---
+
+# Debugging
+
+**Use Chrome DevTools to debug V8 with [`node-inspector`](https://github.com/node-inspector/node-inspector):**
+
+```bash
+npm install -g node-inspector
+npm install -g babel-node-debug
+```
+
+Option #1
+```bash
+node-debug app.js
+bode-debug app.js
+```
+
+Option #2 (daemon + [`--debug` flag(s)](https://nodejs.org/api/all.html#all_advanced_usage))
+```bash
+node-inspector # start daemon in another tab
+node --debug-brk=5858 app.js # Adds breakpoint on line 1
+node --debug      app.js
+```
+
+---
+
+# Debugging
+
+**Use Chrome DevTools to debug V8 with [`node-inspector`](https://github.com/node-inspector/node-inspector):**
+
+```bash
+npm install -g node-inspector
+npm install -g babel-node-debug
+```
+
+Option #1
+```bash
+node-debug app.js
+bode-debug app.js
+```
+
+Option #2 (daemon + [`--debug` flag(s)](https://nodejs.org/api/all.html#all_advanced_usage))
+```bash
+node-inspector # start daemon in another tab
+node --debug-brk=5858 app.js # Adds breakpoint on line 1
+node --debug=5858 app.js
+```
+
+---
+
+# Debugging
+
+**Use Chrome DevTools to debug V8 with [`node-inspector`](https://github.com/node-inspector/node-inspector):**
+
+```bash
+npm install -g node-inspector
+npm install -g babel-node-debug
+```
+
+Option #1
+```bash
+node-debug app.js
+bode-debug app.js
+```
+
+Option #2 (daemon + [`--debug` flag(s)](https://nodejs.org/api/all.html#all_advanced_usage))
+```bash
+node-inspector # start daemon in another tab
+node --debug-brk=5858 app.js # Adds breakpoint on line 1
+node --debug=5858 app.js
+```
+
+*Note: The same flags work with `babel-node`.*
+
+---
+
+# Debugging
+
+**Generate V8 heapdumps with `heapdump`:**
+
+```bash
+npm install heapdump
+```
+
+Usage:
+
+```javascript
+let heapdump = require('heapdump')
+...
+heapdump.writeSnapshot(filename, callback)
+```
+
+*Note: See [StrongLoop's heapdump post](https://strongloop.com/strongblog/how-to-heap-snapshots/), especially the Google Developers links.*
+
+---
+
+# Debugging: `unhandledRejection`
+
+**Avoid silent failures from promise rejections.**
+
+Emitted when a promise has no rejection handler at the time of rejection to eliminate silent failures captured by promises:
+
+```javascript
+process.on('unhandledRejection', (err) => {
+  console.log('Ooops. Promise ignored rejection: ' + err.stack)
+})
+
+// This will trigger the event handler above:
+fs.promise.readdir('nonsense directory')
+  .then(data => {
+    // Note: Only the success path is handled here
+  })
+```
+
+*https://nodejs.org/api/all.html#all_event_unhandledrejection*
+
+---
+
+# Debugging: `trycatch`
+
+**For better error handling.**
+
+---
+
+# Debugging: `trycatch`
+
+**For better error handling.**
+
+1. Stability by wrapping all application callbacks in `try/catch`
+
+---
+
+# Debugging: `trycatch`
+
+**For better error handling.**
+
+1. Stability by wrapping all application callbacks in `try/catch`
+1. async `try/catch` (somewhat mitigated by `async/await`):
+
+---
+
+# Debugging: `trycatch`
+
+**For better error handling.**
+
+1. Stability by wrapping all application callbacks in `try/catch`
+1. async `try/catch` (somewhat mitigated by `async/await`):
+
+  ```javascript
+  server.use((req, res, next) => {
+    trycatch(next, err => send500(err, req, res))
+  })
+  ```
+
+---
+
+# Debugging: `trycatch`
+
+**For better error handling.**
+
+1. Stability by wrapping all application callbacks in `try/catch`
+1. async `try/catch` (somewhat mitigated by `async/await`):
+
+  ```javascript
+  server.use((req, res, next) => {
+    trycatch(next, err => send500(err, req, res))
+  })
+  ```
+1. Long-stack-traces stitches stack-traces across event-loop ticks:
+
+---
+
+# Debugging: `trycatch`
+
+**For better error handling.**
+
+1. Stability by wrapping all application callbacks in `try/catch`
+1. async `try/catch` (somewhat mitigated by `async/await`):
+
+  ```javascript
+  server.use((req, res, next) => {
+    trycatch(next, err => send500(err, req, res))
+  })
+  ```
+1. Long-stack-traces stitches stack-traces across event-loop ticks:
+
+  ```javascript
+  trycatch.configure({'long-stack-traces': true}) // Avoid in production
+  ```
+
+---
+
+# Debugging: `trycatch`
+
+**For better error handling.**
+
+1. Stability by wrapping all application callbacks in `try/catch`
+1. async `try/catch` (somewhat mitigated by `async/await`):
+
+  ```javascript
+  server.use((req, res, next) => {
+    trycatch(next, err => send500(err, req, res))
+  })
+  ```
+1. Long-stack-traces stitches stack-traces across event-loop ticks:
+
+  ```javascript
+  trycatch.configure({'long-stack-traces': true}) // Avoid in production
+  ```
+1. `uncaughtApplicationException` to avoid requiring a restart:
+
+---
+
+# Debugging: `trycatch`
+
+**For better error handling.**
+
+1. Stability by wrapping all application callbacks in `try/catch`
+1. async `try/catch` (somewhat mitigated by `async/await`):
+
+  ```javascript
+  server.use((req, res, next) => {
+    trycatch(next, err => send500(err, req, res))
+  })
+  ```
+1. Long-stack-traces stitches stack-traces across event-loop ticks:
+
+  ```javascript
+  trycatch.configure({'long-stack-traces': true}) // Avoid in production
+  ```
+1. `uncaughtApplicationException` to avoid requiring a restart:
+
+  ```javascript
+  // Like 'unhandledRejection', but for callbacks / non-promises
+  process.on('uncaughtApplicationException', (err) => {
+      console.log('Ooops. Exception not handled: ' + err.stack)
+  })
+  ```
 
 ---
 
 # Stability: `uncaughtException`
 
-**Handle errors before they crash the process and exit.**
+**Instead of crashing, handle errors and exit.**
+
+> Emitted when an exception bubbles all the way back to the event loop. If a listener is added for this exception, the default action (which is to print a stack trace and exit) will not occur.
+
+- Listening on `uncaughtException` is like switching your jet from automatic to manual ejection. **You are now responsible for calling `process.exit()`**
+
+*https://nodejs.org/api/process.html#process_event_uncaughtexception*
+
+---
+
+# Stability: `uncaughtException`
+
+**Instead of crashing, handle errors and exit.**
 
 ```javascript
-process.on('uncaughtException', err => {
-    console.log(err.stack)
+process.on('uncaughtException', (err) => {
+    console.log('uncaughtException: \n' + err.stack)
 
 
     process.exit()
@@ -60,11 +498,11 @@ process.on('uncaughtException', err => {
 
 # Stability: `uncaughtException`
 
-**Handle errors before they crash the process and exit.**
+**Instead of crashing, handle errors and exit.**
 
 ```javascript
-process.on('uncaughtException', err => {
-    console.log(err.stack)
+process.on('uncaughtException', (err) => {
+    console.log('uncaughtException: \n' + err.stack)
     server.shutdown()
 
       .then(process.exit)
@@ -78,19 +516,126 @@ process.on('uncaughtException', err => {
 
 # Stability: `uncaughtException`
 
-**Handle errors before they crash the process and exit.**
+**Instead of crashing, handle errors and exit.**
 
 ```javascript
-process.on('uncaughtException', err => {
-    console.log(err.stack)
+process.on('uncaughtException', (err) => {
+    console.log('uncaughtException: \n' + err.stack)
     server.shutdown()
       .catch(err => console.log('Shut down error:\n', err.stack))
       .then(process.exit)
+
+
+
+})
+```
+
+---
+
+# Stability: `uncaughtException`
+
+**Instead of crashing, handle errors and exit.**
+
+```javascript
+process.on('uncaughtException', (err) => {
+    console.log('uncaughtException: \n' + err.stack)
+    server.shutdown()
+      .catch(err => console.log('Shut down error:\n', err && err.stack))
+      .then(process.exit)
+
+
+
+})
+```
+
+---
+
+# Stability: `uncaughtException`
+
+**Instead of crashing, handle errors and exit.**
+
+```javascript
+process.on('uncaughtException', (err) => {
+    console.log('uncaughtException: \n' + err.stack)
+    server.shutdown()
+      .catch(err => console.log('Shut down error:\n', err.stack))
+      .then(process.exit, process.exit)
+
+
+
+})
+```
+
+---
+
+# Stability: `uncaughtException`
+
+**Instead of crashing, handle errors and exit.**
+
+```javascript
+process.on('uncaughtException', (err) => {
+    console.log('uncaughtException: \n' + err.stack)
+    server.shutdown()
+      .catch(err => console.log('Shut down error:\n', err.stack))
+      .then(process.exit, process.exit)
 
     // Hard exit.
     setTimeout(process.exit, 10000)
 })
 ```
+
+---
+
+# Stability: `uncaughtException`
+
+**Instead of crashing, handle errors and exit.**
+
+```javascript
+process.on('uncaughtException', (err) => {
+    console.log('uncaughtException: \n' + err.stack)
+    server.shutdown()
+      .catch(err => console.log('Shut down error:\n', err.stack))
+      .then(process.exit, process.exit)
+
+    // Hard exit.
+    setTimeout(process.exit, 10000)
+})
+```
+
+*Note: This may actually delay your process shutdown.*
+
+---
+
+# Stability: `cluster`
+
+**No threads? No problem.**
+
+---
+
+# Stability: `cluster`
+
+**No threads? No problem.**
+
+- Port sharing
+
+---
+
+# Stability: `cluster`
+
+**No threads? No problem.**
+
+- Port sharing
+- IPC, Inter-process communication
+
+---
+
+# Stability: `cluster`
+
+**No threads? No problem.**
+
+- Port sharing
+- IPC, Inter-process communication
+- Process lifecycle monitoring for restarts
 
 ---
 
@@ -434,25 +979,28 @@ pm2 reload app        # Restart cluster processes with 0ms downtime
 **Different environments have different needs.**
 
 - `babel`
-- `npm shrinkwrap`
 - `eslint`
 - `debug`
-- Long-stack traces
+- `nodemon`
 
 ---
 
 # Tooling: Transpilation (Babel)
 
-**Pretranspile your code with `babel`:**
+**Pre-transpile your code with `babel`:**
 
 ```bash
-$ babel src -d dist --optional asyncToGenerator
-```
+# Outputs compiled code to stdout
+babel src
 
-Generate source-maps for non-production environments:
+# Specify output directory
+babel src -d dist
 
-```bash
-$ babel src -d dist --source-maps # or -s
+#Specify transformers
+babel src --optional asyncToGenerator
+
+# Source-maps for non-prod environments
+babel src -d dist --source-maps
 ```
 
 Run the transpiled code:
@@ -461,11 +1009,64 @@ Run the transpiled code:
 node dist/index.js
 ```
 
-*Be sure to declare a `.babelrc` file at the root of your project.*
+---
+
+# Tooling: Transpilation (Babel)
+
+**Specify your `babel` configuration in a `.babelrc`:**
+
+```json
+{
+  "optional": ["bluebirdCoroutines"]
+
+}
+```
 
 ---
 
 # Tooling: Transpilation (Babel)
+
+**Specify your `babel` configuration in a `.babelrc`:**
+
+```json
+{
+  "optional": ["asyncToGenerator"]
+
+}
+```
+
+---
+
+# Tooling: Transpilation (Babel)
+
+**Specify your `babel` configuration in a `.babelrc`:**
+
+```json
+{
+  "optional": ["runtime"]
+
+}
+```
+
+---
+
+# Tooling: Transpilation (Babel)
+
+**Specify your `babel` configuration in `package.json`:**
+
+```json
+{
+  "name": "my-package",
+  "version": "1.0.0",
+  "babel": {
+    // my babel config here
+  }
+}
+```
+
+---
+
+# Tooling: `npm` scripting
 
 **Toggle bootstrap file based on `NODE_ENV`:**
 
@@ -482,7 +1083,7 @@ node dist/index.js
 
 ---
 
-# Tooling: Transpilation (Babel)
+# Tooling: `npm` scripting
 
 **Toggle bootstrap file based on `NODE_ENV`:**
 
@@ -499,7 +1100,7 @@ node dist/index.js
 
 ---
 
-# Tooling: Transpilation (Babel)
+# Tooling: `npm` scripting
 
 **Toggle bootstrap file based on `NODE_ENV`:**
 
@@ -516,7 +1117,7 @@ node dist/index.js
 
 ---
 
-# Tooling: Transpilation (Babel)
+# Tooling: `npm` scripting
 
 **Toggle bootstrap file based on `NODE_ENV`:**
 
@@ -533,7 +1134,7 @@ node dist/index.js
 
 ---
 
-# Tooling: Transpilation (Babel)
+# Tooling: `npm` scripting
 
 **Toggle bootstrap file based on `NODE_ENV`:**
 
@@ -601,29 +1202,6 @@ if [[ $failed != 0 ]] ; then
   exit $failed
 fi
 ```
-
----
-
-# Tooling: Dependency Management
-
-**Option 1: Lock down dependency versions with `npm shrinkwrap`.**
-
-Caveats:
-
-- Only respected on `npm install`, not `npm update`
-- Relies on npm registry (or private registry) for deployment
-- Ultimately usually slower
-
----
-
-# Tooling: Dependency Management
-
-**Option 2: Include `node_modules` in archive/artifact and run `npm rebuild`.**
-
-Caveats:
-
-- Increased complexity:
-  - Must run `npm rebuild` on destination server prior to deployment
 
 ---
 
@@ -695,38 +1273,6 @@ setInterval(() => console.log(`Event-loop lag time: ${lag()}ms`), 1000)
 
 ---
 
-# Debugging
-
-**Use Chrome DevTools to debug V8 with [`node-inspector`](https://github.com/node-inspector/node-inspector):**
-
-```bash
-npm install -g node-inspector
-```
-
-```
-node-debug app.js
-```
-
----
-
-# Debugging
-
-**Generate V8 heapdumps with `heapdump`:**
-
-```bash
-npm install heapdump
-```
-
-Usage:
-
-```javascript
-let heapdump = require('heapdump')
-...
-heapdump.writeSnapshot(filename, callback)
-```
-
----
-
 # Additional References
 
 - [`idle-hands`](https://www.npmjs.com/package/idle-hands) - Perform low priority processing when event loop is idle.
@@ -735,7 +1281,6 @@ heapdump.writeSnapshot(filename, callback)
 - [`node-webkit-agent`](https://github.com/c4milo/node-webkit-agent) - V8 heapdump analyzer UI
 - [Flame Graphs](http://www.brendangregg.com/flamegraphs.html)
 - Joyent ["Production Practices"](https://www.joyent.com/developers/node/design)
-- [`longjohn`](https://github.com/mattinsler/longjohn) - Long (async) stack traces
 - [Tracking Down Memory Leaks in Node.js](https://hacks.mozilla.org/2012/11/tracking-down-memory-leaks-in-node-js-a-node-js-holiday-season/)
 
 ---
