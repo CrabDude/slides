@@ -269,11 +269,12 @@ doSomethingElse()
 
 ```node
 // BEST
-async()=>{
-  let data = fs.readFile('~/.bashrc')
+async function main() {
+  let data = await fs.readFile('~/.bashrc')
   console.log(data)
-}()
-doSomethingElse()
+}
+main()
+doSomething()
 ```
 
 ---
@@ -281,13 +282,13 @@ doSomethingElse()
 # Blocking vs Non-Blocking
 
 ```node
-async()=>{
+async function main() {
   let datas = await Promise.all([
     fs.readFile('~/.bashrc'),
     fs.readFile('~/.bash_profile')
   ])
   console.log(datas)
-}()
+}
 ```
 
 [![](./images/blocking_vs_nonblocking.png)](./images/blocking_vs_nonblocking.png)
