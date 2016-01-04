@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Intro to Node.js</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style type="text/css">
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+
+class: center, middle
+
+# Intro to Node.js
+
+The V8 non-blocking asynchronous JavaScript runtime.
+
+---
+
+class: center, middle
+
+# Intro to Node.js
+
+The ....... Whaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa?
+
+---
+
+# What is Node.js?
+
+**A set of non-blocking IO bindings for the V8 JavaScript VM:**
+
+---
+
+# What is Node.js?
+
+**A set of non-blocking IO bindings for the V8 JavaScript VM:**
+
+- **V8** is the JavaScript *Virtual Machine* used by *Google Chrome*
+
+---
+
+# What is Node.js?
+
+**A set of non-blocking IO bindings for the V8 JavaScript VM:**
+
+- **V8** is the JavaScript *Virtual Machine* used by *Google Chrome*
+- **Node.js** is IO for V8:
+
+---
+
+# What is Node.js?
+
+**A set of non-blocking IO bindings for the V8 JavaScript VM:**
+
+- **V8** is the JavaScript *Virtual Machine* used by *Google Chrome*
+- **Node.js** is IO for V8:
+  - filesystem
+
+---
+
+# What is Node.js?
+
+**A set of non-blocking IO bindings for the V8 JavaScript VM:**
+
+- **V8** is the JavaScript *Virtual Machine* used by *Google Chrome*
+- **Node.js** is IO for V8:
+  - filesystem
+  - networking
+
+---
+
+# What is Node.js?
+
+**A set of non-blocking IO bindings for the V8 JavaScript VM:**
+
+- **V8** is the JavaScript *Virtual Machine* used by *Google Chrome*
+- **Node.js** is IO for V8:
+  - filesystem
+  - networking
+  - stdin/stdout/stderr
+
+---
+
+# What is Node.js?
+
+**A set of non-blocking IO bindings for the V8 JavaScript VM:**
+
+- **V8** is the JavaScript *Virtual Machine* used by *Google Chrome*
+- **Node.js** is IO for V8:
+  - filesystem
+  - networking
+  - stdin/stdout/stderr
+  - database access
+
+---
+
+# What is Node.js?
+
+**A set of non-blocking IO bindings for the V8 JavaScript VM:**
+
+- **V8** is the JavaScript *Virtual Machine* used by *Google Chrome*
+- **Node.js** is IO for V8:
+  - filesystem
+  - networking
+  - stdin/stdout/stderr
+  - database access
+- **They're fast!** Node.js* and V8 are written in C/C++
+
+---
+
+# What is Node.js?
+
+**A set of non-blocking IO bindings for the V8 JavaScript VM:**
+
+- **V8** is the JavaScript *Virtual Machine* used by *Google Chrome*
+- **Node.js** is IO for V8:
+  - filesystem
+  - networking
+  - stdin/stdout/stderr
+  - database access
+- **They're fast!** Node.js* and V8 are written in C/C++
+
+\* *Some parts written in JavaScript*
+
+---
+
+# Why Node.js?
+
+**How is node.js different?**
+
+* Asynchronous non-blocking IO
+  - All IO calls are backgrounded
+  - Execution resumes once IO completes
+  - No legacy blocking APIs (V8 contains no IO)
+* JavaScript
+* Evented single-threaded model
+  - Netty or Reactor in Java
+  - Twisted or Tornado in Python
+  - EventMachine in Ruby
+
+---
+
+# Why Node.js?
+
+**When should I use node.js:**
+
+* IO-bound applications
+* Low-latency
+* Shared JavaScript "front-end" (mid-tier + client web)
+* DevOps, tooling and other scripting environments
+
+---
+
+# Why Node.js?
+
+**When should I use node.js:**
+
+* ~~IO-bound applications~~
+* Low-latency
+* Shared JavaScript "front-end" (mid-tier + client web)
+* DevOps, tooling and other scripting environments
+
+---
+
+# Why Node.js?
+
+**When should I use node.js:**
+
+* High-concurrency (many simultaneous IO requests)
+* Low-latency
+* Shared JavaScript "front-end" (mid-tier + client web)
+* DevOps, tooling and other scripting environments
+
+---
+
+# Why Node.js?
+
+**To build scalable network applications using JavaScript on the server**
+
+* Non-block asynchronous IO APIs
+* IO-bound applications
+* Use the Language of the Web, JavaScript 
+* Scripting for faster front-end development 
+
+---
+
+# What could you build?
+
+**Anything that's not CPU-bound:**
+
+* Websocket Server (e.g., chat server)
+* Fast File Upload Server/Client
+* Ad/Metric Server
+* Any Realtime Application
+* Tooling CLIs
+* API server (e.g., Mobile back-end)
+
+---
+
+# Node.js Core
+
+**Core is low-level:**
+
+* Strives to be small
+* No Web Framework
+* No convenience utilities
+* No multi-threading
+* No control-flow
+
+---
+
+# Blocking vs Non-Blocking
+
+**Blocking Code:**
+
+```
+Read file from Filesystem, set equal to "data"
+Print data
+Do something else
+```
+
+**Non-Blocking Code:**
+
+```
+Read file from Filesystem
+    // This is a callback
+    On completion, print "data"
+Do something else
+```
+
+---
+
+# Blocking vs Non-Blocking
+
+**Blocking Code:**
+
+```node
+// BAD
+let data = fs.readFileSync('~/.bashrc')
+console.log(data)
+doSomethingElse()
+```
+
+**Non-Blocking Code:**
+
+```node
+// GOOD (using promises)
+fs.readFile('~/.bashrc')
+    .then(data => console.log(data))
+doSomethingElse()
+```
+
+---
+
+# Non-Blocking with Async/Await
+
+**Use `async` function and `await` instead:**
+
+```node
+// BEST
+async()=>{
+  let data = fs.readFile('~/.bashrc')
+  console.log(data)
+}()
+doSomethingElse()
+```
+
+---
+
+# Blocking vs Non-Blocking
+
+```node
+async()=>{
+  let datas = await Promise.all([
+    fs.readFile('~/.bashrc'),
+    fs.readFile('~/.bash_profile')
+  ])
+  console.log(datas)
+}()
+```
+
+[![](./images/blocking_vs_nonblocking.png)](./images/blocking_vs_nonblocking.png)
+
+---
+
+class: center, middle
+
+# Questions?
+
+
+    </textarea>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
+    <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      remark.highlighter.engine = hljs
+      remark.macros.scale = function (percentage) {
+        var url = this
+        return '<img src="' + url + '" style="width: ' + percentage + '" />'
+      }
+      var slideshow = remark.create({
+        highlightStyle: 'tomorrow-night-bright'
+      })
+    </script>
+  </body>
+</html>
