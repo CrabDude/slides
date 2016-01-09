@@ -738,27 +738,6 @@ let auth = basicAuth(validate)
 
 let validate = (username, password, next) => {
   let result = (username === 'steve' && password === '12345')
-  callback(null, result)
-}
-
-
-app.get('/user', user)
-```
-
----
-
-# Middleware: Basic Auth
-
-
-*http://username:password@127.0.0.1:8000/user*
-
-```javascript
-let app = express()
-let basicAuth = require('basic-auth-connect')
-let auth = basicAuth(validate)
-
-let validate = (username, password, next) => {
-  let result = (username === 'steve' && password === '12345')
   next(null, result)
 }
 
@@ -831,6 +810,7 @@ let app = express()
 
 
 
+
 app.listen(8000)
 ```
 
@@ -842,6 +822,7 @@ app.listen(8000)
 let app = express()
 
 app.get('/version', (req, res) => {
+
 
 
 
@@ -860,6 +841,7 @@ let app = express()
 app.get('/version', (req, res) => {
   res.writeHead(200, {'Content-Type': 'application/json'})
   let result = { version: '1.0.0' }
+
   res.end(JSON.stringify(result))
 })
 
@@ -876,6 +858,7 @@ let app = express()
 app.get('/version', (req, res) => {
 
   let result = { version: '1.0.0' }
+
   res.json(result)
 })
 

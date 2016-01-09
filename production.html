@@ -1225,6 +1225,181 @@ fi
 
 ---
 
+# Tooling: `nodemon`
+
+**For convenient server auto-restart:**
+
+```bash
+# One command to start your server and leave it running
+nodemon
+```
+
+*https://www.npmjs.com/package/nodemon*
+
+---
+
+# Tooling: `nodemon`
+
+**`./nodemon.json` and `~/.nodemon.json` for configuration:**
+
+```json
+{
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
+```
+
+---
+
+# Tooling: `nodemon`
+
+**`./nodemon.json` and `~/.nodemon.json` for configuration:**
+
+```json
+{
+
+
+
+
+
+
+  "execMap": {
+    "js": "babel-node"
+  }
+
+
+
+
+
+
+
+}
+```
+
+---
+
+# Tooling: `nodemon`
+
+**`./nodemon.json` and `~/.nodemon.json` for configuration:**
+
+```json
+{
+
+
+
+
+
+
+  "execMap": {
+    "js": "babel-node"
+  },
+
+
+
+  "env": {
+    "NODE_ENV": "development"
+  },
+  "ext": "js json"
+}
+```
+
+---
+
+# Tooling: `nodemon`
+
+**`./nodemon.json` and `~/.nodemon.json` for configuration:**
+
+```json
+{
+  "restartable": "rs",
+
+
+
+
+
+  "execMap": {
+    "js": "babel-node"
+  },
+
+
+
+  "env": {
+    "NODE_ENV": "development"
+  },
+  "ext": "js json"
+}
+```
+
+---
+
+# Tooling: `nodemon`
+
+**`./nodemon.json` and `~/.nodemon.json` for configuration:**
+
+```json
+{
+  "restartable": "rs",
+  "ignore": [
+    ".git",
+    "node_modules/*/node_modules/**"
+  ],
+  "ignoreRoot": [],
+  "execMap": {
+    "js": "babel-node"
+  },
+
+
+
+  "env": {
+    "NODE_ENV": "development"
+  },
+  "ext": "js json"
+}
+```
+
+---
+
+# Tooling: `nodemon`
+
+**`./nodemon.json` and `~/.nodemon.json` for configuration:**
+
+```json
+{
+  "restartable": "rs",
+  "ignore": [
+    ".git",
+    "node_modules/*/node_modules/**"
+  ],
+  "ignoreRoot": [],
+  "execMap": {
+    "js": "babel-node"
+  },
+  "events": {
+    "restart": "osascript -e 'display notification \"App restarted due to:\n'$FILENAME'\" with title \"nodemon\"'"
+  },
+  "env": {
+    "NODE_ENV": "development"
+  },
+  "ext": "js json"
+}
+```
+
+---
+
 # Event-loop monitoring
 
 > Knowing is half the battle.
