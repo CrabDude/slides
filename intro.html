@@ -8,12 +8,21 @@
       @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
       @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
 
-      body { font-family: 'Droid Serif'; }
+      body {
+        font-family: 'Droid Serif';
+      }
+      .remark-slide-content {
+        padding: 1em 1em 1em 3em;
+        font-size: 170%;
+      }
       h1, h2, h3 {
         font-family: 'Yanone Kaffeesatz';
         font-weight: normal;
       }
-      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      .remark-code, .remark-inline-code {
+        font-family: 'Ubuntu Mono';
+        font-size: 100%;
+      }
     </style>
   </head>
   <body>
@@ -38,43 +47,76 @@ The ....... Whaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa?
 
 # What is Node.js?
 
-**A set of non-blocking IO bindings for the V8 JavaScript VM:**
-
 ---
 
 # What is Node.js?
 
 **A set of non-blocking IO bindings for the V8 JavaScript VM:**
 
-- **V8** is the JavaScript *Virtual Machine* used by *Google Chrome*
+---
+
+# What is Node.js?
+
+**~~A set of non-blocking~~ IO bindings for ~~the~~ V8 ~~JavaScript VM~~:**
 
 ---
 
 # What is Node.js?
 
-**A set of non-blocking IO bindings for the V8 JavaScript VM:**
-
-- **V8** is the JavaScript *Virtual Machine* used by *Google Chrome*
-- **Node.js** is IO for V8:
+** &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IO bindings for &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; V8 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:**
 
 ---
 
 # What is Node.js?
 
-**A set of non-blocking IO bindings for the V8 JavaScript VM:**
+** &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IO bindings for &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; V8 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:**
 
-- **V8** is the JavaScript *Virtual Machine* used by *Google Chrome*
-- **Node.js** is IO for V8:
+- **V8**
+
+---
+
+# What is Node.js?
+
+** &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IO bindings for &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; V8 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:**
+
+- **V8** - Google Chrome's JavaScript *Virtual Machine*
+
+---
+
+# What is Node.js?
+
+** &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IO bindings for &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; V8 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:**
+
+- **V8** - Google Chrome's JavaScript *Virtual Machine*
+- **Node.js**
+
+---
+
+# What is Node.js?
+
+** &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IO bindings for &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; V8 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:**
+
+- **V8** - Google Chrome's JavaScript *Virtual Machine*
+- **Node.js** - IO bindings for V8:
+
+---
+
+# What is Node.js?
+
+** &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IO bindings for &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; V8 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:**
+
+- **V8** - Google Chrome's JavaScript *Virtual Machine*
+- **Node.js** - IO bindings for V8:
   - filesystem
 
 ---
 
 # What is Node.js?
 
-**A set of non-blocking IO bindings for the V8 JavaScript VM:**
+** &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IO bindings for &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; V8 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:**
 
-- **V8** is the JavaScript *Virtual Machine* used by *Google Chrome*
-- **Node.js** is IO for V8:
+- **V8** - Google Chrome's JavaScript *Virtual Machine*
+- **Node.js** - IO bindings for V8:
   - filesystem
   - networking
 
@@ -82,10 +124,10 @@ The ....... Whaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa?
 
 # What is Node.js?
 
-**A set of non-blocking IO bindings for the V8 JavaScript VM:**
+** &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IO bindings for &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; V8 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:**
 
-- **V8** is the JavaScript *Virtual Machine* used by *Google Chrome*
-- **Node.js** is IO for V8:
+- **V8** - Google Chrome's JavaScript *Virtual Machine*
+- **Node.js** - IO bindings for V8:
   - filesystem
   - networking
   - stdin/stdout/stderr
@@ -94,10 +136,10 @@ The ....... Whaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa?
 
 # What is Node.js?
 
-**A set of non-blocking IO bindings for the V8 JavaScript VM:**
+** &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IO bindings for &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; V8 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:**
 
-- **V8** is the JavaScript *Virtual Machine* used by *Google Chrome*
-- **Node.js** is IO for V8:
+- **V8** - Google Chrome's JavaScript *Virtual Machine*
+- **Node.js** - IO bindings for V8:
   - filesystem
   - networking
   - stdin/stdout/stderr
@@ -107,31 +149,140 @@ The ....... Whaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa?
 
 # What is Node.js?
 
-**A set of non-blocking IO bindings for the V8 JavaScript VM:**
+** &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IO bindings for &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; V8 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:**
 
-- **V8** is the JavaScript *Virtual Machine* used by *Google Chrome*
-- **Node.js** is IO for V8:
+- **V8** - Google Chrome's JavaScript *Virtual Machine*
+- **Node.js** - IO bindings for V8:
   - filesystem
   - networking
   - stdin/stdout/stderr
   - database access
-- **They're fast!** Node.js* and V8 are written in C/C++
+- **They're asynchronous!**
 
 ---
 
 # What is Node.js?
 
-**A set of non-blocking IO bindings for the V8 JavaScript VM:**
+** &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IO bindings for &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; V8 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:**
 
-- **V8** is the JavaScript *Virtual Machine* used by *Google Chrome*
-- **Node.js** is IO for V8:
+- **V8** - Google Chrome's JavaScript *Virtual Machine*
+- **Node.js** - IO bindings for V8:
   - filesystem
   - networking
   - stdin/stdout/stderr
   - database access
-- **They're fast!** Node.js* and V8 are written in C/C++
+- **They're asynchronous!** - IO runs in parallel by default
 
-\* *Some parts written in JavaScript*
+---
+
+# What is Node.js?
+
+** &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IO bindings for &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; V8 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:**
+
+- **V8** - Google Chrome's JavaScript *Virtual Machine*
+- **Node.js** - IO bindings for V8:
+  - filesystem
+  - networking
+  - stdin/stdout/stderr
+  - database access
+- **They're asynchronous!** - IO runs in parallel by default
+- **They're fast!**
+
+---
+
+# What is Node.js?
+
+** &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IO bindings for &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; V8 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:**
+
+- **V8** - Google Chrome's JavaScript *Virtual Machine*
+- **Node.js** - IO bindings for V8:
+  - filesystem
+  - networking
+  - stdin/stdout/stderr
+  - database access
+- **They're asynchronous!** - IO runs in parallel by default
+- **They're fast!** - V8 & Node.js&nbsp;&nbsp; are written in C/C++
+
+---
+
+# What is Node.js?
+
+** &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IO bindings for &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; V8 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:**
+
+- **V8** - Google Chrome's JavaScript *Virtual Machine*
+- **Node.js** - IO bindings for V8:
+  - filesystem
+  - networking
+  - stdin/stdout/stderr
+  - database access
+- **They're asynchronous!** - IO runs in parallel by default
+- **They're fast!** - V8 & Node.js* are written in C/C++
+
+\* *mostly*
+
+---
+
+# Demo: Hello World
+
+```bash
+# REPL
+$ node
+> console.log('Hello world')
+Hello World
+
+
+
+
+
+
+
+
+.
+```
+
+---
+
+# Demo: Hello World
+
+```bash
+# REPL
+$ node
+> console.log('Hello world')
+Hello World
+
+# File
+$ echo "console.log('Hello world')" > foo.js
+$ node foo.js
+Hello World
+
+
+
+.
+```
+
+---
+
+# Demo: Hello World
+
+```bash
+# REPL
+$ node
+> console.log('Hello world')
+Hello World
+
+# File
+$ echo "console.log('Hello world')" > foo.js
+$ node foo.js
+Hello World
+
+# Eval
+$ node -e "console.log('Hello world')"
+Hello World
+```
+
+---
+
+# Why Node.js?
 
 ---
 
@@ -139,84 +290,238 @@ The ....... Whaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa?
 
 **How is node.js different?**
 
-* Asynchronous non-blocking IO
+---
+
+# Why Node.js?
+
+**How is node.js different?**
+
+1. **Asynchronous non-blocking IO:**
+
+---
+
+# Why Node.js?
+
+**How is node.js different?**
+
+1. **Asynchronous non-blocking IO:**
+  <br>
+  <br>
+  <br>
+  <br>
+1. **JavaScript:**
+
+---
+
+# Why Node.js?
+
+**How is node.js different?**
+
+1. **Asynchronous non-blocking IO:**
+  <br>
+  <br>
+  <br>
+  <br>
+1. **JavaScript:**
+  <br>
+  <br>
+  <br>
+  <br>
+1. ***Single-threaded* Event-loop:**
+
+---
+
+# Why Node.js?
+
+**How is node.js different?**
+
+1. **Asynchronous non-blocking IO:**
   - All IO calls are backgrounded
-  - Execution resumes once IO completes
-  - No legacy blocking APIs (V8 contains no IO)
-* JavaScript
-* Evented single-threaded model
-  - Netty or Reactor in Java
-  - Twisted or Tornado in Python
-  - EventMachine in Ruby
+  <br>
+  <br>
+  <br>
+1. **JavaScript:**
+  <br>
+  <br>
+  <br>
+  <br>
+1. ***Single-threaded* Event-loop:**
 
 ---
 
 # Why Node.js?
 
-**When should I use node.js:**
+**How is node.js different?**
 
-* IO-bound applications
-* Low-latency
-* Shared JavaScript "front-end" (mid-tier + client web)
-* DevOps, tooling and other scripting environments
-
----
-
-# Why Node.js?
-
-**When should I use node.js:**
-
-* ~~IO-bound applications~~
-* Low-latency
-* Shared JavaScript "front-end" (mid-tier + client web)
-* DevOps, tooling and other scripting environments
+1. **Asynchronous non-blocking IO:**
+  - All IO calls are backgrounded
+  - Execution resumes when IO completes
+  <br>
+  <br>
+1. **JavaScript:**
+  <br>
+  <br>
+  <br>
+  <br>
+1. ***Single-threaded* Event-loop:**
 
 ---
 
 # Why Node.js?
 
-**When should I use node.js:**
+**How is node.js different?**
 
-* High-concurrency (many simultaneous IO requests)
-* Low-latency
-* Shared JavaScript "front-end" (mid-tier + client web)
-* DevOps, tooling and other scripting environments
+1. **Asynchronous non-blocking IO:**
+  - All IO calls are backgrounded
+  - Execution resumes when IO completes
+  - No legacy blocking APIs (No IO in V8)
+1. **JavaScript:**
+  <br>
+  <br>
+  <br>
+  <br>
+1. ***Single-threaded* Event-loop:**
 
 ---
 
 # Why Node.js?
 
-**To build scalable network applications using JavaScript on the server**
+**How is node.js different?**
 
-* Non-block asynchronous IO APIs
-* IO-bound applications
-* Use the Language of the Web, JavaScript 
-* Scripting for faster front-end development 
-
----
-
-# What could you build?
-
-**Anything that's not CPU-bound:**
-
-* Websocket Server (e.g., chat server)
-* Fast File Upload Server/Client
-* Ad/Metric Server
-* Any Realtime Application
-* Tooling CLIs
-* API server (e.g., Mobile back-end)
+1. **Asynchronous non-blocking IO:**
+  - All IO calls are backgrounded
+  - Execution resumes when IO completes
+  - No legacy blocking APIs (No IO in V8)
+1. **JavaScript:**
+  - Unifies the front-end & mid-tier
+  <br>
+  <br>
+  <br>
+1. ***Single-threaded* Event-loop:**
 
 ---
 
-# Node.js Core
+# Why Node.js?
 
-**Core is low-level:**
+**How is node.js different?**
 
-* Strives to be small
-* No Web Framework
-* No convenience utilities
-* No multi-threading
-* No control-flow
+1. **Asynchronous non-blocking IO:**
+  - All IO calls are backgrounded
+  - Execution resumes when IO completes
+  - No legacy blocking APIs (No IO in V8)
+1. **JavaScript:**
+  - Unifies the front-end & mid-tier
+  - Universal JavaScript
+  <br>
+  <br>
+1. ***Single-threaded* Event-loop:**
+
+---
+
+# Why Node.js?
+
+**How is node.js different?**
+
+1. **Asynchronous non-blocking IO:**
+  - All IO calls are backgrounded
+  - Execution resumes when IO completes
+  - No legacy blocking APIs (No IO in V8)
+1. **JavaScript:**
+  - Unifies the front-end & mid-tier
+  - Universal JavaScript - Share client/server code
+  <br>
+  <br>
+1. ***Single-threaded* Event-loop:**
+
+---
+
+# Why Node.js?
+
+**How is node.js different?**
+
+1. **Asynchronous non-blocking IO:**
+  - All IO calls are backgrounded
+  - Execution resumes when IO completes
+  - No legacy blocking APIs (No IO in V8)
+1. **JavaScript:**
+  - Unifies the front-end & mid-tier
+  - Universal JavaScript - Share client/server code
+  - Server-side Rendering
+1. ***Single-threaded* Event-loop:**
+
+---
+
+# Why Node.js?
+
+**How is node.js different?**
+
+1. **Asynchronous non-blocking IO:**
+  - All IO calls are backgrounded
+  - Execution resumes when IO completes
+  - No legacy blocking APIs (No IO in V8)
+1. **JavaScript:**
+  - Unifies the front-end & mid-tier
+  - Universal JavaScript - Share client/server code
+  - Server-side Rendering
+1. ***Single-threaded* Event-loop:**
+  - NGINX
+
+---
+
+# Why Node.js?
+
+**How is node.js different?**
+
+1. **Asynchronous non-blocking IO:**
+  - All IO calls are backgrounded
+  - Execution resumes when IO completes
+  - No legacy blocking APIs (No IO in V8)
+1. **JavaScript:**
+  - Unifies the front-end & mid-tier
+  - Universal JavaScript - Share client/server code
+  - Server-side Rendering
+1. ***Single-threaded* Event-loop:**
+  - NGINX
+  - Netty or Reactor (Java)
+
+---
+
+# Why Node.js?
+
+**How is node.js different?**
+
+1. **Asynchronous non-blocking IO:**
+  - All IO calls are backgrounded
+  - Execution resumes when IO completes
+  - No legacy blocking APIs (No IO in V8)
+1. **JavaScript:**
+  - Unifies the front-end & mid-tier
+  - Universal JavaScript - Share client/server code
+  - Server-side Rendering
+1. ***Single-threaded* Event-loop:**
+  - NGINX
+  - Netty or Reactor (Java)
+  - Twisted or Tornado (Python)
+
+---
+
+# Why Node.js?
+
+**How is node.js different?**
+
+1. **Asynchronous non-blocking IO:**
+  - All IO calls are backgrounded
+  - Execution resumes when IO completes
+  - No legacy blocking APIs (No IO in V8)
+1. **JavaScript:**
+  - Unifies the front-end & mid-tier
+  - Universal JavaScript - Share client/server code
+  - Server-side Rendering
+1. ***Single-threaded* Event-loop:**
+  - NGINX
+  - Netty or Reactor (Java)
+  - Twisted or Tornado (Python)
+  - EventMachine (Ruby)
 
 ---
 
@@ -224,19 +529,19 @@ The ....... Whaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa?
 
 **Blocking Code:**
 
-```
-Read file from Filesystem, set equal to "data"
+```html
+Read file from Filesystem
 Print data
-Do something else
+Do something unrelated
 ```
 
 **Non-Blocking Code:**
 
-```
+```html
 Read file from Filesystem
-    // This is a callback
-    On completion, print "data"
-Do something else
+    // This is asynchronous
+    On completion, Print data
+Do something unrelated
 ```
 
 ---
@@ -245,53 +550,542 @@ Do something else
 
 **Blocking Code:**
 
-```node
+```js
+
+Read file from Filesystem
+Print data
+Do something unrelated
+```
+
+**Non-Blocking Code:**
+
+```js
+
+
+Read file from Filesystem
+    // This is asynchronous
+    On completion, Print data
+
+Do something unrelated
+```
+
+---
+
+# Blocking vs Non-Blocking
+
+**Blocking Code:**
+
+```js
+
+Read file from Filesystem
+console.log(data)
+doSomethingUnrelated()
+```
+
+**Non-Blocking Code:**
+
+```js
+
+
+Read file from Filesystem
+    // This is asynchronous
+    console.log(data)
+
+doSomethingUnrelated()
+```
+
+---
+
+# Blocking vs Non-Blocking
+
+**Blocking Code:**
+
+```js
+
+let data = // Read file from Filesystem
+console.log(data)
+doSomethingUnrelated()
+```
+
+**Non-Blocking Code:**
+
+```js
+
+
+let data = // Read file from Filesystem
+    // This is asynchronous
+    console.log(data)
+
+doSomethingUnrelated()
+```
+
+---
+
+# Blocking vs Non-Blocking
+
+**Blocking Code:**
+
+```js
+
+let data = fs.readFile    ('~/.bashrc')
+console.log(data)
+doSomethingUnrelated()
+```
+
+**Non-Blocking Code:**
+
+```js
+
+
+let data =       fs.readFile('~/.bashrc')
+    // This is asynchronous
+    console.log(data)
+
+doSomethingUnrelated()
+```
+
+---
+
+# Blocking vs Non-Blocking
+
+**Blocking Code:**
+
+```js
+
+let data = fs.readFileSync('~/.bashrc')
+console.log(data)
+doSomethingUnrelated()
+```
+
+**Non-Blocking Code:**
+
+```js
+
+
+let data = await fs.readFile('~/.bashrc')
+    // This is asynchronous
+    console.log(data)
+
+doSomethingUnrelated()
+```
+
+---
+
+# Blocking vs Non-Blocking
+
+**Blocking Code:**
+
+```js
+
+let data = fs.readFileSync('~/.bashrc')
+console.log(data)
+doSomethingUnrelated()
+```
+
+**Non-Blocking Code:**
+
+```js
+
+
+    let data = await fs.readFile('~/.bashrc')
+    // This is asynchronous
+    console.log(data)
+
+doSomethingUnrelated()
+```
+
+---
+
+# Blocking vs Non-Blocking
+
+**Blocking Code:**
+
+```js
+
+let data = fs.readFileSync('~/.bashrc')
+console.log(data)
+doSomethingUnrelated()
+```
+
+**Non-Blocking Code:**
+
+```js
+
+async function readFile() {
+    let data = await fs.readFile('~/.bashrc')
+    console.log(data)
+}
+readFile()
+doSomethingUnrelated()
+```
+
+---
+
+# Blocking vs Non-Blocking
+
+**Blocking Code:**
+
+```js
 // BAD
 let data = fs.readFileSync('~/.bashrc')
 console.log(data)
-doSomethingElse()
+doSomethingUnrelated()
 ```
 
 **Non-Blocking Code:**
 
-```node
-// GOOD (using promises)
-fs.readFile('~/.bashrc')
-    .then(data => console.log(data))
-doSomethingElse()
+```js
+// GOOD
+async function readFile() {
+    let data = await fs.readFile('~/.bashrc')
+    console.log(data)
+}
+readFile()
+doSomethingUnrelated()
 ```
 
 ---
 
-# Non-Blocking with Async/Await
+# In Summary: &ensp;&ensp;&ensp;Blocking
 
-**Use `async` function and `await` instead:**
-
-```node
-// BEST
-async function main() {
-  let data = await fs.readFile('~/.bashrc')
+```js
+      function readFileSync() {
+  let data =       fs.readFileSync('~/.bashrc')
   console.log(data)
 }
-main()
-doSomething()
+readFileSync()
+doSomethingUnrelated()
 ```
+
+---
+
+# In Summary: Non-Blocking
+
+```js
+async function readFile    () {
+  let data = await fs.readFile    ('~/.bashrc')
+  console.log(data)
+}
+readFile    ()
+doSomethingUnrelated()
+```
+
+---
+
+class: center, middle
+
+### Always remember...
+
+# **`async` & `await`**
+
+<br/>
+
+---
+
+class: center, middle
+
+### Always remember...
+
+# **`async` & `await`**
+
+*or else...*
 
 ---
 
 # Blocking vs Non-Blocking
 
-```node
-async function main() {
-  let datas = await Promise.all([
-    fs.readFile('~/.bashrc'),
-    fs.readFile('~/.bash_profile')
+```javascript
+async function readFile(filePath) {
+  // Use await for serial execution
+  let data = await fs.readFile(filePath)
+  console.log(data)
+}
+readFile('~/.bashrc')
+readFile('~/.bash_profile')
+```
+
+[![](./images/blocking_vs_nonblocking.png)](./images/blocking_vs_nonblocking.png)
+
+---
+
+# Parallel vs Serial
+
+```javascript
+async function swapFiles(filePathA, filePathB) {
+  // Execute reads in parallel
+  let [dataA, dataB] = await Promise.all([
+    fs.readFile(filePathA),
+    fs.readFile(filePathB)
   ])
-  console.log(datas)
+
+  // Execute writes in serial
+  await fs.writeFile(filePathA, dataB)
+  await fs.writeFile(filePathB, dataA)
 }
 ```
 
 [![](./images/blocking_vs_nonblocking.png)](./images/blocking_vs_nonblocking.png)
+
+---
+
+# When Node.js?
+
+---
+
+# When Node.js?
+
+**When should I use node.js:**
+
+---
+
+# When Node.js?
+
+**When should I use node.js:**
+
+- IO-bound applications
+
+---
+
+# When Node.js?
+
+**When should I use node.js:**
+
+- ~~IO-bound applications~~
+
+---
+
+# When Node.js?
+
+**When should I use node.js:**
+
+- High-concurrency (many simultaneous IO requests)
+
+---
+
+# When Node.js?
+
+**When should I use node.js:**
+
+- High-concurrency (many simultaneous IO requests)
+- Low-latency
+
+---
+
+# When Node.js?
+
+**When should I use node.js:**
+
+- High-concurrency (many simultaneous IO requests)
+- Low-latency
+- Unified JavaScript "front-end"
+
+---
+
+# When Node.js?
+
+**When should I use node.js:**
+
+- High-concurrency (many simultaneous IO requests)
+- Low-latency
+- Unified JavaScript "front-end" = mid-tier + client
+
+---
+
+# When Node.js?
+
+**When should I use node.js:**
+
+- High-concurrency (many simultaneous IO requests)
+- Low-latency
+- Unified JavaScript "front-end" = mid-tier + client*
+
+<br>
+\* Also, iOS & Android with React
+
+---
+
+# When Node.js?
+
+**When should I use node.js:**
+
+- High-concurrency (many simultaneous IO requests)
+- Low-latency
+- Unified JavaScript "front-end" = mid-tier + client*
+- DevOps, tooling & other scripting environments
+
+\* Also, iOS & Android with React
+
+---
+
+# Where Node.js
+
+---
+
+# Where Node.js
+
+**What should you build?**
+
+---
+
+# Where Node.js
+
+**What should you build?**
+
+Anything that's &ensp;&ensp;&ensp;&ensp;&ensp;&nbsp;&nbsp; **IO**-bound:
+
+---
+
+# Where Node.js
+
+**What should you build?**
+
+Anything that's &ensp;&ensp;&ensp;&ensp;&ensp;&nbsp;&nbsp; **~~IO~~**-bound:
+
+---
+
+# Where Node.js
+
+**What should you build?**
+
+Anything that's **NOT CPU**-bound:
+
+---
+
+# Where Node.js
+
+**What should you build?**
+
+Anything that's **NOT CPU**-bound:
+
+- Realtime Apps
+
+---
+
+# Where Node.js
+
+**What should you build?**
+
+Anything that's **NOT CPU**-bound:
+
+- Realtime Apps - *Websockets, Chat*
+
+---
+
+# Where Node.js
+
+**What should you build?**
+
+Anything that's **NOT CPU**-bound:
+
+- Realtime Apps - *Websockets, Chat*
+- Fast File Upload Server
+
+---
+
+# Where Node.js
+
+**What should you build?**
+
+Anything that's **NOT CPU**-bound:
+
+- Realtime Apps - *Websockets, Chat*
+- Fast File Upload Server - *Especially large files*
+
+---
+
+# Where Node.js
+
+**What should you build?**
+
+Anything that's **NOT CPU**-bound:
+
+- Realtime Apps - *Websockets, Chat*
+- Fast File Upload Server - *Especially large files*
+- Ad/Metrics Server
+
+---
+
+# Where Node.js
+
+**What should you build?**
+
+Anything that's **NOT CPU**-bound:
+
+- Realtime Apps - *Websockets, Chat*
+- Fast File Upload Server - *Especially large files*
+- Ad/Metrics Server
+- Tooling CLIs
+
+---
+
+# Where Node.js
+
+**What should you build?**
+
+Anything that's **NOT CPU**-bound:
+
+- Realtime Apps - *Websockets, Chat*
+- Fast File Upload Server - *Especially large files*
+- Ad/Metrics Server
+- Tooling CLIs - *DevOps, CI, CD, QA*
+
+---
+
+# Where Node.js
+
+**What should you build?**
+
+Anything that's **NOT CPU**-bound:
+
+- Realtime Apps - *Websockets, Chat*
+- Fast File Upload Server - *Especially large files*
+- Ad/Metrics Server
+- Tooling CLIs - *DevOps, CI, CD, QA*
+- API Server
+
+---
+
+# Where Node.js
+
+**What should you build?**
+
+Anything that's **NOT CPU**-bound:
+
+- Realtime Apps - *Websockets, Chat*
+- Fast File Upload Server - *Especially large files*
+- Ad/Metrics Server
+- Tooling CLIs - *DevOps, CI, CD, QA*
+- API Server - *Mobile back-end*
+
+---
+
+# Where Node.js
+
+**What should you build?**
+
+Anything that's **NOT CPU**-bound:
+
+- Realtime Apps - *Websockets, Chat*
+- Fast File Upload Server - *Especially large files*
+- Ad/Metrics Server
+- Tooling CLIs - *DevOps, CI, CD, QA*
+- API Server - *Mobile back-end*
+- Unified "Front-end" 
+
+---
+
+# Where Node.js
+
+**What should you build?**
+
+Anything that's **NOT CPU**-bound:
+
+- Realtime Apps - *Websockets, Chat*
+- Fast File Upload Server - *Especially large files*
+- Ad/Metrics Server
+- Tooling CLIs - *DevOps, CI, CD, QA*
+- API Server - *Mobile back-end*
+- Unified "Front-end" - *Any Web Application!*
 
 ---
 
