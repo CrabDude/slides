@@ -34,7 +34,7 @@ Simpler asynchronous JavaScript programming.
 1. Callbacks
 
   ```javascript
-  fs.readFile(__filename, (err data) => { /* ... */ })
+  fs.readFile(__filename, (err, data) => { /* ... */ })
   ```
 1. Promises
 
@@ -48,47 +48,602 @@ Simpler asynchronous JavaScript programming.
 
   ```javascript
   // Within a function marked `async`
-  let data = fs.readFile(__filename)
+  let data = await fs.readFile(__filename)
   ```
 
 ---
 
-# Why not use callbacks?
+# Why not callbacks?
+
+---
+
+# Why not callbacks?
+
+**Simplest in concept, manual and erorr-prone in practice.**
+
+---
+
+# Why not callbacks?
 
 **Simplest in concept, manual and erorr-prone in practice.**
 
 ```javascript
-function myStatDir(dirPath, callback) {
-    fs.stat(dirPath, (err, stats) => {
-        // Remember to pass error and early return
-        if (err) return callback(err)
 
-        // Remember to call callback
-        callback(null, stats)
+    fs.stat(dirPath, (err, stats) => {
+
+
+
+
+
+    })
+.
+```
+
+---
+
+# Why not callbacks?
+
+**Simplest in concept, manual and erorr-prone in practice.**
+
+```javascript
+
+    fs.stat(dirPath, (err, stats) => {
+
+
+
+      let notString = stats.isDirectory() ? "" : " not"
+      console.log(dirPath + ' is ' + notString + ' a directory.')
+    })
+.
+```
+
+---
+
+# Why not callbacks?
+
+**Simplest in concept, manual and erorr-prone in practice.**
+
+```javascript
+
+    fs.stat(dirPath, (err, stats) => {
+      // Remember to handle err
+      if (err)        console.log(dirPath + ' is not a directory.')
+
+      let notString = stats.isDirectory() ? "" : " not"
+      console.log(dirPath + ' is ' + notString + ' a directory.')
+    })
+.
+```
+
+---
+
+# Why not callbacks?
+
+**Simplest in concept, manual and erorr-prone in practice.**
+
+```javascript
+
+    fs.stat(dirPath, (err, stats) => {
+      // Remember to handle err & early return
+      if (err) return console.log(dirPath + ' is not a directory.') 
+
+      let notString = stats.isDirectory() ? "" : " not"
+      console.log(dirPath + ' is ' + notString + ' a directory.')
+    })
+.
+```
+
+---
+
+# Why not callbacks?
+
+**Simplest in concept, manual and erorr-prone in practice.**
+
+```javascript
+function isDir(dirPath, callback) {
+    fs.stat(dirPath, (err, stats) => {
+      // Remember to handle err & early return
+      if (err) return callback(null, false)
+
+      let notString = stats.isDirectory() ? "" : " not"
+      console.log(dirPath + ' is ' + notString + ' a directory.')
     })
 }
 ```
 
 ---
 
-# Why not use callbacks?
+# Why not callbacks?
 
-**Errors cannot be caught! (without monkey-patching the runtime)**
+**Simplest in concept, manual and erorr-prone in practice.**
 
 ```javascript
-// This will crash your server
+function isDir(dirPath, callback) {
+    fs.stat(dirPath, (err, stats) => {
+      // Remember to handle err and early return
+      if (err) return callback(null, false)
+
+      // Remember to call callback
+      callback(null, stats.isDirectory())
+    })
+}
+```
+
+---
+
+# Why not callbacks?
+
+**Simplest in concept, manual and erorr-prone in practice.**
+
+```javascript
+function isDir(dirPath, callback) {
+    fs.stat(dirPath, (err, stats) => {
+      // Remember to handle err and early return
+      if (err) return callback(null, false)
+
+      // Remember to call callback
+      callback(null, stats.isDirectory())
+    })
+}
+```
+
+**Rinse & Repeat:**
+
+```javascript
+isDir(dirPath, (err, isDir) => {
+  // Remember to handle err & early return
+  if (err) return console.log(dirPath + ' is not a directory.') 
+
+  let notString = stats.isDirectory() ? "" : " not"
+  console.log(dirPath + ' is ' + notString + ' a directory.')
+})
+```
+
+---
+
+class: center, middle
+
+# *Strawman much?*
+
+Use a control-flow library!
+
+** *We'll get there...* **
+
+---
+
+# Why not callbacks?
+
+**Errors cannot be caught!\* **
+
+```javascript
+
+
+
+
+
+
+
+.
+```
+\* ...
+
+---
+
+# Why not callbacks?
+
+**Errors cannot be caught!\* **
+
+```javascript
+// This will     crash your server
+
+    isDir(__dirname, (err, stats) => {
+        throw new Error('Boom.')
+    })
+
+
+.
+```
+\* ...
+
+---
+
+# Why not callbacks?
+
+**Errors cannot be caught!\* **
+
+```javascript
+// This will     crash your server
 try {
-    statDir(__dirname, (err, stats) => {
+    isDir(__dirname, (err, stats) => {
+        throw new Error('Boom.')
+    })
+} catch(err) {
+
+}
+```
+\* ...
+
+---
+
+# Why not callbacks?
+
+**Errors cannot be caught!\* **
+
+```javascript
+// This will     crash your server
+try {
+    isDir(__dirname, (err, stats) => {
         throw new Error('Boom.')
     })
 } catch(err) {
     // Nope.
 }
 ```
+\* ...
 
 ---
 
-# Why not use callbacks?
+class: center, middle
+
+# *Really? More strawmans?*
+
+Just don't throw or pass the error.
+
+---
+
+# Why not callbacks?
+
+**Errors cannot be caught!\* **
+
+Scenario 1: No callback
+
+```javascript
+
+
+
+
+
+
+
+
+
+.
+```
+
+\* ...
+
+---
+
+# Why not callbacks?
+
+**Errors cannot be caught!\* **
+
+Scenario 1: No callback
+
+```javascript
+
+  // This will NOT crash your server
+  try {
+      isDir(dirPath, (err, stats) => {
+          console.log(new Error('Boom.').stack)
+      })
+  } catch(err) {
+      // Nope.
+  }
+.
+```
+
+\* ...
+
+---
+
+# Why not callbacks?
+
+**Errors cannot be caught!\* **
+
+Scenario 2: Pass error to callback
+
+```javascript
+function run(callback) {
+  // This will NOT crash your server
+  try {
+      isDir(dirPath, (err, stats) => {
+          callback(new Error('Boom.'))
+      })
+  } catch(err) {
+      // Nope.
+  }
+}
+```
+
+\* ...
+
+---
+
+# Why not callbacks?
+
+**Errors cannot be caught!\* **
+
+Scenario 3: Reality
+
+```javascript
+function isDir(dirPath, callback) {
+  fs.stat(dirPath, (err, stats) => {
+    if (err) return callback(null, false)
+    callback(null, stats.isDirectory())
+  })
+}
+
+
+
+.
+```
+
+\* ...
+
+---
+
+# Why not callbacks?
+
+**Errors cannot be caught!\* **
+
+Scenario 3: Reality
+
+```javascript
+function isDir(dirPath, callback) {
+  fs.stat(dirPath, (err, stats) => {
+    if (err) return callback(null, false)
+    callback(null, stats.isDirectory())
+  })
+}
+
+isDir(__dirname, (err, isDir) => {
+    console.log(__dirname + ' is ' + isDir?"":" not" + ' a directory.')
+})
+```
+
+\* ...
+
+---
+
+# Why not callbacks?
+
+**Errors cannot be caught!\* **
+
+Scenario 3: Reality
+
+```javascript
+function isDir(dirPath, callback) {
+  fs.stat(dirPath, (err, stats) => {
+    if (err)       callback(null, false)
+    callback(null, stats.isDirectory())
+  })
+}
+
+isDir(__dirname, (err, isDir) => {
+    console.log(__dirname + ' is ' + isDir?"":" not" + ' a directory.')
+})
+```
+
+\* ...
+
+---
+
+class: center, middle
+
+# **BOOM.**
+
+Go directly to jail.
+
+Do not pass Go.
+
+Do not collect your bonus.
+
+---
+
+# Why not callbacks?
+
+**Errors cannot be caught!\* **
+
+Scenario 3: Reality
+
+```javascript
+function isDir(dirPath, callback) {
+  fs.stat(dirPath, (err, stats) => {
+    if (err)       callback(null, false)
+    callback(null, stats.isDirectory())
+  })
+}
+
+
+  isDir(__dirname, (err, isDir) => {
+      console.log(__dirname + ' is ' + isDir?"":" not" + ' a directory.')
+  })
+
+
+.
+```
+
+\* ...
+
+---
+
+# Why not callbacks?
+
+**Errors cannot be caught!\* **
+
+Scenario 3: Reality
+
+```javascript
+function isDir(dirPath, callback) {
+  fs.stat(dirPath, (err, stats) => {
+    if (err)       callback(null, false)
+    callback(null, stats.isDirectory())
+  })
+}
+
+try {
+  isDir(__dirname, (err, isDir) => {
+      console.log(__dirname + ' is ' + isDir?"":" not" + ' a directory.')
+  })
+} catch(e) {
+
+}
+```
+
+\* ...
+
+---
+
+# Why not callbacks?
+
+**Errors cannot be caught!\* **
+
+Scenario 3: Reality
+
+```javascript
+function isDir(dirPath, callback) {
+  fs.stat(dirPath, (err, stats) => {
+    if (err)       callback(null, false)
+    callback(null, stats.isDirectory())
+  })
+}
+
+try {
+  isDir(__dirname, (err, isDir) => {
+      console.log(__dirname + ' is ' + isDir?"":" not" + ' a directory.')
+  })
+} catch(e) {
+  // Nope.
+}
+```
+
+\* ...
+
+---
+
+# Why not callbacks?
+
+**Errors cannot be caught!\* **
+
+Scenario 3: Reality
+
+```javascript
+function isDir(dirPath, callback) {
+  fs.stat(dirPath, (err, stats) => {
+    if (err)       callback(null, false)
+    callback(null, stats.isDirectory())
+  })
+}
+
+
+  isDir(__dirname, (err, isDir) => {
+      console.log(__dirname + ' is ' + isDir?"":" not" + ' a directory.')
+  })
+
+
+.
+```
+
+\* ...
+
+---
+
+# Why not callbacks?
+
+**Errors cannot be caught!\* **
+
+Scenario 3: Reality
+
+```javascript
+function isDir(dirPath, callback) {
+  fs.stat(dirPath, (err, stats) => {
+    if (err)       callback(null, false)
+    callback(null, stats.isDirectory())
+  })
+}
+
+
+  isDir(__dirname, (err, isDir) => {
+      console.log(__dirname + ' is ' + isDir?"":" not" + ' a directory.')
+  })
+
+
+.
+```
+
+\* Unless you monkey-patch the runtime.
+
+---
+
+# Why not callbacks?
+
+**Errors cannot be caught!\* **
+
+Scenario 3: Reality
+
+```javascript
+function isDir(dirPath, callback) {
+  fs.stat(dirPath, (err, stats) => {
+    if (err)       callback(null, false)
+    callback(null, stats.isDirectory())
+  })
+}
+
+trycatch(() => {
+  isDir(__dirname, (err, isDir) => {
+      console.log(__dirname + ' is ' + isDir?"":" not" + ' a directory.')
+  })
+}, (err) => {
+  // Yup.
+})
+```
+
+\* Unless you monkey-patch the runtime.
+
+---
+
+class: center, middle
+
+# **Lesson?**
+
+...
+
+...
+
+---
+
+class: center, middle
+
+# **Lesson?**
+
+Use my `trycatch` library.
+
+...
+
+---
+
+class: center, middle
+
+# **Lesson?**
+
+**No seriously,** use my `trycatch` library.
+
+...
+
+---
+
+class: center, middle
+
+# **Lesson?**
+
+~~**No seriously,** use my `trycatch` library.~~
+
+**Don't use callbacks.**
+
+---
+
+# Why not callbacks?
 
 **The pyramid of doom**
 
@@ -107,7 +662,7 @@ foo((err, a) => {
 
 ---
 
-# Why not use callbacks?
+# Why not callbacks?
 
 **Even simple control-flows require complex non-standardized libraries**
 
@@ -129,6 +684,242 @@ async.waterfall([
 
 ---
 
+# Other requirements of the callback contract
+
+
+
+
+
+
+
+
+
+
+
+---
+
+# Other requirements of the callback contract
+
+* Callbacks should always be passed last
+
+
+
+
+
+
+
+
+
+---
+
+# Other requirements of the callback contract
+
+* Callbacks should always be passed last
+  * First argument is an error
+
+
+
+
+
+
+
+
+---
+
+# Other requirements of the callback contract
+
+* Callbacks should always be passed last
+  * First argument is an error
+  * Second argument is the result
+
+
+
+
+
+
+
+---
+
+# Other requirements of the callback contract
+
+* Callbacks should always be passed last
+  * First argument is an error
+  * Second argument is the result
+  * Never pass both
+
+
+
+
+
+
+---
+
+# Other requirements of the callback contract
+
+* Callbacks should always be passed last
+  * First argument is an error
+  * Second argument is the result
+  * Never pass both
+  * Errors should be `instanceof` `Error`
+
+
+
+
+
+---
+
+# Other requirements of the callback contract
+
+* Callbacks should always be passed last
+  * First argument is an error
+  * Second argument is the result
+  * Never pass both
+  * Errors should be `instanceof` `Error`
+* Callbacks must never execute on the same event-loop tick 
+
+
+
+
+---
+
+# Other requirements of the callback contract
+
+* Callbacks should always be passed last
+  * First argument is an error
+  * Second argument is the result
+  * Never pass both
+  * Errors should be `instanceof` `Error`
+* Callbacks must never execute on the same event-loop tick 
+* Return value should be ignored
+
+
+
+---
+
+# Other requirements of the callback contract
+
+* Callbacks should always be passed last
+  * First argument is an error
+  * Second argument is the result
+  * Never pass both
+  * Errors should be `instanceof` `Error`
+* Callbacks must never execute on the same event-loop tick 
+* Return value should be ignored
+* Must never throw and always pass errors
+
+
+---
+
+# Other requirements of the callback contract
+
+* Callbacks should always be passed last
+  * First argument is an error
+  * Second argument is the result
+  * Never pass both
+  * Errors should be `instanceof` `Error`
+* Callbacks must never execute on the same event-loop tick 
+* Return value should be ignored
+* Must never throw and always pass errors
+* Must never be called more than once
+
+---
+
+# ~~Other requirements of the callback contract~~
+
+* Callbacks should always be passed last
+  * First argument is an error
+  * Second argument is the result
+  * Never pass both
+  * Errors should be `instanceof` `Error`
+* Callbacks must never execute on the same event-loop tick 
+* Return value should be ignored
+* Must never throw and always pass errors
+* Must never be called more than once
+
+---
+
+# Other reasons to not use callbacks
+
+* Callbacks should always be passed last
+  * First argument is an error
+  * Second argument is the result
+  * Never pass both
+  * Errors should be `instanceof` `Error`
+* Callbacks must never execute on the same event-loop tick 
+* Return value should be ignored
+* Must never throw and always pass errors
+* Must never be called more than once
+
+---
+
+class: center, middle
+
+# **Still strawmanning?**
+
+Control-flow libraries handle all this!
+
+---
+
+class: center, middle
+
+# **Pop Quiz!**
+
+Name one callback-based control-flow library
+
+that handles all of the callback contract requirements.
+
+---
+
+class: center, middle
+
+# **Answer:**
+
+Only 1. `stepup`, which uses `trycatch`.
+
+https://github.com/crabdude/stepup
+
+---
+
+class: center, middle
+
+# **Lesson?**
+
+...
+
+...
+
+---
+
+class: center, middle
+
+# **Lesson?**
+
+Use my `stepup` library.
+
+...
+
+---
+
+class: center, middle
+
+# **Lesson?**
+
+Use my `stepup` library **and my `trycatch` library.**
+
+...
+
+---
+
+class: center, middle
+
+# **Lesson?**
+
+~~Use my `stepup` library **and my `trycatch` library.**~~
+
+**Don't use callbacks.**
+
+---
+
 # What about `Promise`?
 
 **Better...**
@@ -145,10 +936,6 @@ function statDir(dirPath) {
 }
 ```
 
-*Note: `pn` is only for CORE APIs*
-
-*Note: `songbird` provides compatibility with ANY callback API
-
 ---
 
 # What about `Promise`?
@@ -168,7 +955,7 @@ function statDir(dirPath) {
 # What about `Promise`?
 
 **Better...**
-- Included in language: ES6, node v0.11.13, io.js v1.0
+- Included in language: ES6, node v0.11.13
 
 
 
@@ -182,7 +969,7 @@ function statDir(dirPath) {
 # What about `Promise`?
 
 **Better...**
-- Included in language: ES6, node v0.11.13, io.js v1.0
+- Included in language: ES6, node v0.11.13
 - Automatic error handling and propagation
 
 
@@ -196,7 +983,7 @@ function statDir(dirPath) {
 # What about `Promise`?
 
 **Better...**
-- Included in language: ES6, node v0.11.13, io.js v1.0
+- Included in language: ES6, node v0.11.13
 - Automatic error handling and propagation
 - Elegant chaining for control-flow
 
@@ -210,7 +997,7 @@ function statDir(dirPath) {
 # What about `Promise`?
 
 **Better...**
-- Included in language: ES6, node v0.11.13, io.js v1.0
+- Included in language: ES6, node v0.11.13
 - Automatic error handling and propagation
 - Elegant chaining for control-flow
 - Expectations are guaranteed in spec:
@@ -224,7 +1011,7 @@ function statDir(dirPath) {
 # What about `Promise`?
 
 **Better...**
-- Included in language: ES6, node v0.11.13, io.js v1.0
+- Included in language: ES6, node v0.11.13
 - Automatic error handling and propagation
 - Elegant chaining for control-flow
 - Expectations are guaranteed in spec:
@@ -238,7 +1025,7 @@ function statDir(dirPath) {
 # What about `Promise`?
 
 **Better...**
-- Included in language: ES6, node v0.11.13, io.js v1.0
+- Included in language: ES6, node v0.11.13
 - Automatic error handling and propagation
 - Elegant chaining for control-flow
 - Expectations are guaranteed in spec:
@@ -252,7 +1039,7 @@ function statDir(dirPath) {
 # What about `Promise`?
 
 **Better...**
-- Included in language: ES6, node v0.11.13, io.js v1.0
+- Included in language: ES6, node v0.11.13
 - Automatic error handling and propagation
 - Elegant chaining for control-flow
 - Expectations are guaranteed in spec:
@@ -266,7 +1053,7 @@ function statDir(dirPath) {
 # What about `Promise`?
 
 **Better...**
-- Included in language: ES6, node v0.11.13, io.js v1.0
+- Included in language: ES6, node v0.11.13
 - Automatic error handling and propagation
 - Elegant chaining for control-flow
 - Expectations are guaranteed in spec:
@@ -324,6 +1111,25 @@ statDir(__dirname)
     .then(someValue => {
         // Nope.
     })
+.
+```
+
+---
+
+# What about `Promise`?
+
+**Problem: Errors can silently fail!**
+
+```javascript
+// You won't know this threw
+statDir(__dirname)
+    .then(stats => {
+        throw new Error('Boom.')
+    })
+    .then(someValue => {
+        // Nope.
+    })
+    .catch(e => console.log(e.stack))
 ```
 
 ---
@@ -461,28 +1267,250 @@ foo()
 
 ---
 
+class: center, middle
+
+# **Lesson?**
+
+...
+
+...
+
+---
+
+class: center, middle
+
+# **Lesson?**
+
+Use `Promise`.
+
+...
+
+---
+
+class: center, middle
+
+# **Lesson?**
+
+Use `Promise` *for now.*
+
+...
+
+---
+
+class: center, middle
+
+# **Lesson?**
+
+~~Use `Promise` *for now.*~~
+
+**No, not really. Use async/await or async generators.**
+
+---
+
 # `async/await`
 
 **Our hero!* **
 
 ```javascript
-async function main() => {
-    let a = await foo()
 
 
 
+
+
+
+
+
+
+
+
+
+
+.
+```
+
+---
+
+# `async/await`
+
+**Our hero!* **
+
+```javascript
+
+  foo().then(a => {
+          return bar(a)
+      })
+      .then(b => {
+          return baz(b)
+      })
+      .then(result => console.log(result))
+
+      // ALWAYS remember to check for errors!
+      .catch(e => console.log(e.stack))
+
+
+.
+```
+
+---
+
+# `async/await`
+
+**Our hero!* **
+
+```javascript
+
+  let a = await foo()
+          return bar(a)
+      })
+      .then(b => {
+          return baz(b)
+      })
+      .then(result => console.log(result))
+
+      // ALWAYS remember to check for errors!
+      .catch(e => console.log(e.stack))
+
+
+.
+```
+
+---
+
+# `async/await`
+
+**Our hero!* **
+
+```javascript
+
+  let a = await foo()
+                bar(a)
+      
+      .then(b => {
+          return baz(b)
+      })
+      .then(result => console.log(result))
+
+      // ALWAYS remember to check for errors!
+      .catch(e => console.log(e.stack))
+
+
+.
+```
+
+---
+
+# `async/await`
+
+**Our hero!* **
+
+```javascript
+
+  let a = await foo()
+  let b = await bar(a)
+
+
+                 baz(b)
+
+      .then(result => console.log(result))
+
+      // ALWAYS remember to check for errors!
+      .catch(e => console.log(e.stack))
+
+
+.
+```
+
+---
+
+# `async/await`
+
+**Our hero!* **
+
+```javascript
+
+  let a = await foo()
+  let b = await bar(a)
+  let result = await baz(b)
+
+
+
+      .then(result => console.log(result))
+
+      // ALWAYS remember to check for errors!
+      .catch(e => console.log(e.stack))
+
+
+.
+```
+
+---
+
+# `async/await`
+
+**Our hero!* **
+
+```javascript
+
+  let a = await foo()
+  let b = await bar(a)
+  let result = await baz(b)
+  console.log(result)
+
+
+
+
+      // ALWAYS remember to check for errors!
+      .catch(e => console.log(e.stack))
+
+
+.
+```
+
+---
+
+# `async/await`
+
+**Our hero!* **
+
+```javascript
+async function main() {
+  let a = await foo()
+  let b = await bar(a)
+  let result = await baz(b)
+  console.log(result)
 }
 
 
+
+      // ALWAYS remember to check for errors!
+      .catch(e => console.log(e.stack))
+
+
+.
+```
+
+---
+
+# `async/await`
+
+**Our hero!* **
+
+```javascript
+async function main() {
+  let a = await foo()
+  let b = await bar(a)
+  let result = await baz(b)
+  console.log(result)
+}
 
 main()
 
+      // ALWAYS remember to check for errors!
+      .catch(e => console.log(e.stack))
 
 
 .
 ```
-
-* *Available in ES7 and Babel.js*
 
 ---
 
@@ -491,23 +1519,22 @@ main()
 **Our hero!* **
 
 ```javascript
-async function main() => {
+async function main() {
+  try {
     let a = await foo()
     let b = await bar(a)
-    let c = await baz(b)
-    return result
+    let result = await baz(b)
+    console.log(result)
+  } catch(e) {
+    // ALWAYS remember to check for errors!
+    console.log(e.stack)
+  }
 }
-
-
 
 main()
 
-
-
 .
 ```
-
-* *Available in ES7 and Babel.js*
 
 ---
 
@@ -516,23 +1543,68 @@ main()
 **Our hero!* **
 
 ```javascript
-async function main(someArg) => {
-    let a = await foo(someArg)
-    let b = await bar(a)
-    let c = await baz(b)
-    return result
+async function main() {
+  let a = await foo()
+  let b = await bar(a)
+  let result = await baz(b)
+  console.log(result)
+}
+
+main()
+      .then(result => console.log(result))
+      // ALWAYS remember to check for errors!
+      .catch(e => console.log(e.stack))
+
+
+.
+```
+
+---
+
+# `async/await`
+
+**Our hero!* **
+
+```javascript
+async function main(someArg) {
+  let a = await foo()
+  let b = await bar(a)
+  let result = await baz(b)
+  console.log(result)
+}
+
+main(someArg)
+      .then(result => console.log(result))
+      // ALWAYS remember to check for errors!
+      .catch(e => console.log(e.stack))
+
+
+.
+```
+
+---
+
+# `async/await`
+
+**Our hero!* **
+
+```javascript
+async function main(someArg) {
+  let a = await foo()
+  let b = await bar(a)
+  let result = await baz(b)
+  console.log(result)
 }
 
 
 
-main(someArg)
+        let result = await main(someArg)
+
 
 
 
 .
 ```
-
-* *Available in ES7 and Babel.js*
 
 ---
 
@@ -541,98 +1613,46 @@ main(someArg)
 **Our hero!* **
 
 ```javascript
-async function main(someArg) => {
-    let a = await foo(someArg)
-    let b = await bar(a)
-    let c = await baz(b)
-    return result
-}
-
-
-
-main(someArg)
-
-
-
-.
-```
-
-* *Available in ES7 and Babel.js*
-
----
-
-# `async/await`
-
-**Our hero!* **
-
-```javascript
-async function main(someArg) => {
-    let a = await foo(someArg)
-    let b = await bar(a)
-    let c = await baz(b)
-    return result
-}
-
-
-
-main(someArg)
-    .then(result => console.log(result))
-
-
-.
-```
-
-* *Available in ES7 and Babel.js*
-
----
-
-# `async/await`
-
-**Our hero!* **
-
-```javascript
-async function main(someArg) => {
-    let a = await foo(someArg)
-    let b = await bar(a)
-    let c = await baz(b)
-    return result
-}
-
-
-
-main(someArg)
-    .then(result => console.log(result))
-    .catch(e => console.log(e.stack))
-
-.
-```
-
-* *Available in ES7 and Babel.js*
-
----
-
-# `async/await`
-
-**Our hero!* **
-
-```javascript
-async function main(someArg) => {
-    let a = await foo(someArg)
-    let b = await bar(a)
-    let c = await baz(b)
-    return result
+async function main(someArg) {
+  let a = await foo()
+  let b = await bar(a)
+  let result = await baz(b)
+  console.log(result)
 }
 
 async ()=> {
 
-    let result = await main(someArg)
+        let result = await main(someArg)
+
 
 
 
 }()
 ```
 
-* *Available in ES7 and Babel.js*
+---
+
+# `async/await`
+
+**Our hero!* **
+
+```javascript
+async function main(someArg) {
+  let a = await foo()
+  let b = await bar(a)
+  let result = await baz(b)
+  console.log(result)
+}
+
+async ()=> {
+
+        let result = await main(someArg)
+
+
+
+    console.log(result)
+}()
+```
 
 ---
 
@@ -641,11 +1661,11 @@ async ()=> {
 **Our hero!* **
 
 ```javascript
-async function main(someArg) => {
-    let a = await foo(someArg)
-    let b = await bar(a)
-    let c = await baz(b)
-    return result
+async function main(someArg) {
+  let a = await foo()
+  let b = await bar(a)
+  let result = await baz(b)
+  console.log(result)
 }
 
 async ()=> {
@@ -654,10 +1674,9 @@ async ()=> {
     } catch(e) {
         console.log(e.stack)
     }
+    console.log(result)
 }()
 ```
-
-* *Available in ES7 and Babel.js*
 
 ---
 
@@ -691,28 +1710,24 @@ async function main(someArg) {
 
 ---
 
-class: center, middle
-
 # Why is `async/await` SUPER AWESOME?!
 
----
-
-class: center, middle
-
-# It forces a distinction between synchronous and asynchronous functions!
+1. It forces a distinction between synchronous and asynchronous functions!
+1. Automatically handles the async contract
+1. It composes with existing language features
 
 ---
 
 # `async/await`
 
-**To review, Lifecycle Phases:**
+**Lifecycle Phases:**
 - Require Phase
 
 ---
 
 # `async/await`
 
-**To review, Lifecycle Phases:**
+**Lifecycle Phases:**
 - Require Phase
   - Blocking `*Sync` IO acceptable
 
@@ -720,7 +1735,7 @@ class: center, middle
 
 # `async/await`
 
-**To review, Lifecycle Phases:**
+**Lifecycle Phases:**
 - Require Phase
   - Blocking `*Sync` IO acceptable
   - Must be completed by end of the main tick
@@ -729,7 +1744,7 @@ class: center, middle
 
 # `async/await`
 
-**To review, Lifecycle Phases:**
+**Lifecycle Phases:**
 - Require Phase
   - Blocking `*Sync` IO acceptable
   - Must be completed by end of the main tick
@@ -739,7 +1754,7 @@ class: center, middle
 
 # `async/await`
 
-**To review, Lifecycle Phases:**
+**Lifecycle Phases:**
 - Require Phase
   - Blocking `*Sync` IO acceptable
   - Must be completed by end of the main tick
@@ -750,7 +1765,7 @@ class: center, middle
 
 # `async/await`
 
-**To review, Lifecycle Phases:**
+**Lifecycle Phases:**
 - Require Phase
   - Blocking `*Sync` IO acceptable
   - Must be completed by end of the main tick
@@ -762,7 +1777,7 @@ class: center, middle
 
 # `async/await`
 
-**To review, Lifecycle Phases:**
+**Lifecycle Phases:**
 - Require Phase
   - Blocking `*Sync` IO acceptable
   - Must be completed by end of the main tick
@@ -775,7 +1790,7 @@ class: center, middle
 
 # `async/await`
 
-**To review, Lifecycle Phases:**
+**Lifecycle Phases:**
 - Require Phase
   - Blocking `*Sync` IO acceptable
   - Must be completed by end of the main tick
@@ -789,7 +1804,7 @@ class: center, middle
 
 # `async/await`
 
-**To review, Lifecycle Phases:**
+**Lifecycle Phases:**
 - Require Phase
   - Blocking `*Sync` IO acceptable
   - Must be completed by end of the main tick
@@ -804,7 +1819,7 @@ class: center, middle
 
 # `async/await`
 
-**To review, Lifecycle Phases:**
+**Lifecycle Phases:**
 - Require Phase
   - Blocking `*Sync` IO acceptable
   - Must be completed by end of the main tick
@@ -820,7 +1835,7 @@ class: center, middle
 
 # `async/await`
 
-**To review, Lifecycle Phases:**
+**Lifecycle Phases:**
 - Require Phase
   - Blocking `*Sync` IO acceptable
   - Must be completed by end of the main tick
@@ -837,7 +1852,7 @@ class: center, middle
 
 # `async/await`
 
-**To review, Lifecycle Phases:**
+**Lifecycle Phases:**
 - Require Phase
   - Blocking `*Sync` IO acceptable
   - Must be completed by end of the main tick
@@ -855,7 +1870,7 @@ class: center, middle
 
 # `async/await`
 
-**To review, Lifecycle Phases:**
+**Lifecycle Phases:**
 - Require Phase
   - Blocking `*Sync` IO acceptable
   - Must be completed by end of the main tick
@@ -874,7 +1889,7 @@ class: center, middle
 
 # `async/await`
 
-**To review, Lifecycle Phases:**
+**Lifecycle Phases:**
 - Require Phase
   - Blocking `*Sync` IO acceptable
   - Must be completed by end of the main tick
@@ -1194,7 +2209,7 @@ process.on('unhandledRejection', handleError)
 process.on('unhandledApplicationException', handleError)
 
 if (process.env.NODE_ENV === 'development') {
-    trycatch.configure({'long-stack-traces'})
+    trycatch.configure({'long-stack-traces': true})
 }
 
 
@@ -1216,23 +2231,45 @@ app.initialize().catch(err => console.log(err.stack))
 
 **Using `async/await` today with Async Generators (`function*()/yield`)**
 
-- Support today in node v0.11.13, io.js v1.0 with a library like `bluebird`
-
 ```javascript
-function* main(someArg) {
-  let a = yield foo(someArg)
-  let b = yield bar(a)
-  let c = yield baz(b)
+// co.wrap converts generators to async semantics
+let fnAsync = co.wrap(function* (a) {
+  let [b, c] = yield Promise.all([foo(a), bar(a)])
+  let result = yield baz(b, c)
   return result
-}
-bluebird.coroutine(function*() {
+})
+
+// Bootstrap with co
+co(function* () {
   try {
-    let result = yield main()
+    let result = yield fnAsync(a)
   } catch(e) {
     console.log(e.stack)
   }
-})
+}
 ```
+
+---
+
+# `async/await`
+
+**Using `async/await` today with Async Generators (`function*()/yield`)**
+
+- Supported today with `--harmony` flag in node v0.11.13
+- Supported today **without a flag** in node v4.0
+- Requires a library to bootstrap:
+  - `co`: `co(function*(){})`
+  - `bluebird`: `bluebird.coroutine(function*(){})`
+- Remember to convert `function*` to async function:
+
+  ```javascript
+  let fnAsync = co.wrap(function*(){
+    // ...
+  })
+
+  // Invoke like async function
+  let promise = fnAsync()
+  ```
 
 ---
 
@@ -1244,8 +2281,8 @@ class: center, middle
 
 
     </textarea>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/default.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/highlight.min.js"></script>
     <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js">
     </script>
     <script>
