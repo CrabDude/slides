@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Validation</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style type="text/css">
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Route Validation
+
+Good servers don't accept just any request...
+
+---
+
+# Route Validation: Intro
+
+**Routes are more than just pattern matching:**
+
+```javascript
+// CRUD: Create, Read, Update, Delete
+app.get('/foo/:id', getHandler)
+app.post('/foo/id?', postHandler)
+app.put('/foo/b*', putHandler)
+app.del(/.*\.foo$/, deleteHandler)
+```
+
+---
+
+class: center, middle
+
+**Question: What if they try to create a bad foo?!**
+
+---
+
+class: center, middle
+
+**Question: What if they try to create a bad foo?!**
+
+**Answer: Route validation.**
+
+---
+
+class: center, middle
+
+**Question: What if they try to create a bad foo?!**
+
+**~~Answer: Route validation.~~**
+
+---
+
+class: center, middle
+
+**Question: What if they try to create a bad foo?!**
+
+**~~Answer: `express-validation` + `joi`**
+
+---
+
+# `joi`: Intro
+
+**Create validation schemas with Hapi's `joi`:**
+
+```javascript
+// validators/fooPost.js
+let joi = require('joi')
+
+module.exports = {
+  // req.query
+  query: {
+    id: joi.number().integer().required()
+  },
+  // req.body
+  body: {
+    email: joi.string().email().required(),
+    password: joi.string().regex(/[a-zA-Z0-9]{3,30}/).required()
+  }
+}
+```
+
+---
+
+# `express-validation`: Intro
+
+**Also supports header and cookie validation:**
+
+```
+// validators/fooPost.js
+module.exports = {
+  // For cookies, use "cookie"
+  headers: {
+    accesstoken: joi.string().required(),
+    userid : joi.string().required()
+  }
+}
+```
+
+---
+
+# `joi`: Validators
+
+**Hapi hapi Joi joi to your schema's content!**
+
+```javascript
+let joi = require('joi')
+ 
+let schema = joi.object().keys({
+    username: joi.string().alphanum().min(3).max(30).required(),
+    password: joi.string().regex(/^[a-zA-Z0-9]{3,30}$/),
+    access_token: [joi.string(), joi.number()],
+    birthyear: joi.number().integer().min(1900).max(2013),
+    email: joi.string().email()
+})
+  .with('username', 'birthyear')
+  .without('password', 'access_token')
+
+// elsewhere... (No error === valid)
+await joi.validate({ username: 'abc', birthyear: 1994 }, schema
+```
+
+---
+
+# `joi`: Validators
+
+**List of supported `joi` types:**
+
+```javascript
+any()
+array()
+boolean()
+date()
+func()
+number()
+object(schema)
+string()
+```
+
+---
+
+# `joi`: Notes
+
+- keys are optional by default
+- strings are utf-8 encoded by default
+- rules are defined in an additive fashion
+- rules are evaluated in order after whitelist and blacklist checks
+
+---
+
+# `express-validation`: Intro
+
+**Consume `joi` schemas in express with the `express-validation` middleware:**
+
+```javascript
+let validate = require('express-validation')
+let fooPostValidator = require('./validators/fooPost')
+ 
+app.post('/foo', validate(fooPostValidator), wrap(async (req, res) =>{
+    res.json(200)
+}))
+```
+
+---
+
+# `express-validation`: Handling Validation Errors
+
+**User input errors are different from server runtime errors:**
+
+```
+// express error handler
+app.use((err, req, res, next) => {
+  // Send 4XXs for validation errors
+  if (err instanceof validate.ValidationError) {
+    return res.status(err.status).json(err)
+  }
+ 
+  // Send 5XXs for runtime errors
+  res.status(500).send(err.stack)
+})
+```
+
+---
+
+# `express-validation`: Options
+
+**1. Don't allow unknown values with strict validation:**
+
+```
+// validators/fooPost.js
+module.exports = {
+  options : {
+    allowUnknownBody: false,
+    allowUnknownHeaders: false,
+    allowUnknownQuery: false,
+    allowUnknownParams: false,
+    allowUnknownCookies: false
+  },
+  // ...
+}
+```
+
+---
+
+# `express-validation`: Options
+
+**2. Send alternative status codes:**
+
+```
+// validators/fooPost.js
+module.exports = {
+  options: {
+    status: 422,
+    statusText: 'Unprocessable Entity'
+  },
+  // ...
+}
+```
+
+---
+
+class: center, middle
+
+# Questions?
+
+    </textarea>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
+    <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      remark.highlighter.engine = hljs
+      remark.macros.scale = function (percentage) {
+        var url = this
+        return '<img src="' + url + '" style="width: ' + percentage + '" />'
+      }
+      var slideshow = remark.create({
+        highlightStyle: 'tomorrow-night-bright'
+      })
+    </script>
+  </body>
+</html>
