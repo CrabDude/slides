@@ -14,6 +14,11 @@
         font-weight: normal;
       }
       .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      .remark-inline-code {
+        background: #e7e8e2;
+        border-radius: 5px;
+        padding: 3px;
+      }
     </style>
   </head>
   <body>
@@ -29,13 +34,13 @@ Safety starts with you.
 
 # Testing
 
-**Overview:**
+**Package Overview:**
 
-- Terminology
-- Mocha - **The** node.js test framework
-- Chai - For BDD assertions
-- Sinon.js - For spies, stubs and mocks
-- Gulp - For automated task and test running
+- [Mocha](https://mochajs.org) - **The** node.js test framework
+- [Gulp](http://gulpjs.com) - Streaming automated task runner
+- [Chai](http://chaijs.com) - For BDD assertions
+- [Sinon.js](http://sinonjs.org) - For spies, stubs and mocks
+- [SuperTest](https://www.npmjs.com/package/supertest-as-promised) - Extends [SuperAgent](https://github.com/visionmedia/superagent) for conveniently testing HTTP
 
 ---
 
@@ -43,15 +48,9 @@ Safety starts with you.
 
 **Integration Test**
 
-A test which tests the result of systems interacting
+Tests the result of systems interacting
 
 *Typically, blackbox testing that is ignorant to internal implementations*
-
----
-
-# Terminology
-
-~~Integration Test~~
 
 ---
 
@@ -172,10 +171,22 @@ A test which tests the results of a specific unit of code
 
 - Runs on node.js & browser
 - Unoppinionated on assertion & mocking libraries
-- Built-in performance measuring
+- Built-in performance measuring (duration & timeout)
 - `async` & `Promise` support
 - File watcher support
 - Filename pattern matching
+
+---
+
+# Mocha TDD
+
+**[Behavior-driven development](https://en.wikipedia.org/wiki/Behavior-driven_development) (BDD) focuses on *human-readable* tests:**
+
+- Where to start in the process
+- What to test and what not to test
+- How much to test in one go
+- What to call the tests
+- How to understand why a test fails
 
 ---
 
@@ -186,9 +197,9 @@ A test which tests the results of a specific unit of code
 ```javascript
 // test/test.js
 let assert = require('assert')
-describe('Test suite', ()=> {
-  describe('feature', ()=> {
-    it('should have the expected behavior', async ()=> {
+describe('Test suite', () => {
+  describe('feature X', () => {
+    it('should have the expected behavior', async () => {
       await process.promise.nextTick()
       assert.equal(true, true)
     })
@@ -196,22 +207,21 @@ describe('Test suite', ()=> {
 })
 ```
 
-- Groups tests with `describe`
-- Groupings can be nested
-- Describe a test with `it`
+- Use `describe` to group tests (nestable)
+- Use `it` to describe a test
 
 ---
 
 # Mocha TDD
 
-**Basic Example:**
+**BDD Interface:**
 
 ```javascript
 // test/test.js
 let assert = require('assert')
-describe('Test suite', ()=> {
-  describe('feature', ()=> {
-    it('should have the expected behavior', async ()=> {
+describe('Test suite', () => {
+  describe('feature X', () => {
+    it('should have the expected behavior', async () => {
       await process.promise.nextTick()
       assert.equal(true, true)
     })
@@ -220,22 +230,19 @@ describe('Test suite', ()=> {
 ```
 
 ```bash
-npm install -g mocha
-```
-
-
-```bash
-mocha test/test.js
+npm install --save-dev mocha        # Save to "devDependencies" in package.json
+npm run mocha test/test.js          # Run a single test
+mocha                               # Runs test/*.js
 ```
 
 ---
 
 # Mocha TDD
 
-**Basic Example Output:**
+**Example Output (Basic):**
 
 ```bash
-
+$ npm install mocha -g
 $ mocha test/test.js
 
 
@@ -253,11 +260,11 @@ $ mocha test/test.js
 
 # Mocha TDD
 
-**Basic Example Output:**
+**Example Output (Basic):**
 
 ```bash
-
-$ mocha 
+$ npm install mocha --save-dev
+$ npm run mocha test/test.js
 
 
 
@@ -274,11 +281,11 @@ $ mocha
 
 # Mocha TDD
 
-**Basic Example Output:**
+**Example Output (Basic):**
 
 ```bash
-$ # Runs ./test/*.js by default
-$ mocha
+
+$ npm run mocha test/test.js
 
 
 
@@ -295,17 +302,38 @@ $ mocha
 
 # Mocha TDD
 
-**Basic Example Output:**
+**Example Output (Basic):**
 
 ```bash
-$ # Runs ./test/*.js by default
-$ mocha
+
+$ npm run mocha  # Run ./test/*.js
+
+
+
+
+
+
+
+
+
+.
+```
+
+---
+
+# Mocha TDD
+
+**Example Output (Basic):**
+
+```bash
+
+$ npm run mocha  # Run ./test/*.js
 
 > slides-code@1.0.0 test /code
 > mocha
 
   Test suite
-    feature
+    feature X
       ✓ should have the expected behavior
 
 
@@ -316,20 +344,44 @@ $ mocha
 
 # Mocha TDD
 
-**Run tests with `npm test`:**
+**Example Output (Advanced):**
+
+![:scale 100%](https://mochajs.org/images/reporter-spec.png)
+
+???
+
+Results are human-readable
+
+---
+
+# Mocha TDD
+
+**Example Output (Failure):**
+
+![:scale 100%](https://mochajs.org/images/reporter-spec-fail.png)
+
+???
+
+Failures are human-readable as well
+
+---
+
+# Mocha TDD
+
+**By convention, use `npm test` to run tests:**
 
 ```bash
-npm install --save-dev mocha
+$ npm test
 ```
 
 ---
 
 # Mocha TDD
 
-**Run tests with `npm test`:**
+**By convention, use `npm test` to run tests:**
 
 ```bash
-npm install --save-dev mocha
+$ npm test
 ```
 
 Add a `"scripts"` entry to `package.json`:
@@ -337,24 +389,21 @@ Add a `"scripts"` entry to `package.json`:
 ```javascript
 {
   "scripts": {
-    // Run tests in /test using local or global mocha
+    // Run tests matching ./test/*.js
+    // Use local (devDependencies) or global mocha
     "test": "mocha"
   }
 }
 ```
 
-```bash
-$ npm test
-```
-
 ---
 
 # Mocha TDD
 
-**Run tests with `npm test`:**
+**By convention, use `npm test` to run tests:**
 
 ```bash
-npm install --save-dev mocha
+$ npm test
 ```
 
 Add a `"scripts"` entry to `package.json`:
@@ -362,13 +411,21 @@ Add a `"scripts"` entry to `package.json`:
 ```javascript
 {
   "scripts": {
-    // or with options:
-    "test": "mocha --reporter spec testDirectory"
+    
+    // With options
+    "test": "mocha --reporter spec altTestDirectory"
   }
 }
 ```
 
+---
+
+# Mocha TDD
+
+**Write tests with ESNext (Babel):**
+
 ```bash
+$ npm install --save-dev babel-register
 $ npm test
 ```
 
@@ -376,96 +433,74 @@ $ npm test
 
 # Mocha TDD
 
-**Write tests using ESNext with Babel:**
+**Write tests with ESNext (Babel):**
 
 ```bash
-npm install --save-dev babel
-```
-
-**Option 1:**
-
-```javascript
-{
-  "scripts": {
-    // As a compiler option
-    "test": "mocha --compilers js:babel/register"
-  }
-}
-```
-
-```bash
+$ npm install --save-dev babel-register
 $ npm test
 ```
 
+```javascript
+{
+  "scripts": {
+    // 1. As a compiler option
+    "test": "mocha --compilers js:babel-register"
+  }
+}
+```
+
 ---
 
 # Mocha TDD
 
-**Write tests using ESNext with Babel:**
+**Write tests with ESNext (Babel):**
 
 ```bash
-npm install --save-dev babel
+$ npm install --save-dev babel-register
+$ npm test
 ```
-
-**Option 2 (preferred):**
 
 ```javascript
 {
   "scripts": {
-    // As a programmatic require
-    "test": "mocha --require babelhook"
+    // 1. As a compiler option
+    "test": "mocha --compilers js:babel-register"
+    // 2. As a pre-run script (preferred, more configurable)
+    "test": "mocha --require customFile_babelhook"
   }
 }
 ```
 
 ```javascript
-// project_root/babelhook.js
-// Enable async/await
-require("babel/register")({ stage: 1 })
+// ./customFile_babelhook.js
+require('babel/register')()
 ```
 
 ---
 
-# Mocha TDD
+# Mocha: Setup & Teardown
 
-**Setup & Teardown:**
+**DRY code with lifecycle hooks:**
 
-Avoid code duplication with supported *global* hooks:
-
-- `before` & `after`: run once
-- `beforeEach` & `afterEach`: run once per test
+- `before` & `after`: run once per group (`describe`)
+- `beforeEach` & `afterEach`: run once per test (`it`)
 
 ---
 
-# Mocha TDD
+# Mocha: Setup & Teardown
 
-**Setup & Teardown:**
+**DRY code with lifecycle hooks:**
 
-Avoid code duplication with supported *global* hooks:
-
-- `before` & `after`: run once
-- `beforeEach` & `afterEach`: run once per test
-- Can be nested in **any** `describe`
-
----
-
-# Mocha TDD
-
-**Setup & Teardown:**
-
-Avoid code duplication with supported *global* hooks:
-
-- `before` & `after`: run once
-- `beforeEach` & `afterEach`: run once per test
-- Can be nested in **any** `describe`
+- `before` & `after`: run once per group (`describe`)
+- `beforeEach` & `afterEach`: run once per test (`it`)
 
 ```javascript
-describe('Test suite', ()=> {
+describe('Test suite', () => {
 
 
 
 
-  describe('feature', ()=> {
+  describe('feature X', () => {
 
 
 
@@ -474,8 +509,40 @@ describe('Test suite', ()=> {
 
 
 
-    it('should have the expected behavior', async ()=> {
-      let record = await db.find({})
+    it('should have the expected behavior', async () => {
+
+
+    })
+  })
+})
+```
+
+---
+
+# Mocha: Setup & Teardown
+
+**DRY code with lifecycle hooks:**
+
+- `before` & `after`: run once per group (`describe`)
+- `beforeEach` & `afterEach`: run once per test (`it`)
+
+```javascript
+describe('Test suite', () => {
+
+
+
+
+  describe('feature X', () => {
+
+
+
+
+
+
+
+
+    it('should have the expected behavior', async () => {
+      let record = await db.findOne({})
       assert.equals(someRecord.id, record.id)
     })
   })
@@ -484,23 +551,20 @@ describe('Test suite', ()=> {
 
 ---
 
-# Mocha TDD
+# Mocha: Setup & Teardown
 
-**Setup & Teardown:**
+**DRY code with lifecycle hooks:**
 
-Avoid code duplication with supported *global* hooks:
-
-- `before` & `after`: run once
-- `beforeEach` & `afterEach`: run once per test
-- Can be nested in **any** `describe`
+- `before` & `after`: run once per group (`describe`)
+- `beforeEach` & `afterEach`: run once per test (`it`)
 
 ```javascript
-describe('Test suite', ()=> {
-  before(async ()=> {
+describe('Test suite', () => {
+  before(async () => {
     await db.connect()
   })
 
-  describe('feature', ()=> {
+  describe('feature X', () => {
     
       
     
@@ -509,8 +573,8 @@ describe('Test suite', ()=> {
     
     
 
-    it('should have the expected behavior', async ()=> {
-      let record = await db.find({})
+    it('should have the expected behavior', async () => {
+      let record = await db.findOne({})
       assert.equals(someRecord.id, record.id)
     })
   })
@@ -519,24 +583,21 @@ describe('Test suite', ()=> {
 
 ---
 
-# Mocha TDD
+# Mocha: Setup & Teardown
 
-**Setup & Teardown:**
+**DRY code with lifecycle hooks:**
 
-Avoid code duplication with supported *global* hooks:
-
-- `before` & `after`: run once
-- `beforeEach` & `afterEach`: run once per test
-- Can be nested in **any** `describe`
+- `before` & `after`: run once per group (`describe`)
+- `beforeEach` & `afterEach`: run once per test (`it`)
 
 ```javascript
-describe('Test suite', ()=> {
-  before(async ()=> {
+describe('Test suite', () => {
+  before(async () => {
     await db.connect()
   })
 
-  describe('feature', ()=> {
-    beforeEach(async ()=> {
+  describe('feature X', () => {
+    beforeEach(async () => {
       await db.save(someRecord)
     })
 
@@ -544,8 +605,8 @@ describe('Test suite', ()=> {
 
 
 
-    it('should have the expected behavior', async ()=> {
-      let record = await db.find({})
+    it('should have the expected behavior', async () => {
+      let record = await db.findOne({})
       assert.equals(someRecord.id, record.id)
     })
   })
@@ -554,33 +615,30 @@ describe('Test suite', ()=> {
 
 ---
 
-# Mocha TDD
+# Mocha: Setup & Teardown
 
-**Setup & Teardown:**
+**DRY code with lifecycle hooks:**
 
-Avoid code duplication with supported *global* hooks:
-
-- `before` & `after`: run once
-- `beforeEach` & `afterEach`: run once per test
-- Can be nested in **any** `describe`
+- `before` & `after`: run once per group (`describe`)
+- `beforeEach` & `afterEach`: run once per test (`it`)
 
 ```javascript
-describe('Test suite', ()=> {
-  before(async ()=> {
+describe('Test suite', () => {
+  before(async () => {
     await db.connect()
   })
 
-  describe('feature', ()=> {
-    beforeEach(async ()=> {
+  describe('feature X', () => {
+    beforeEach(async () => {
       await db.save(someRecord)
     })
 
-    afterEach(async ()=> {
+    afterEach(async () => {
       await db.clear()
     })
 
-    it('should have the expected behavior', async ()=> {
-      let record = await db.find({})
+    it('should have the expected behavior', async () => {
+      let record = await db.findOne({})
       assert.equals(someRecord.id, record.id)
     })
   })
@@ -589,24 +647,34 @@ describe('Test suite', ()=> {
 
 ---
 
-# Mocha TDD
+# Mocha: Test Options
 
-**Pending tests:**
+**1. Pending tests (aka "TODO"):**
 
 ```javascript
-describe('Feature', ()=> {
+describe('Feature X', () => {
+  // No callback 
   it('should do something not yet supported')
 })
 ```
 
 ---
 
-# Mocha TDD
+# Mocha: Test Options
 
-**Skipped tests:**
+**1. Pending tests (aka "TODO"):**
 
 ```javascript
-describe('Feature', ()=> {
+describe('Feature X', () => {
+  // No callback 
+  it('should do something not yet supported')
+})
+```
+
+**2. Skipped tests:**
+
+```javascript
+describe('Feature X', () => {
   it.skip('should ignore this test that\'s currently broken', ...)
   it('should still pass this test', ...)
 })
@@ -614,12 +682,30 @@ describe('Feature', ()=> {
 
 ---
 
-# Mocha TDD
+# Mocha: Test Options
 
-**Exclusive tests:**
+**1. Pending tests (aka "TODO"):**
 
 ```javascript
-describe('Feature', ()=> {
+describe('Feature X', () => {
+  // No callback 
+  it('should do something not yet supported')
+})
+```
+
+**2. Skipped tests:**
+
+```javascript
+describe('Feature X', () => {
+  it.skip('should ignore this test that\'s currently broken', ...)
+  it('should still pass this test', ...)
+})
+```
+
+**3. Exclusive tests:**
+
+```javascript
+describe('Feature X', () => {
   it.only('should pass this test because it\'s currently being worked on', ...)
   it('should ignore this test at the moment', ...)
 })
@@ -627,21 +713,54 @@ describe('Feature', ()=> {
 
 ---
 
-# Mocha TDD
+# Mocha: Test Options
 
-**CLI:**
+**1. Pending tests (aka "TODO"):**
 
-- `mocha test/test.js`
-- `mocha --watch test/test.js`
-- `mocha --grep="Test suite" test/test.js` *
-  
+```javascript
+describe('Feature X', () => {
+  // No callback 
+  it('should do something not yet supported')
+})
+```
+
+**2. Skipped tests:**
+
+```javascript
+describe('Feature X', () => {
+  it.skip('should ignore this test that\'s currently broken', ...)
+  it('should still pass this test', ...)
+})
+```
+
+**3. Exclusive tests:**
+
+```javascript
+describe('Feature X', () => {
+  it.only('should pass this test because it\'s currently being worked on', ...)
+  it('should ignore this test at the moment', ...)
+})
+```
+
+**Note:** All of the above can be applied to `describe` as well.
+---
+
+# Mocha: CLI
+
+**Many, many options. Here are a few:**
+
+- `$ mocha test/test.js`
+- `$ mocha --watch test/test.js`
+- `$ mocha --grep="Test suite" test/test.js` *
+- Etc... `$ mocha --check-leaks --timeout 5000`
+
 \* Only runs tests with "Test suite" in descriptions
 
 ---
 
-# Mocha TDD
+# Mocha: Reporters
 
-**Reporters:**
+**Reporters determine how results are displayed:**
 
 ```bash
 $ mocha --reporters
@@ -665,67 +784,57 @@ $ mocha --reporters
 
 ---
 
-# Mocha Tooling
+# Mocha: Reporters
 
-**Gulp:**
+**Spec:**
 
-```bash
-npm install -g gulp
-npm install --save-dev gulp
-npm install --save-dev gulp-mocha
-```
+The default reporter, a hierarchical nested view.
+
+![:scale 100%](https://mochajs.org/images/reporter-spec.png)
 
 ---
 
-# Mocha Tooling
+# Mocha: Reporters
 
-**Gulp:**
+**Dot Matrix:**
 
-```bash
-npm install -g gulp
-npm install --save-dev gulp
-npm install --save-dev gulp-mocha
-```
+Dots representing test cases, failures highlight in **red**, pending in **blue**, slow as **yellow**.
 
-```javascript
-let gulp = require('gulp')
-let mocha = require('gulp-mocha')
-
-gulp.task('default', ()=> {
-  return gulp.src('test.js', {reporter: 'spec'})
-    .pipe(mocha())
-})
-```
+![:scale 100%](https://mochajs.org/images/reporter-dot.png)
 
 ---
 
-# Mocha Tooling
+# Mocha: Reporters
 
-**Gulp:**
+**List:**
 
-```bash
-npm install -g gulp
-npm install --save-dev gulp
-npm install --save-dev gulp-mocha
-```
+A simple specifications list as test cases pass or fail, outputting the failure details at the bottom of the output.
 
-```javascript
-let gulp = require('gulp')
-let mocha = require('gulp-mocha')
-
-gulp.task('default', ()=> {
-  return gulp.src('test.js', {reporter: 'spec'})
-    .pipe(mocha())
-})
-```
-
-```bash
-project_root$ gulp
-```
+![:scale 100%](https://mochajs.org/images/reporter-list.png)
 
 ---
 
-# Mocha Examples
+# Mocha: Reporters
+
+**Nyan:**
+
+Nyan, nyan, nyan, nyan, nyan, nyan, nyan, nyan, nyan, nyan, nyan, nyan, nyan, nyan, nyan, nyan, nyan, nyan, nyan, nyan, nyan, nyan, nyan, nyan, nyan, nyan, nyan, nyan, nyan...
+
+![:scale 100%](https://mochajs.org/images/reporter-nyan.png)
+
+---
+
+# Mocha: Reporters
+
+**JSON:**
+
+A single large JSON object for programmatic consumption (e.g., tooling, instrumentation).
+
+![:scale 100%](https://mochajs.org/images/reporter-json.png)
+
+---
+
+# Mocha: Examples
 
 **Test Suites from projects using Mocha:**
 
@@ -737,26 +846,197 @@ project_root$ gulp
 
 ---
 
-# Why Chai.js?
+# Gulp: Streaming Task Runner
 
-**Features:**
+**[`gulp`](https://www.npmjs.com/package/gulp) & [`gulp-mocha`](https://www.npmjs.com/package/gulp-mocha):**
 
-- BDD (chaining)
-- node.js and browser support
-- Multiple assertion styles
-  - should: `foo.should.be.a('string')`
-  - expect: `expect(foo).to.be.a('string')`
-  - assert: `assert.typeOf(foo, 'string')`
+```bash
+$ npm install gulp-cli  --save-dev      # The task runner CLI
+$ npm install gulp --save-dev           # The task runner dependency
+$ npm install gulp-mocha --save-dev     # Run mocha from gulp
+```
 
 ---
 
-# Chai.js Example
+# Gulp: Streaming Task Runner
 
-**Chai: `should`:**
+**Basic example:**
+
+```javascript
+// ./gulpfile.js
+let gulp = require('gulp')
+let mocha = require('gulp-mocha')
+
+gulp.task('default', () => {
+
+
+})
+
+
+.
+```
+
+---
+
+# Gulp: Streaming Task Runner
+
+**Basic example:**
+
+```javascript
+// ./gulpfile.js
+let gulp = require('gulp')
+let mocha = require('gulp-mocha')
+
+gulp.task('default', () => {
+  return gulp.src('test.js', {reporter: 'spec'})
+    .pipe(mocha())
+})
+
+
+.
+```
+
+---
+
+# Gulp: Streaming Task Runner
+
+**Basic example:**
+
+```javascript
+// ./gulpfile.js
+let gulp = require('gulp')
+let mocha = require('gulp-mocha')
+
+gulp.task('default', () => {
+  return gulp.src('test.js', {reporter: 'spec'})
+    .pipe(mocha())
+})
+
+
+.
+```
 
 ```bash
-npm install --save-dev chai
+$ npm run gulp                          # Run all tasks
 ```
+
+---
+
+# Gulp: Streaming Task Runner
+
+**Basic example:**
+
+```javascript
+// ./gulpfile.js
+let gulp = require('gulp')
+let mocha = require('gulp-mocha')
+
+gulp.task('tests', () => {
+  return gulp.src('test.js', {reporter: 'spec'})
+    .pipe(mocha())
+})
+
+// The default task (called when you run `gulp` from cli) 
+gulp.task('default', ['tests'])
+```
+
+```bash
+$ npm run gulp test                      # Run specific tasks
+```
+
+---
+
+# Gulp: Streaming Task Runner
+
+**Use `gulp.watch` to rerun tasks when files change:**
+
+```javascript
+// ./gulpfile.js
+let gulp = require('gulp')
+let mocha = require('gulp-mocha')
+
+gulp.task('watch', () => {
+  // Assume we declared these tasks
+  gulp.watch('test/**/*', ['tests'])
+  gulp.watch('src/**/*', ['babel-build'])
+})
+
+.
+```
+
+```bash
+$ npm run gulp watch                     # Rerun tasks on file change
+```
+
+---
+
+# Why Chai.js?
+
+**BDD Assertion Library:**
+
+---
+
+# Why Chai.js?
+
+**BDD Assertion Library:**
+
+- Human-readable assertions (chaining):
+  ```javascript
+  foo.should.be.a('string')
+  ```
+
+---
+
+# Why Chai.js?
+
+**BDD Assertion Library:**
+
+- Human-readable assertions (chaining):
+  ```javascript
+  foo.should.be.a('string')
+  ```
+- node.js and browser supported
+
+---
+
+# Why Chai.js?
+
+**BDD Assertion Library:**
+
+- Human-readable assertions (chaining):
+  ```javascript
+  foo.should.be.a('string')
+  ```
+- node.js and browser supported
+- Supports common assertion styles:
+  ```javascript
+  // should
+  foo.should.be.a('string')
+
+  // expect
+  expect(foo).to.be.a('string')
+
+  // assert
+  assert.typeOf(foo, 'string')
+  ```
+
+---
+
+# Chai.js: Example
+
+```bash
+$ npm install chai --save-dev
+```
+
+---
+
+# Chai.js: Example
+
+```bash
+$ npm install chai --save-dev
+```
+
+**BDD with `should`:**
 
 ```javascript
 // Just some features
@@ -778,22 +1058,23 @@ x.should.not.be.an('object')
 
 ---
 
-# Terminology
+# Why Sinon.js?
 
-**Spy**
+**Standalone test spies, stubs and mocks:**
 
-- Wraps a function and watches arguments
-- Calls the original function
-
-**Stub**
-
-- Replaces a function and watches arguments
-- **Does not** call the original function
-
-**Mock**
-
-- Replaces functions and object properties.
-- **Does not** call the original function (*unless you tell it to*)
+- Spy:
+  - A function that records the arguments, return value, the value of `this` and exception thrown (if any) for all its calls
+  - Can be an anonymous function or wrap an existing function
+  - Especially useful for wrapping callbacks
+- Stub:
+  - Spies with pre-programmed **behavior**
+  - Extends the Spy API with methods to alter the stub’s behavior.
+  - Spies are passive observers, stubs are for forcing function behavior
+  - **Does not** wrap an existing function
+  - Especially useful for avoiding IO in unit tests
+- Mock:
+  - Stubs with pre-programmed **expectations**
+  - Primarily used to state assertions up front
 
 ---
 
@@ -801,19 +1082,23 @@ x.should.not.be.an('object')
 
 **Spies:**
 
+Passive function observers, userful for later assertions.
+
 ```javascript
 let sinon = require('sinon')
-let sinonChai = require('sinon-chai')
+require('sinon-chai')
 
-describe('Calling events with `emit`', ()=> {
-  it('should call all the functions bound in the queue', ()=> {
-    let e = new EventEmitter
-    let fn = sinon.spy()
+describe('Calling events with `emit`', () => {
+  it('should call all the functions bound in the queue', () => {
 
-    e.on('test', fn)
-    e.emit('test', 1, 2)
 
-    fn.should.be.calledWith(1, 2)
+
+
+
+
+
+
+
   })
 })
 ```
@@ -824,14 +1109,18 @@ describe('Calling events with `emit`', ()=> {
 
 **Spies:**
 
+Passive function observers, userful for later assertions.
+
 ```javascript
 let sinon = require('sinon')
-let sinonChai = require('sinon-chai')
+require('sinon-chai')
 
-describe('Calling events with `emit`', ()=> {
-  it('should call all the functions bound in the queue', ()=> {
+describe('Calling events with `emit`', () => {
+  it('should call all the functions bound in the queue', () => {
     let e = new EventEmitter
     let fn = sinon.spy()
+
+
 
     e.on('test', fn)
     e.emit('test', 1, 2)
@@ -851,13 +1140,42 @@ Stubs are spies with pre-programmed behavior.
 
 ```javascript
 let sinon = require('sinon')
-let sinonChai = require('sinon-chai')
+require('sinon-chai')
 
-describe('Callback`', ()=> {
-  it('should return the expected values', ()=> {
+describe('Callback`', () => {
+  it('should return the expected values', () => {
+
+
+
+
+
+
+
+
+
+  })
+})
+```
+
+---
+
+# Sinon.js
+
+**Stubs:**
+
+Stubs are spies with pre-programmed behavior.
+
+```javascript
+let sinon = require('sinon')
+require('sinon-chai')
+
+describe('Callback`', () => {
+  it('should return the expected values', () => {
     let callback = sinon.stub()
     callback.withArgs(42).returns(1)
     callback.withArgs(1).throws('TypeError')
+
+
 
     callback().should.be.empty
     callback(42).should.equal(1)
@@ -872,18 +1190,43 @@ describe('Callback`', ()=> {
 
 **Mocks:**
 
-Mocks are stubs with pre-programmed behavior **and** expectations.
-
-In other words, use a mock to state expectations up-front, instead of after the fact.
+Mocks are stubs with pre-programmed (up-front) expectations.
 
 ```javascript
 let sinon = require('sinon')
-let sinonChai = require('sinon-chai')
+require('sinon-chai')
 
-describe('Callback`', ()=> {
-  it('should return the expected values', ()=> {
+describe('Callback`', () => {
+  it('should return the expected values', () => {
+
+
+
+
+
+
+
+
+
+  })
+})
+```
+
+---
+
+# Sinon.js
+
+**Mocks:**
+
+Mocks are stubs with pre-programmed (up-front) expectations.
+
+```javascript
+let sinon = require('sinon')
+require('sinon-chai')
+
+describe('Callback`', () => {
+  it('should return the expected values', () => {
     let e = new EventEmitter
-    let mock = sinon.mock({handler: ()=>{}})
+    let mock = sinon.mock({handler: () => {}})
     mock.expects('handler').once().throws()
 
     e.on('test', mock.handler)
@@ -891,6 +1234,61 @@ describe('Callback`', ()=> {
     e.emit('someOtherEvent')
 
     mock.verify()
+  })
+})
+```
+
+---
+
+# SuperTest: HTTP Mocking
+
+**Convenient HTTP client request mocking built on SuperAgent:**
+
+```bash
+$ npm install supertest --save-dev
+```
+
+Simple Example:
+
+```javascript
+let request = require('supertest-as-promised')
+
+async function foo() {
+    await request(app) // Pass the http.Server instance
+      .get('/user')
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect(200)
+}
+```
+
+---
+
+# SuperTest: HTTP Mocking
+
+**Convenient HTTP client request mocking built on SuperAgent:**
+
+```bash
+$ npm install supertest-as-promised --save-dev
+```
+
+Advanced Example:
+
+```javascript
+let request = require('supertest-as-promised')
+describe('GET /user', () => {
+  it('should work', async () => {
+    await request(app)
+      .get('/user')
+      .set('Accept', 'application/json')
+      .expect((res) => {
+        res.body.id = 'some fixed id'
+        res.body.name = res.body.name.toUpperCase()
+      })
+      .expect(200, {
+        id: 'some fixed id',
+        name: 'TOBI'
+      })
   })
 })
 ```

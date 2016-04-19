@@ -67,7 +67,7 @@ class: center, middle
 
 **Question: What if they try to create a bad foo?!**
 
-**~~Answer: `express-validation` + `joi`**
+**Answer: `express-validation` + `joi`**
 
 ---
 
@@ -94,11 +94,11 @@ module.exports = {
 
 ---
 
-# `express-validation`: Intro
+# `joi`: Intro
 
 **Also supports header and cookie validation:**
 
-```
+```javascript
 // validators/fooPost.js
 module.exports = {
   // For cookies, use "cookie"
@@ -175,11 +175,11 @@ app.post('/foo', validate(fooPostValidator), wrap(async (req, res) =>{
 
 ---
 
-# `express-validation`: Handling Validation Errors
+# `express-validation`: Errors
 
-**User input errors are different from server runtime errors:**
+**ValidationErrors (bad user input) are not server runtime errors:**
 
-```
+```javascript
 // express error handler
 app.use((err, req, res, next) => {
   // Send 4XXs for validation errors
@@ -198,7 +198,7 @@ app.use((err, req, res, next) => {
 
 **1. Don't allow unknown values with strict validation:**
 
-```
+```javascript
 // validators/fooPost.js
 module.exports = {
   options : {
@@ -218,7 +218,7 @@ module.exports = {
 
 **2. Send alternative status codes:**
 
-```
+```javascript
 // validators/fooPost.js
 module.exports = {
   options: {

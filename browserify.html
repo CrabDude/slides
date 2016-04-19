@@ -120,20 +120,19 @@ let User = require('../models/user')
 - Babel.js with [`babelify`](https://github.com/babel/babelify):
   
   ```bash
-  browserify  -d -e main.js -t [ babelify --stage 0 ] -o bundle.js
+  browserify -d -e main.js -t [ babelify --presets [ node5 ] ] -o bundle.js
   ```
-- Auto-rebuild server with [`beefy`](http://didact.us/beefy/):
+- Auto-rebuild server with [`budo`](http://npmjs.com/budo):
   
   ```bash
-  beefy main.js --open -- -t [ babelify --stage 0 ]
+  budo main.js --live -- -t babelify
   ```
 - Express middleware with [`browserify-middleware`](https://github.com/ForbesLindesay/browserify-middleware):
 
   ```javascript
   //provide browserified versions of all the files in a directory
-  app.use('/js', browserify('./client/dir'));
+  app.use('/js', browserify(dirname + '/client/dir'));
   ```
-- Source maps with [`exorcist`](https://www.npmjs.com/package/exorcist)
 
 ---
 
