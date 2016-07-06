@@ -21,6 +21,144 @@
 
 class: center, middle
 
+# Joi
+
+Object schema description language and validator<br/>
+for JavaScript objects
+
+---
+
+class: center, middle
+
+# Joi
+
+IOW, Hapi.js ecosystem's data schema validator.
+
+---
+
+# Joi: Overview 
+
+- object schema description language
+- validator for javascript objects
+- joi used useful in non-hapi projects
+- built-in helpers for hapi
+- response validation
+- https://github.com/hapijs/joi
+
+---
+
+# Joi: Validation Process
+
+**2 step process:**
+
+1. define schema
+1. validate the schema
+
+---
+
+# Joi: Validation Process
+
+**1. define schema:**
+
+```javascript
+let joi = require('joi')
+let schema = {
+    a: joi.string()
+}
+```
+
+---
+
+# Joi: Validation Process
+
+**2. validate the schema**
+
+```javascript
+// With callbacks
+joi.validate({ a: 'a string' }, schema, (err, value) => {
+    if (!err) {
+        console.log(JSON.stringify(value) + ' validated')
+    }
+})
+```
+
+---
+
+# Joi: Validation Process
+
+**2. validate the schema**
+
+```javascript
+// With async/await & promises
+try {
+  let value = await joi.validate({ a: 'a string' }, schema)
+} catch (e) {
+  console.log(JSON.stringify(value) + ' validated')
+}
+```
+
+---
+
+# Joi: Schema Notes
+- keys are **optional** by default
+- strings are utf-8 encoded by default
+- rules are defined in an **additive** fashion
+- rules are evaluated in order after whitelist and blacklist checks
+
+---
+
+## Joi: Example
+
+```javascript
+let joi = require('joi')
+
+let schema = joi.object().keys({
+    username: joi.string().alphanum().min(3).max(30).required(),
+    password: joi.string().regex(/[a-zA-Z0-9]{3,30}/),
+    accessToken: [joi.string(), joi.number()],
+    birthyear: joi.number().integer().min(1900).max(2013),
+    email: joi.string().email()
+}).with('username', 'birthyear').without('password', 'accessToken')
+
+let thing = { username: 'abc', birthyear: 1994 }
+
+// No err -> valid
+joi.validate(thing, schema, (err, value) => {
+    if (!err) {
+        console.log(JSON.stringify(value) + ' validated')
+    }
+})
+```
+
+---
+
+## Joi: Example
+
+```javascript
+let joi = require('joi')
+
+let schema = joi.object().keys({
+    username: joi.string().alphanum().min(3).max(30).required(),
+    password: joi.string().regex(/[a-zA-Z0-9]{3,30}/),
+    accessToken: [joi.string(), joi.number()],
+    birthyear: joi.number().integer().min(1900).max(2013),
+    email: joi.string().email()
+}).with('username', 'birthyear').without('password', 'accessToken')
+
+let thing = { username: 'abc', birthyear: 1994 }
+
+// No err -> valid
+try {
+  let value = await joi.validate(thing, schema)
+} catch (err) {
+  console.log(JSON.stringify(value) + ' validated')
+}
+```
+
+---
+
+class: center, middle
+
 # Route Validation
 
 Good servers don't accept just any request...
@@ -76,7 +214,7 @@ class: center, middle
 **Create validation schemas with Hapi's `joi`:**
 
 ```javascript
-// validators/fooPost.js
+// schemas/fooPost.js
 let joi = require('joi')
 
 module.exports = {
@@ -99,7 +237,7 @@ module.exports = {
 **Also supports header and cookie validation:**
 
 ```javascript
-// validators/fooPost.js
+// schemas/fooPost.js
 module.exports = {
   // For cookies, use "cookie"
   headers: {
@@ -111,7 +249,7 @@ module.exports = {
 
 ---
 
-# `joi`: Validators
+# `joi`: Schemas
 
 **Hapi hapi Joi joi to your schema's content!**
 
@@ -134,7 +272,7 @@ await joi.validate({ username: 'abc', birthyear: 1994 }, schema
 
 ---
 
-# `joi`: Validators
+# `joi`: Schemas
 
 **List of supported `joi` types:**
 
@@ -151,24 +289,16 @@ string()
 
 ---
 
-# `joi`: Notes
-
-- keys are optional by default
-- strings are utf-8 encoded by default
-- rules are defined in an additive fashion
-- rules are evaluated in order after whitelist and blacklist checks
-
----
-
 # `express-validation`: Intro
 
 **Consume `joi` schemas in express with the `express-validation` middleware:**
 
 ```javascript
 let validate = require('express-validation')
-let fooPostValidator = require('./validators/fooPost')
+let wrap = require('co-express')
+let fooPostSchema = require('./schemas/fooPost')
  
-app.post('/foo', validate(fooPostValidator), wrap(async (req, res) =>{
+app.post('/foo', validate(fooPostSchema), wrap(async (req, res) =>{
     res.json(200)
 }))
 ```
@@ -199,7 +329,7 @@ app.use((err, req, res, next) => {
 **1. Don't allow unknown values with strict validation:**
 
 ```javascript
-// validators/fooPost.js
+// schemas/fooPost.js
 module.exports = {
   options : {
     allowUnknownBody: false,
@@ -219,7 +349,7 @@ module.exports = {
 **2. Send alternative status codes:**
 
 ```javascript
-// validators/fooPost.js
+// schemas/fooPost.js
 module.exports = {
   options: {
     status: 422,
@@ -231,9 +361,51 @@ module.exports = {
 
 ---
 
+# `joi`: Tips
+
+```javascript
+// empty string
+any.allow('')
+// conditional
+any.when('key',
+  { is: 'val',
+    then: joi.required(),
+    otherwise: joi.allow('').optional()
+  }
+)
+```
+
+---
+
+# `joi`: Conclusion
+
+Joi is an extremely powerful library.  You can integrate it directly with `hapi`, but it can also be used on other non-hapi projects.  It is useful for not only validating your inputs of params, query, headers, and payload but also your responses.
+
+---
+
+class: center, middle
+
+## Thanks to [Lloyd Benson](https://www.linkedin.com/in/lloyd-benson-b6761b1)
+## [Github](https://github.com/lloydbenson), NodeConf EU Joi [Slides](https://github.com/geek/hapi-workshop/blob/master/validate/slides.md) & [Samples](https://github.com/geek/hapi-workshop/tree/master/validate) (same repo)
+
+---
+
+# Links
+
+- This Slidedeck: https://cdn.rawgit.com/CrabDude/slides/master/validation.html
+
+- Github `joi` - https://github.com/hapijs/joi
+
+- `co-express` (async/await middleware) - https://www.npmjs.com/package/co-express
+
+- NodeConf EU Joi [Slides](https://github.com/geek/hapi-workshop/blob/master/validate/slides.md) & [Samples](https://github.com/geek/hapi-workshop/tree/master/validate)
+
+---
+
 class: center, middle
 
 # Questions?
+
 
     </textarea>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/default.min.css">
