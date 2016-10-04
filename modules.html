@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Intro to Node.js</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style type="text/css">
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body {
+        font-family: 'Droid Serif';
+      }
+      .remark-slide-content {
+        padding: 1em 1em 1em 3em;
+        font-size: 170%;
+      }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .remark-code, .remark-inline-code {
+        font-family: 'Ubuntu Mono';
+        font-size: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+
+class: center, middle
+
+# Node.js Modules
+
+Dependency managment & `npm`.
+
+---
+
+# Node.js Layers
+
+---
+
+# Node.js Layers
+
+**2 Layers:**
+
+- Core
+- Userland
+
+---
+
+# Node.js Layers
+
+**~~2~~ Layers:**
+
+- Core
+- Userland
+
+---
+
+# Node.js Layers
+
+**3 Layers:**
+
+- **Core**
+- *Userland:*
+  - &nbsp;
+  - &nbsp;
+
+---
+
+# Node.js Layers
+
+**3 Layers:**
+
+- **Core**
+- *Userland:*
+  - **Packages**
+  - &nbsp;
+
+---
+
+# Node.js Layers
+
+**3 Layers:**
+
+- **Core**
+- *Userland:*
+  - **Packages**
+  - **Application Code**
+
+---
+
+# Node.js Core
+
+---
+
+# Node.js Core
+
+**Core is small:**
+
+---
+
+# Node.js Core
+
+**Core is small:**
+
+- C/C++ V8 Bindings
+
+---
+
+# Node.js Core
+
+**Core is small:**
+
+- C/C++ V8 Bindings
+- JavaScript APIs
+
+---
+
+# Node.js Core
+
+**Core is small:**
+
+- C/C++ V8 Bindings
+- JavaScript APIs
+- Module System
+
+---
+
+# Node.js Core
+
+**Core is small:**
+
+- C/C++ V8 Bindings
+- JavaScript APIs
+- Module System
+- Event-loop
+
+---
+
+# Node.js Core
+
+**Core is low-level:**
+
+---
+
+# Node.js Core
+
+**Core is low-level:**
+
+> *"If it can be done in Userland, it belongs in Userland."*
+
+---
+
+# Node.js Core
+
+**Core is low-level:**
+
+> *"If it can be done in Userland, it belongs in Userland."*
+
+- No Web Framework
+
+---
+
+# Node.js Core
+
+**Core is low-level:**
+
+> *"If it can be done in Userland, it belongs in Userland."*
+
+- No Web Framework
+- No Convenience Utilities
+
+---
+
+# Node.js Core
+
+**Core is low-level:**
+
+> *"If it can be done in Userland, it belongs in Userland."*
+
+- No Web Framework
+- No Convenience Utilities
+- No Standard Library
+
+---
+
+# Node.js Core
+
+**Core is low-level:**
+
+> *"If it can be done in Userland, it belongs in Userland."*
+
+- No Web Framework
+- No Convenience Utilities
+- No Standard Library
+- No Database Drivers
+
+---
+
+# Node.js Core
+
+**Core Modules:**
+
+---
+
+# Node.js Core
+
+**Core Modules:**
+
+- Common:
+
+  `buffer` &middot; `events` &middot; `fs` &middot; `http` &middot; `https` &middot; `net` &middot; `os`<br/>
+  `path` &middot; `querystring` &middot; `stream` &middot; `url` &middot; `util`
+
+---
+
+# Node.js Core
+
+**Core Modules:**
+
+- Common:
+
+  `buffer` &middot; `events` &middot; `fs` &middot; `http` &middot; `https` &middot; `net` &middot; `os`<br/>
+  `path` &middot; `querystring` &middot; `stream` &middot; `url` &middot; `util`
+
+- Advanced:
+
+  `child_process` &middot; `cluster` &middot; `crypto` &middot; `dns` &middot; `punycode`<br/>
+  `readline` &middot; `repl` &middot; `tls` &middot; `tty` &middot; `v8` &middot; `vm` &middot; `zlib`
+
+---
+
+# Node.js Core
+
+**Core Modules:**
+
+- Common:
+
+  `buffer` &middot; `events` &middot; `fs` &middot; `http` &middot; `https` &middot; `net` &middot; `os`<br/>
+  `path` &middot; `querystring` &middot; `stream` &middot; `url` &middot; `util`
+
+- Advanced:
+
+  `child_process` &middot; `cluster` &middot; `crypto` &middot; `dns` &middot; `punycode`<br/>
+  `readline` &middot; `repl` &middot; `tls` &middot; `tty` &middot; `v8` &middot; `vm` &middot; `zlib`
+
+- *Probably* Never:
+
+  `assert` &middot; `console` &middot; `constants` &middot; `dgram` &middot; `domain`<br/>
+  `module` &middot; `process` &middot; `string_decoder` &middot; `timers`
+
+---
+
+class: center, middle
+
+# Questions?
+
+
+    </textarea>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
+    <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      remark.highlighter.engine = hljs
+      remark.macros.scale = function (percentage) {
+        var url = this
+        return '<img src="' + url + '" style="width: ' + percentage + '" />'
+      }
+      var slideshow = remark.create({
+        highlightStyle: 'tomorrow-night-bright'
+      })
+    </script>
+  </body>
+</html>
