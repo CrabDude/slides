@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Node.js Events</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style type="text/css">
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body {
+        font-family: 'Droid Serif';
+      }
+      .remark-slide-content {
+        padding: 1em 1em 1em 3em;
+        font-size: 170%;
+      }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .remark-code, .remark-inline-code {
+        font-family: 'Ubuntu Mono';
+        font-size: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+
+class: center, middle
+
+# Node.js Events
+
+A non-blocking *single-threaded* event-loop.
+
+---
+
+# What is an Event-loop?
+
+<= IO Operation (Event Source, e.g., Timer)
+IO Events (vs non-IO arbitrary events)
+=> Listening Events
+==> Event Queue
+===> Event Handlers
+
+TODO: Graphic
+
+---
+
+class: center, middle
+
+# All node.js IO is evented
+
+---
+
+# Evented IO
+
+** Everything inherits from `EventEmitter`:**
+
+---
+
+# Evented IO
+
+** ~~Everything~~ inherits from `EventEmitter`:**
+
+---
+
+# Evented IO
+
+** IO Sources inherit from `EventEmitter`:**
+
+---
+
+# Evented IO
+
+** IO Sources inherit from `EventEmitter`:**
+
+- `http.Server`
+  - *emits:* `request`, `close`, `connect`, ...
+- `ReadableStream`
+  - *e.g., `fs.readStream`, `process.stdin`*
+  - *emits:* `close`, `data`, `end`, `error`
+- `WritableStream`
+  - *e.g., `fs.writeStream`, `process.stdout`*
+  - *emits:* `drain`, `finish`, `end`, `pipe`
+- `process`
+  - *emits:* `exit`, `uncaughtException`, `unhandledRejection`
+
+---
+
+# Evented IO
+
+**`fs.readFile`:**
+
+```javascript
+
+let data = await fs.readFile(__filename)
+```
+
+---
+
+# Evented IO
+
+**`fs.readFile`:**
+
+```javascript
+// Listen on & handle 'data' & 'close'  events
+let data = await fs.readFile(__filename)
+```
+
+---
+
+# Evented IO
+
+**`fs.readFile`:**
+
+```javascript
+// Listen on & handle 'data' & 'close'  events
+let data = await fs.readFile(__filename)
+```
+
+**The process...**
+
+---
+
+# Evented IO
+
+**`fs.readFile`:**
+
+```javascript
+// Listen on & handle 'data' & 'close'  events
+let data = await fs.readFile(__filename)
+```
+
+**The process...**
+
+- is idle while waiting on async IO
+
+---
+
+# Evented IO
+
+**`fs.readFile`:**
+
+```javascript
+// Listen on & handle 'data' & 'close'  events
+let data = await fs.readFile(__filename)
+```
+
+**The process...**
+
+- is idle while waiting on async IO
+- remains open while idle
+
+---
+
+# Evented IO
+
+**`fs.readFile`:**
+
+```javascript
+// Listen on & handle 'data' & 'close'  events
+let data = await fs.readFile(__filename)
+```
+
+**The process...**
+
+- is idle while waiting on async IO
+- remains open while idle
+- closes when there are no remaining **IO event sources**
+
+---
+
+# Evented IO
+
+**`fs.readFile`:**
+
+```javascript
+// Listen on & handle 'data' & 'close'  events
+let data = await fs.readFile(__filename)
+```
+
+**The process...**
+
+- is idle while waiting on async IO
+- remains open while idle
+- closes when there are no remaining **IO event sources**
+  - *e.g., `setTimeout`, httpServer, `http.request`*
+
+---
+
+# Evented IO
+
+**`fs.readFile`:**
+
+```javascript
+// Listen on & handle 'data' & 'close'  events
+console.log( await fs.readFile(__filename) )
+```
+
+---
+
+# Evented IO
+
+**`fs.readFile`:**
+
+```javascript
+// Listen on & handle 'data' & 'close'  events
+console.log( await fs.readFile(__filename) )
+```
+
+**is sugar for:**
+
+---
+
+# Evented IO
+
+**`fs.readFile`:**
+
+```javascript
+// Listen on & handle 'data' & 'close'  events
+console.log( await fs.readFile(__filename) )
+```
+
+**is sugar for:**
+
+```javascript
+// Start IO operation
+let readStream = fs.createReadStream(__filename)
+
+
+
+
+
+.
+```
+
+---
+
+# Evented IO
+
+**`fs.readFile`:**
+
+```javascript
+// Listen on & handle 'data' & 'close'  events
+console.log( await fs.readFile(__filename) )
+```
+
+**is sugar for:**
+
+```javascript
+// Start IO operation
+let readStream = fs.createReadStream(__filename)
+
+
+// Listen on 'data', buffer chunks
+readStream.on('data', data => {                })
+
+.
+```
+
+---
+
+# Evented IO
+
+**`fs.readFile`:**
+
+```javascript
+// Listen on & handle 'data' & 'close'  events
+console.log( await fs.readFile(__filename) )
+```
+
+**is sugar for:**
+
+```javascript
+// Start IO operation
+let readStream = fs.createReadStream(__filename)
+let result = ''
+
+// Listen on 'data', buffer chunks
+readStream.on('data', data => { result += data })
+
+.
+```
+
+---
+
+# Evented IO
+
+**`fs.readFile`:**
+
+```javascript
+// Listen on & handle 'data' & 'close'  events
+console.log( await fs.readFile(__filename) )
+```
+
+**is sugar for:**
+
+```javascript
+// Start IO operation
+let readStream = fs.createReadStream(__filename)
+let result = ''
+
+// Listen on 'data', buffer chunks
+readStream.on('data', data => { result += data })
+// Listen on 'close'
+readStream.on('close', () => {                     }
+```
+
+---
+
+# Evented IO
+
+**`fs.readFile`:**
+
+```javascript
+// Listen on & handle 'data' & 'close'  events
+console.log( await fs.readFile(__filename) )
+```
+
+**is sugar for:**
+
+```javascript
+// Start IO operation
+let readStream = fs.createReadStream(__filename)
+let result = ''
+
+// Listen on 'data', buffer chunks
+readStream.on('data', data => { result += data })
+// Listen on 'close'
+readStream.on('close', () => { console.log(result) }
+```
+
+---
+
+class: center, middle
+
+# Pending IO keeps the process open
+
+*Even when no one's listening...*
+
+---
+
+# Evented IO & Long Running Processes
+
+---
+
+# Evented IO & Long Running Processes
+
+**HTTP Server:**
+
+```javascript
+let http = require('http')
+
+
+
+
+
+
+
+
+
+
+
+
+.
+```
+
+---
+
+# Evented IO & Long Running Processes
+
+**HTTP Server:**
+
+```javascript
+let http = require('http')
+
+// Create httpServer instance & handle 'request' events
+http.createServer((request, response) => {
+
+
+
+
+
+
+
+
+})
+.
+```
+
+---
+
+# Evented IO & Long Running Processes
+
+**HTTP Server:**
+
+```javascript
+let http = require('http')
+
+// Create httpServer instance & handle 'request' events
+http.createServer((request, response) => {
+  
+
+
+
+
+
+
+
+})
+.listen(8000)  // Start server IO
+```
+
+---
+
+# Evented IO & Long Running Processes
+
+**HTTP Server:**
+
+```javascript
+let http = require('http')
+
+// Create httpServer instance & handle 'request' events
+http.createServer((request, response) => {
+  response.writeHead(200)
+  response.write('Hello ')
+
+
+
+
+    response.end()
+
+})
+.listen(8000)  // Start server IO
+```
+
+---
+
+# Evented IO & Long Running Processes
+
+**HTTP Server:**
+
+```javascript
+let http = require('http')
+
+// Create httpServer instance & handle 'request' events
+http.createServer((request, response) => {
+  response.writeHead(200)
+  response.write('Hello ')
+
+  // Create timer & handle 'timeout' event
+  setTimeout(() => {
+
+    response.end()
+  }, 4000)
+})
+.listen(8000)  // Start server IO
+```
+
+---
+
+# Evented IO & Long Running Processes
+
+**HTTP Server:**
+
+```javascript
+let http = require('http')
+
+// Create httpServer instance & handle 'request' events
+http.createServer((request, response) => {
+  response.writeHead(200)
+  response.write('Hello ')
+
+  // Create timer & handle 'timeout' event
+  setTimeout(() => {
+    reponse.write('world\n')
+    response.end()
+  }, 4000)
+})
+.listen(8000)  // Start server IO
+```
+
+---
+
+# TODO: CPU Timeline for blocking & non-blocking requests
+
+---
+
+class: center, middle
+
+# It's all sugar.
+
+Too sweet? Let cut back on the sugar...
+
+---
+
+# Evented IO & Long Running Processes
+
+** *Sugar-free* HTTP Server:**
+
+```javascript
+let http = require('http')
+
+// Create httpServer instance & handle 'request' events
+http.createServer((request, response) => {
+  response.writeHead(200)
+  response.write('Hello ')
+
+  // Create timer & handle 'timeout' event
+  setTimeout(() => {
+    reponse.write('world\n')
+    response.end()
+  }, 4000)
+})
+.listen(8000)  // Start server IO
+```
+
+---
+
+# Evented IO & Long Running Processes
+
+** *Sugar-free* HTTP Server:**
+
+```javascript
+
+
+// Create httpServer instance & handle 'request' events
+                  (request, response) => {
+  response.writeHead(200)
+  response.write('Hello ')
+
+  // Create timer & handle 'timeout' event
+  setTimeout(() => {
+    reponse.write('world\n')
+    response.end()
+  }, 4000)
+})
+.listen(8000)  // Start server IO
+```
+
+---
+
+# Evented IO & Long Running Processes
+
+** *Sugar-free* HTTP Server:**
+
+```javascript
+// Create httpServer instance
+
+// Handle 'request' events
+                  (request, response) => {
+  response.writeHead(200)
+  response.write('Hello ')
+
+  // Create timer & handle 'timeout' event
+  setTimeout(() => {
+    reponse.write('world\n')
+    response.end()
+  }, 4000)
+})
+.listen(8000)  // Start server IO
+```
+
+---
+
+# Evented IO & Long Running Processes
+
+** *Sugar-free* HTTP Server:**
+
+```javascript
+// Create httpServer instance
+let app = http.createServer()
+// Handle 'request' events
+                  (request, response) => {
+  response.writeHead(200)
+  response.write('Hello ')
+
+  // Create timer & handle 'timeout' event
+  setTimeout(() => {
+    reponse.write('world\n')
+    response.end()
+  }, 4000)
+})
+.listen(8000)  // Start server IO
+```
+
+---
+
+# Evented IO & Long Running Processes
+
+** *Sugar-free* HTTP Server:**
+
+```javascript
+// Create httpServer instance
+let app = http.createServer()
+// Handle 'request' events
+app.on('request', (request, response) => {
+  response.writeHead(200)
+  response.write('Hello ')
+
+  // Create timer & handle 'timeout' event
+  setTimeout(() => {
+    reponse.write('world\n')
+    response.end()
+  }, 4000)
+})
+.listen(8000)  // Start server IO
+```
+
+---
+
+# Evented IO & Long Running Processes
+
+** *Sugar-free* HTTP Server:**
+
+```javascript
+// Create httpServer instance
+let app = http.createServer()
+// Handle 'request' events
+app.on('request', (request, response) => {
+  response.writeHead(200)
+  response.write('Hello ')
+
+  // Create timer & handle 'timeout' event
+  setTimeout(() => {
+    reponse.write('world\n')
+    response.end()
+  }, 4000)
+})
+app.listen(8000)  // Start server IO
+```
+
+---
+
+# `EventEmitter`
+
+**Using `EventEmitter`:**
+
+```javascript
+let EventEmitter = require('events').EventEmitter
+
+let syslog = new EventEmitter()
+
+
+
+
+
+
+
+
+
+.
+```
+
+---
+
+# `EventEmitter`
+
+**~~Using~~ `EventEmitter`:**
+
+```javascript
+let EventEmitter = require('events').EventEmitter
+
+let syslog = new EventEmitter()
+
+
+
+
+
+
+
+
+
+.
+```
+
+---
+
+# `EventEmitter`
+
+**Inheriting from `EventEmitter`:**
+
+```javascript
+let EventEmitter = require('events').EventEmitter
+class Syslog extends EventEmitter {}
+let syslog = new Syslog()
+
+
+
+
+
+
+
+
+
+.
+```
+
+---
+
+# `EventEmitter`
+
+**Inheriting from `EventEmitter`:**
+
+```javascript
+let EventEmitter = require('events').EventEmitter
+class Syslog extends EventEmitter {}
+let syslog = new Syslog()
+
+let log = console.log
+
+syslog.on('error', (err) => log('ERR: ', err.stack))
+
+
+
+
+
+
+.
+```
+
+---
+
+# `EventEmitter`
+
+**Inheriting from `EventEmitter`:**
+
+```javascript
+let EventEmitter = require('events').EventEmitter
+class Syslog extends EventEmitter {}
+let syslog = new Syslog()
+
+let log = console.log
+// Multiple handlers for the same event
+syslog.on('error', (err) => log('ERR: ', err.stack))
+syslog.on('error', (err) => process.exit())
+
+
+
+
+
+.
+```
+
+---
+
+# `EventEmitter`
+
+**Inheriting from `EventEmitter`:**
+
+```javascript
+let EventEmitter = require('events').EventEmitter
+class Syslog extends EventEmitter {}
+let syslog = new Syslog()
+
+let log = console.log
+// Multiple handlers for the same event
+syslog.on('error', (err) => log('ERR: ', err.stack))
+syslog.on('error', (err) => process.exit())
+// Multiple arguments
+syslog.on('warn', (msg, meta) => log('WARN: ', msg, meta))
+
+
+
+.
+```
+
+---
+
+# `EventEmitter`
+
+**Inheriting from `EventEmitter`:**
+
+```javascript
+let EventEmitter = require('events').EventEmitter
+class Syslog extends EventEmitter {}
+let syslog = new Syslog()
+
+let log = console.log
+// Multiple handlers for the same event
+syslog.on('error', (err) => log('ERR: ', err.stack))
+syslog.on('error', (err) => process.exit())
+// Multiple arguments
+syslog.on('warn', (msg, meta) => log('WARN: ', msg, meta))
+
+// Elsewhere
+syslog.emit('error', new Error('The System is Down.'))
+syslog.emit('warn', 'Low memory', process.memoryUsage())
+```
+
+---
+
+class: center, middle
+
+# Questions?
+
+
+    </textarea>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
+    <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      remark.highlighter.engine = hljs
+      remark.macros.scale = function (percentage) {
+        var url = this
+        return '<img src="' + url + '" style="width: ' + percentage + '" />'
+      }
+      var slideshow = remark.create({
+        highlightStyle: 'tomorrow-night-bright'
+      })
+    </script>
+  </body>
+</html>
