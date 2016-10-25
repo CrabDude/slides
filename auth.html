@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ORMs</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style type="text/css">
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Hapi: Request Lifecycle
+
+---
+
+# Hapi: Request Lifecycle
+
+**`request` object**
+
+- Created internally for each incoming request.
+
+---
+
+# Hapi: Request Lifecycle
+
+**`request` object**
+
+- Created internally for each incoming request.
+- Methods and properties change throughout the request lifecycle.
+  Similar to the express middleware request pipeline (i.e., `res.render`)
+
+---
+
+# Hapi: Request Lifecycle
+
+**Uses:**
+
+- route interception
+- validation
+- authentication (identity)
+- authorization (permissioning)
+- encryption (ex. create SHA1 hash of each request body)
+- etc...
+
+---
+
+class: center, middle
+
+# Extension Points
+
+---
+
+# Request Lifecycle: Extension Points
+
+[![](./images/auth_extensionpoints.png)](./images/auth_extensionpoints.png)
+
+---
+
+# Request Lifecycle: Extension Points
+
+[![](./images/auth_lifecycle_complete.png)](./images/auth_lifecycle_complete.png)
+
+---
+
+# Request Lifecycle: Extension Points
+
+**Adding a `hapi` server extension point:**
+
+```js
+server.ext(extension_point_event, method, [options])
+```
+
+---
+
+# Request Lifecycle: **`onRequest`**
+
+**Before the router begins processing the request...**
+
+[![](./images/auth_request.png)](./images/auth_request.png)
+ 
+---
+
+# Request Lifecycle: **`onRequest`**
+
+**Before the router begins processing the request...**
+
+[![](./images/auth_request.png)](./images/auth_request.png)
+ 
+Special methods available **only** in `onRequest` handler:
+
+- `request.setUrl()` - Changes the request URI
+- `request.setMethod()` - Changes the request method
+
+---
+
+# Request Lifecycle: **`onRequest`**
+
+**'onRequest' example:**
+
+```js
+server.ext('onRequest', (request, reply) => {
+    request.setUrl('/hello')
+    request.setMethod('POST')
+    return reply.continue()
+})
+
+
+
+
+
+
+
+
+
+
+.
+```
+
+---
+
+# Request Lifecycle: **`onRequest`**
+
+**'onRequest' example:**
+
+```js
+server.ext('onRequest', (request, reply) => {
+    request.setUrl('/hello')
+    request.setMethod('POST')
+    return reply.continue()
+})
+
+server.route({ 
+    method: 'POST', 
+    path: '/hello', 
+    handler: function (request, reply) {
+        return reply('POST /hello handler')
+    }
+})
+
+
+.
+```
+
+---
+
+# Request Lifecycle: **`onRequest`**
+
+**'onRequest' example:**
+
+```js
+server.ext('onRequest', (request, reply) => {
+    request.setUrl('/hello')
+    request.setMethod('POST')
+    return reply.continue()
+})
+
+server.route({ 
+    method: 'POST', 
+    path: '/hello', 
+    handler: function (request, reply) {
+        return reply('POST /hello handler')
+    }
+})
+
+server.start()
+// All requests forward to handler for `POST /hello`
+```
+
+---
+
+class: center, middle
+
+# Authentication
+
+---
+
+# Request Lifecycle: Authentication
+
+[![](./images/auth_postauth.png)](./images/auth_postauth.png)
+
+---
+
+# Request Lifecycle: Authentication
+
+[![](./images/auth_postauth.png)](./images/auth_postauth.png)
+
+1. Verify route permissions (specified by strategy)
+
+---
+
+# Request Lifecycle: Authentication
+
+[![](./images/auth_postauth.png)](./images/auth_postauth.png)
+
+1. Verify route permissions (specified by strategy)
+1. Parse & authenticate payload
+
+---
+
+# Request Lifecycle: Authentication
+
+**Authentication is based on the concept of schemes & strategies.**
+
+> Think of a **scheme** as a general type of auth, like "basic" or "digest". A **strategy** on the other hand, is a pre-configured and named instance of a scheme.
+
+---
+
+# Request Lifecycle: Authentication
+
+**Authentication is based on the concept of schemes & strategies.**
+
+> Think of a **scheme** as a general type of auth, like "basic" or "digest". A **strategy** on the other hand, is a pre-configured and named instance of a scheme.
+
+```js
+// Registers a strategy with "scheme" to "name"
+server.auth.strategy(name, scheme)
+```
+
+*Think of a strategy like an instance of a scheme.*
+
+---
+
+# Request Lifecycle: Authentication
+
+```js
+// Require Auth Scheme
+const HapiAuthBasic = require('hapi-auth-basic')
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.
+```
+
+---
+
+# Request Lifecycle: Authentication
+
+```js
+// Require Auth Scheme
+const HapiAuthBasic = require('hapi-auth-basic')
+
+// Scheme handler
+async function basicValidate(username, password) {
+  //...
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.
+```
+
+---
+
+# Request Lifecycle: Authentication
+
+```js
+// Require Auth Scheme
+const HapiAuthBasic = require('hapi-auth-basic')
+
+// Scheme handler
+async function basicValidate(username, password) {
+  //...
+}
+
+server.register(HapiAuthBasic, (err) => {
+    // Register Auth Strategy
+    server.auth.strategy('simple', 'basic', {
+      // Use nodeifyit to support callbacks
+      validateFunc: nodeifyit(basicValidate, {spread: true})
+    })
+
+
+
+
+
+
+
+
+
+
+
+
+})
+```
+
+---
+
+# Request Lifecycle: Authentication
+
+```js
+// Require Auth Scheme
+const HapiAuthBasic = require('hapi-auth-basic')
+
+// Scheme handler
+async function basicValidate(username, password) {
+  //...
+}
+
+server.register(HapiAuthBasic, (err) => {
+    // Register Auth Strategy
+    server.auth.strategy('simple', 'basic', {
+      // Use nodeifyit to support callbacks
+      validateFunc: nodeifyit(basicValidate, {spread: true})
+    })
+
+    // Add 'simple' 'auth' (registered above)
+    server.route({
+        method: 'GET',
+        path: '/',
+        config: {
+            auth: 'simple',
+            handler: (request, reply) => {
+                reply('hello, ' + request.auth.credentials.user)
+            }
+        }
+    })
+})
+```
+
+---
+
+# Request Lifecycle: Authentication
+
+```js
+// Require Auth Scheme
+const HapiAuthBasic = require('hapi-auth-basic')
+
+// Scheme handler
+async function basicValidate(username, password) {
+  return [true, {id: 1234}]
+}
+
+server.register(HapiAuthBasic, (err) => {
+    // Register Auth Strategy
+    server.auth.strategy('simple', 'basic', {
+      // Use nodeifyit to support callbacks
+      validateFunc: nodeifyit(basicValidate, {spread: true})
+    })
+
+    // Add 'simple' 'auth' (registered above)
+    server.route({
+        method: 'GET',
+        path: '/',
+        config: {
+            auth: 'simple',
+            handler: (request, reply) => {
+                reply('hello, ' + request.auth.credentials.user)
+            }
+        }
+    })
+})
+```
+---
+
+# Request Lifecycle: Authentication
+
+```js
+// Require Auth Scheme
+const HapiAuthBasic = require('hapi-auth-basic')
+
+// Scheme handler
+function basicValidate(username, password, callback) {
+  callback(null, true, {id: 1234})
+}
+
+server.register(HapiAuthBasic, (err) => {
+    // Register Auth Strategy
+    server.auth.strategy('simple', 'basic', {
+
+      validateFunc: basicValidate
+    })
+
+    // Add 'simple' 'auth' (registered above)
+    server.route({
+        method: 'GET',
+        path: '/',
+        config: {
+            auth: 'simple',
+            handler: (request, reply) => {
+                reply('hello, ' + request.auth.credentials.user)
+            }
+        }
+    })
+})
+```
+---
+
+# Request Lifecycle: Auth
+
+**Scheme & strategy auth review:**
+
+```js
+server.auth.scheme('basic', scheme)
+server.auth.strategy('simple', 'basic')
+
+
+.
+```
+
+---
+
+# Request Lifecycle: Auth
+
+**Scheme & strategy auth review:**
+
+```js
+server.auth.scheme('basic', scheme)
+server.auth.strategy('simple', 'basic')
+
+// Set default auth for all routes
+server.auth.default('simple')
+```
+
+---
+
+# Request Lifecycle: Auth
+
+- `hapi-auth-cookie` - Uses 'cookie' schema
+- `bell` - Uses 'bell' schema:
+
+```js
+server.auth.strategy('twitter', 'bell', {
+    provider: 'twitter',
+    password: 'encryption_password',
+    clientId: 'client_id',
+    clientSecret: 'client_secret'
+})
+```
+
+---
+
+class: center, middle
+
+# Validation
+
+[![](./images/auth_validation.png)](./images/auth_validation.png)
+
+---
+
+# Request Lifecycle: **Validation**
+
+**Validating params:**
+
+```js
+plugin.route({
+    method: 'GET',
+    path:'/welcome/{name}',
+    handler: function (request, reply) {
+
+        var welcomeMsg = 'Welcome ' + request.params.name + '!\n';
+        welcomeMsg += 'Are you ' + request.query.mood + '?';
+
+        reply(welcomeMsg);
+    },
+    config: {
+        validate: {
+            params: {
+                name: Joi.string().required()
+            },
+            // ...
+        }
+    }
+});
+```
+
+---
+
+# Request Lifecycle: **Validation**
+
+**Validating querystring in `request.query`:**
+
+```js
+plugin.route({
+    method: 'GET',
+    path:'/welcome/{name}',
+    handler: function (request, reply) {
+
+        var welcomeMsg = 'Welcome ' + request.params.name + '!\n';
+        welcomeMsg += 'Are you ' + request.query.mood + '?';
+
+        reply(welcomeMsg);
+    },
+    config: {
+        validate: {
+            // ...
+            query: {
+                mood: Joi.string().valid(['happy','sad'])
+                         .default('happy')
+            }
+        }
+    }
+});
+```
+
+---
+
+# Request Lifecycle: Route Prerequisites
+
+[![](./images/auth_prerequisites.png)](./images/auth_prerequisites.png)
+
+---
+
+# Request Lifecycle: Route Prerequisites
+
+[![](./images/auth_prerequisites.png)](./images/auth_prerequisites.png)
+
+- May contain an object or array of objects with actions
+- Actions 'terminate' with a reply(), and pass the result to the next step
+
+---
+
+# Request Lifecycle: Route Prerequisites
+
+[![](./images/auth_prerequisites.png)](./images/auth_prerequisites.png)
+
+- May contain an object or array of objects with actions
+- Actions 'terminate' with a reply(), and pass the result to the next step
+
+```js
+function prerequisite (request, reply) {
+    return reply('I am a prerequisite!')
+}
+```
+
+---
+
+# Request Lifecycle: Route pre-requisites
+
+```js
+server.route({
+    method: 'GET',
+    path: '/hello',
+    config: {
+        pre: [
+            [
+                /* foo and bar executed in parallel */
+                { method: foo, assign: 'foo' },
+                { method: bar, assign: 'bar' }
+            ],
+            {
+              method: (request, reply) => {
+                reply(request.pre.foo + '\n' + request.pre.bar)
+              },
+              assign: 'baz'
+            },
+        ],
+        handler: (request, reply) => {
+            return reply(request.pre.baz);
+        }
+    }
+})
+```
+
+---
+
+# Request Lifecycle: **`onPostHandler` & `onPreResponse`**
+
+[![](./images/auth_extensionpoints.png)](./images/auth_extensionpoints.png)
+
+The response object contained in `request.response` may be modified in `onPostHandler` & `onPreResponse`.
+
+---
+
+# Request Lifecycle: **`onPostHandler` & `onPreResponse`**
+
+[![](./images/auth_extensionpoints.png)](./images/auth_extensionpoints.png)
+
+The response object contained in `request.response` may be modified in `onPostHandler` & `onPreResponse`.
+
+**`onPreResponse` is always called.**
+
+---
+
+# Request Lifecycle: Send Response
+
+[![](./images/auth_extensionpoints.png)](./images/auth_extensionpoints.png)
+
+- May emit `"request-error"` event
+- Finally returns data to client!
+
+---
+
+# Request Lifecycle: Tails
+
+[![](./images/auth_preresponse.png)](./images/auth_preresponse.png)
+
+> Tails are actions performed throughout the request lifecycle, but which may end after a response is sent back to the client. For example, a request may trigger a database update which should not delay sending back a response. However, it is still desirable to associate the activity with the request when logging it (or an error associated with it).
+
+---
+
+# Request Lifecycle: Tails
+
+[![](./images/auth_preresponse.png)](./images/auth_preresponse.png)
+
+**When all tails completed, the server emits a 'tail' event.**
+
+---
+
+# Request Lifecycle: Tails
+
+[![](./images/auth_preresponse.png)](./images/auth_preresponse.png)
+
+```js
+const tailFn = request.tail([name])
+
+// Returns a tail function which must be called
+// when the tail activity is completed
+```
+
+---
+
+# Request Lifecycle: Conclusion
+
+[![](./images/auth_conclusion.png)](./images/auth_conclusion.png)
+
+---
+
+class: center, middle
+
+# Questions?
+
+    </textarea>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
+    <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      remark.highlighter.engine = hljs
+      remark.macros.scale = function (percentage) {
+        var url = this
+        return '<img src="' + url + '" style="width: ' + percentage + '" />'
+      }
+      var slideshow = remark.create({
+        highlightStyle: 'tomorrow-night-bright'
+      })
+    </script>
+  </body>
+</html>
